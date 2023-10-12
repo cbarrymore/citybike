@@ -6,6 +6,7 @@ import java.util.Random;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import sitioTuristico.modelo.InformacionCompleta;
 import sitioTuristico.servicio.SitiosTuristicosGeoNames;
 
 public class TestApp {
@@ -23,7 +24,11 @@ public class TestApp {
  public void prueba2() {
 	 SitiosTuristicosGeoNames g = new SitiosTuristicosGeoNames();
 	 
-	 g.obtenerInformacionSiitoInteres("Catedral_de_Murcia");
+	 InformacionCompleta inf = g.obtenerInformacionSiitoInteres("Catedral_de_Murcia");
+	 inf.getCategorias().stream().forEach(System.out::println);
+	 inf.getInfoComplementaria().stream().forEach(System.out::println);
+	 System.out.println(inf.getImagen());
+	 System.out.println(inf.getResumenWikipedia());
  }
 
 }

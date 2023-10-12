@@ -8,9 +8,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.xml.parsers.DocumentBuilder;
@@ -30,10 +33,11 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 	
 	private static final String FIND_NEARBY_WIKIPEDIA = "http://api.geonames.org/findNearbyWikipedia?username=aadd&lang=es";
 	private static final String DBPEDIA = "https://es.dbpedia.org/data/";
-	private static final String DBPEDIA_NOMBRE = " http://www.w3.org/2000/01/rdf-schema#label";
+	private static final String DBPEDIA_OBJURL = "http://es.dbpedia.org/resource/";
+	private static final String DBPEDIA_NOMBRE = "http://www.w3.org/2000/01/rdf-schema#label";
 	private static final String DBPEDIA_RESUMEN = "http://dbpedia.org/ontology/abstract";
 	private static final String DBPEDIA_CATEGORIAS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
-	private static final String DBPEDIA_ENLACES_COMPLEMENTARIOS = "http://dbpedia.org/ontology/wikiPageExternalLink\r\n";
+	private static final String DBPEDIA_ENLACES_COMPLEMENTARIOS = "http://dbpedia.org/ontology/wikiPageExternalLink";
 	private static final String DBPEDIA_IMAGEN = "http://es.dbpedia.org/property/imagen";
 	//private Repositorio<SitioTuristico, String> repositorio = FactoriaRepositorios.getRepositorio(SitioTuristico.class);
 	
@@ -78,7 +82,13 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 			InputStream source = new URL(url).openStream();
 			JsonReader jsonReader = Json.createReader(source);
 			JsonObject obj = jsonReader.readObject();
-			System.out.println(obj.toString());
+			obj = obj.getJsonObject(DBPEDIA_OBJURL+idSitio);
+			String nombre = obtenerListaElementos(obj, DBPEDIA_NOMBRE).get(0);
+			String resumen = obtenerListaElementos(obj, DBPEDIA_RESUMEN).get(0);
+			List<String> categorias = obtenerListaElementos(obj, DBPEDIA_CATEGORIAS);
+			List<String> enlaces = obtenerListaElementos(obj, DBPEDIA_ENLACES_COMPLEMENTARIOS);
+			String imagen = obtenerListaElementos(obj, DBPEDIA_IMAGEN).get(0);
+			return new InformacionCompleta(resumen, categorias, enlaces, imagen);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -88,6 +98,14 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 		
 		
 		return null;
+	}
+	
+	private List<String> obtenerListaElementos(JsonObject obj,String nombre)
+	{
+
+		return obj.getJsonArray(nombre).getValuesAs(JsonObject.class).stream()
+		.map(o -> o.getString("value")).collect(Collectors.toList());
+		
 	}
 	
 }
