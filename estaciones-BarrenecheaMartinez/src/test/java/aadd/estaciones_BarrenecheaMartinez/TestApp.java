@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import sitioTuristico.modelo.InformacionCompleta;
+import sitioTuristico.repositorio.RepositorioJSONSitioTuristico;
 import sitioTuristico.servicio.SitiosTuristicosGeoNames;
 
 public class TestApp {
@@ -29,6 +30,11 @@ public class TestApp {
 	 inf.getInfoComplementaria().stream().forEach(System.out::println);
 	 System.out.println(inf.getImagen());
 	 System.out.println(inf.getResumenWikipedia());
+ }
+ 
+ @Test
+ public void pruebaRepoJson() {
+	 RepositorioJSONSitioTuristico r = new RepositorioJSONSitioTuristico();
  }
 
 }

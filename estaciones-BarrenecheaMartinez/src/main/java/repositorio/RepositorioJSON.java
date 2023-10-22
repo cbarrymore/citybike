@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.json.bind.Jsonb;
@@ -81,14 +82,34 @@ public abstract class RepositorioJSON<T extends Identificable> implements Reposi
 
 	@Override
 	public List<T> getAll() throws RepositorioException {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<T> result = new LinkedList<>();
+
+		for (String id : getIds()) {
+			try {
+				T entity = getById(id);
+				result.add(entity);
+			} catch (EntidadNoEncontrada e) {
+				// No va a suceder
+			}
+		}
+		// return al entities
+
+		return result;
 	}
 
 	@Override
 	public List<String> getIds() throws RepositorioException {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<String> ids = new LinkedList<String>();
+		File dir = new File("json/");
+		if(dir.isDirectory()) {
+			File files[] = dir.listFiles();
+			for (File file : files) {
+				ids.add(file.getName());
+			}
+		}
+		// get all stored IDs
+
+		return ids;
 	}
 	
 }

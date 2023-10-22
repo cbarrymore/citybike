@@ -18,6 +18,7 @@ public class SitioTuristico implements Identificable {
 		this.descripcion = descripcion;
 		this.distanciaCoordenadas = distanciaCoordenadas;
 		this.URL = url;
+		this.id = id;
 	}
 	
 	public String getNombre() {
