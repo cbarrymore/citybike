@@ -3,9 +3,12 @@ package estaciones.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 import repositorio.Identificable;
+import sitioTuristico.modelo.SitioTuristico;
 
 public class Estacion implements Identificable{
 	private String nombre;
@@ -15,6 +18,7 @@ public class Estacion implements Identificable{
 	private BigDecimal longitud;
 	private String id;
 	private LocalDate fechaAlta;
+	private Set<SitioTuristico> sitiosInteres;
 	
 	public Estacion(String nombre, int numPuestos, long dirPostal, BigDecimal latitud, BigDecimal longitud) {
 		this.id=UUID.randomUUID().toString();
@@ -81,6 +85,14 @@ public class Estacion implements Identificable{
 
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;
+	}
+
+	public Set<SitioTuristico> getSitiosInteres() {
+		return sitiosInteres;
+	}
+
+	public void setSitiosInteres(Set<SitioTuristico> sitiosInteres) {
+		this.sitiosInteres = sitiosInteres;
 	}
 	
 }

@@ -2,6 +2,7 @@ package sitioTuristico.servicio;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Set;
 
 import repositorio.Repositorio;
 import repositorio.RepositorioJSON;
@@ -11,7 +12,7 @@ import sitioTuristico.modelo.SitioTuristico;
 
 public interface SitiosTuristicos {
 	
-	public Collection<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud);
+	public Set<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud);
 	
 	public InformacionCompleta obtenerInformacionSiitoInteres(String idSitio);
 }

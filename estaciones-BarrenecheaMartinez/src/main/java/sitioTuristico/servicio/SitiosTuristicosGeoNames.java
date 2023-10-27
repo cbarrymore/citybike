@@ -8,8 +8,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.json.Json;
@@ -39,11 +41,12 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 	private static final String DBPEDIA_CATEGORIAS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 	private static final String DBPEDIA_ENLACES_COMPLEMENTARIOS = "http://dbpedia.org/ontology/wikiPageExternalLink";
 	private static final String DBPEDIA_IMAGEN = "http://es.dbpedia.org/property/imagen";
-	//private Repositorio<SitioTuristico, String> repositorio = FactoriaRepositorios.getRepositorio(SitioTuristico.class);
+	
+	private Repositorio<SitioTuristico, String> repositorio = FactoriaRepositorios.getRepositorio(SitioTuristico.class);
 	
 	@Override
-	public Collection<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud) {
-		Collection<SitioTuristico> coleccion = new ArrayList<SitioTuristico>();
+	public Set<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud) {
+		Set<SitioTuristico> set = new HashSet<SitioTuristico>();
 		Document dom;
 		DocumentBuilder analizador;
 		DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
@@ -65,9 +68,10 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 		        String id = splitted_url[splitted_url.length-1];
 		        
 				SitioTuristico sitio = new SitioTuristico(nombre,descripcion,distancia,url,id);
-				coleccion.add(sitio);
+				set.add(sitio);
+				repositorio.add(sitio);
 			}
-			return coleccion;
+			return set;
 			
 		} catch (Exception e) {
 			e.printStackTrace();

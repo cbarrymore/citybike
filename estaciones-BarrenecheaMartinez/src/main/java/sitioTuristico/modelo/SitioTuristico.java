@@ -1,5 +1,8 @@
 package sitioTuristico.modelo;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTypeAdapter;
+
 import repositorio.Identificable;
 
 public class SitioTuristico implements Identificable {
@@ -7,6 +10,7 @@ public class SitioTuristico implements Identificable {
 	private String descripcion;
 	private double distanciaCoordenadas;
 	private String URL;
+	@JsonbProperty("informacionCompleta")
 	private InformacionCompleta infoCompleta;
 	private String id;
 	
