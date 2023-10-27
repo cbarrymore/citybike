@@ -1,26 +1,18 @@
 package sitioTuristico.servicio;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,7 +45,6 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 		try {
 			analizador = factoria.newDocumentBuilder();
 			String formatted_str = FIND_NEARBY_WIKIPEDIA + "&lat=" +latitud.toString() + "&lng=" + longitud.toString();
-			System.out.println(formatted_str);
 			dom= analizador.parse(formatted_str);
 			NodeList nodeListEntries= dom.getElementsByTagName("entry");
 			for (int i =0; i< nodeListEntries.getLength();i++) {
@@ -80,14 +71,14 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 	}
 
 	@Override
-	public InformacionCompleta obtenerInformacionSiitoInteres(String idSitio) {
+	public InformacionCompleta obtenerInformacionSitoInteres(String idSitio) {
 		String url=DBPEDIA +idSitio + ".json";
 		try {
 			InputStream source = new URL(url).openStream();
 			JsonReader jsonReader = Json.createReader(source);
 			JsonObject obj = jsonReader.readObject();
 			obj = obj.getJsonObject(DBPEDIA_OBJURL+idSitio);
-			String nombre = obtenerListaElementos(obj, DBPEDIA_NOMBRE).get(0);
+			//String nombre = obtenerListaElementos(obj, DBPEDIA_NOMBRE).get(0);
 			String resumen = obtenerListaElementos(obj, DBPEDIA_RESUMEN).get(0);
 			List<String> categorias = obtenerListaElementos(obj, DBPEDIA_CATEGORIAS);
 			List<String> enlaces = obtenerListaElementos(obj, DBPEDIA_ENLACES_COMPLEMENTARIOS);
@@ -95,12 +86,8 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 			return new InformacionCompleta(resumen, categorias, enlaces, imagen);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		
-		
-		
 		return null;
 	}
 	

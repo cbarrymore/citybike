@@ -12,6 +12,8 @@ public interface IServicioEstaciones {
 	
 	public String altaEstacion(String nombre,int numeroPuestos,long dirPostal,BigDecimal longitud, BigDecimal latitud);
 	
+	public Set<SitioTuristico> obtenerSitiosTuristicosProximos(String idEstacion);
+	
 	public void establecerSitiosTuristicos(String id, Set<SitioTuristico> sitiosTuristicos);
 	
 	public Estacion obtenerEstacion(String id);

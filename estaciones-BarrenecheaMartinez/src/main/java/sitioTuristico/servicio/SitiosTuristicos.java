@@ -14,5 +14,5 @@ public interface SitiosTuristicos {
 	
 	public Set<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud);
 	
-	public InformacionCompleta obtenerInformacionSiitoInteres(String idSitio);
+	public InformacionCompleta obtenerInformacionSitoInteres(String idSitio);
 }

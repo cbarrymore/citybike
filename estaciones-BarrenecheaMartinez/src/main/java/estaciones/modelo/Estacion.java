@@ -21,7 +21,7 @@ public class Estacion implements Identificable{
 	private Set<SitioTuristico> sitiosInteres;
 	
 	public Estacion(String nombre, int numPuestos, long dirPostal, BigDecimal latitud, BigDecimal longitud) {
-		this.id=UUID.randomUUID().toString();
+		this.id=String.valueOf(0);
 		this.nombre = nombre;
 		this.numPuestos = numPuestos;
 		this.dirPostal = dirPostal;
