@@ -17,52 +17,33 @@ import servicio.FactoriaServicios;
 
 public class ServicioEstaciones implements IServicioEstaciones {
 	
-	private  Repositorio<Estacion, String> repositorio = FactoriaRepositorios.getRepositorio(Estacion.class);
+	private Repositorio<Estacion, String> repositorio = FactoriaRepositorios.getRepositorio(Estacion.class);
 	private SitiosTuristicos servicioTuristico = FactoriaServicios.getServicio(SitiosTuristicos.class);
 	
 	@Override
 	public String altaEstacion(String nombre, int numeroPuestos, long dirPostal, BigDecimal longitud,
-			BigDecimal latitud) {
+			BigDecimal latitud) throws RepositorioException {
 		Estacion estacion = new Estacion(nombre, numeroPuestos, dirPostal, latitud, longitud);
-		try {
-			repositorio.add(estacion);
-			return estacion.getId();
-		} catch (RepositorioException e) {
-			e.printStackTrace();
-		}
-		return null;
+		repositorio.add(estacion);
+		return estacion.getId();
 	}
 	
-	public Set<SitioTuristico> obtenerSitiosTuristicosProximos(String idEstacion){
+	public Set<SitioTuristico> obtenerSitiosTuristicosProximos(String idEstacion) throws Exception{
 		Estacion estacion;
-		try {
-			estacion = repositorio.getById(idEstacion);
-			return servicioTuristico.obtenerSitiosInteres(estacion.getLatitud(), estacion.getLongitud());
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
+		estacion = repositorio.getById(idEstacion);
+		return servicioTuristico.obtenerSitiosInteres(estacion.getLatitud(), estacion.getLongitud());
 	}
 
 	@Override
-	public void establecerSitiosTuristicos(String idEstacion, Set<SitioTuristico> sitiosTuristicos) {
-		try {
-			Estacion estacion = repositorio.getById(idEstacion);
-			estacion.setSitiosInteres(sitiosTuristicos);
-			repositorio.update(estacion);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
+	public void establecerSitiosTuristicos(String idEstacion, Set<SitioTuristico> sitiosTuristicos) throws RepositorioException, EntidadNoEncontrada {
+		Estacion estacion = repositorio.getById(idEstacion);
+		estacion.setSitiosInteres(sitiosTuristicos);
+		repositorio.update(estacion);
 	}
 
 	@Override
-	public Estacion obtenerEstacion(String id) {
-		try {
+	public Estacion obtenerEstacion(String id) throws RepositorioException, EntidadNoEncontrada {
 			return repositorio.getById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 }

@@ -2,6 +2,7 @@ package aadd.estaciones_BarrenecheaMartinez;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -59,53 +60,97 @@ public class TestApp {
  public void pruebaMostrarSitios() {
 	 BigDecimal lat =new BigDecimal(47);
 	 BigDecimal lng = new BigDecimal(9);
-	 Set<SitioTuristico> sitios =  servicioSitios.obtenerSitiosInteres(lat,lng);
-	 for(SitioTuristico sitio : sitios)
-	 {
-		 System.out.println(sitio.getURL());
-	 }
+	 Set<SitioTuristico> sitios;
+	try {
+		sitios = servicioSitios.obtenerSitiosInteres(lat,lng);
+		for(SitioTuristico sitio : sitios)
+		{
+		System.out.println(sitio.getURL());
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+		fail();
+	}
  }
  
- @Test 
+ @Test
  public void pruebaSitiosTuristicosMostrarInfo() {
-	 InformacionCompleta inf = servicioSitios.obtenerInformacionSitoInteres("Catedral_de_Murcia");
-	 inf.getCategorias().stream().forEach(System.out::println);
-	 inf.getInfoComplementaria().stream().forEach(System.out::println);
-	 System.out.println(inf.getImagen());
-	 System.out.println(inf.getResumenWikipedia());
+	 try
+	 {
+		 InformacionCompleta inf = servicioSitios.obtenerInformacionSitoInteres("Catedral_de_Murcia");
+		 inf.getCategorias().stream().forEach(System.out::println);
+		 inf.getInfoComplementaria().stream().forEach(System.out::println);
+		 System.out.println(inf.getImagen());
+		 System.out.println(inf.getResumenWikipedia());
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+		 fail();
+	 }
  }
  
  @Test
  public void pruebaSitiosTuristicosSitioIncorrecto() {
-	 InformacionCompleta inf = servicioSitios.obtenerInformacionSitoInteres("Catedral de Murcia");
-	 assertEquals(null, inf);
+	try
+	{
+		InformacionCompleta inf = servicioSitios.obtenerInformacionSitoInteres("Catedral de Murcia");
+		fail();
+	}
+	catch (Exception e)
+	{
+	}
  }
  
  
  @Test
  public void pruebaServicioEstacionesDarAlta() {
-	String idEstacion = servicioEstaciones.altaEstacion("Estacion1", 2, 30004, new BigDecimal("47"), new BigDecimal("9"));
-	Estacion estacion = servicioEstaciones.obtenerEstacion(idEstacion);
-	assertNotEquals(null,estacion);
-	assertEquals(idEstacion, estacion.getId());
-	idBorrarEstaciones.add(estacion);
+	 try
+	 {
+		String idEstacion = servicioEstaciones.altaEstacion("Estacion1", 2, 30004, 
+				new BigDecimal("47"), new BigDecimal("9"));
+		Estacion estacion = servicioEstaciones.obtenerEstacion(idEstacion);
+		assertNotEquals(null,estacion);
+		assertEquals(idEstacion, estacion.getId());
+		idBorrarEstaciones.add(estacion);
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+		 fail();
+	 }
  }
  
  @Test
  public void pruebaServicioEstacionesEstablecerSitiosEnEstacion() {
-	String idEstacion = servicioEstaciones.altaEstacion("Estacion1", 2, 30004, new BigDecimal("47"), new BigDecimal("9"));
-	Estacion estacion = servicioEstaciones.obtenerEstacion(idEstacion);
-	Set<SitioTuristico> set = servicioEstaciones.obtenerSitiosTuristicosProximos(idEstacion);
-	servicioEstaciones.establecerSitiosTuristicos(idEstacion, set);
-	assertNotEquals(null, estacion.getSitiosInteres());
-	idBorrarEstaciones.add(estacion);
+	try
+	{
+		String idEstacion = servicioEstaciones.altaEstacion("Estacion1", 2, 30004, new BigDecimal("47"), new BigDecimal("9"));
+		Estacion estacion = servicioEstaciones.obtenerEstacion(idEstacion);
+		Set<SitioTuristico> set = servicioEstaciones.obtenerSitiosTuristicosProximos(idEstacion);
+		servicioEstaciones.establecerSitiosTuristicos(idEstacion, set);
+		assertNotEquals(null, estacion.getSitiosInteres());
+		idBorrarEstaciones.add(estacion);
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		fail();
+	}
  }
  
  public void pruebaServicioEstacionesSitiosNulos() {
 		Estacion estacion = new Estacion("Estacion1", 2, 30004, new BigDecimal("47"), new BigDecimal("9"));
 		String idEstacion = estacion.getId();
-		Set<SitioTuristico> set = servicioEstaciones.obtenerSitiosTuristicosProximos(idEstacion);
-		assertEquals(null, set);
+		Set<SitioTuristico> set;
+		try {
+			set = servicioEstaciones.obtenerSitiosTuristicosProximos(idEstacion);
+			assertEquals(null, set);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		
 	 }
 
 }

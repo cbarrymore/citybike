@@ -1,7 +1,9 @@
 package sitioTuristico.servicio;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
@@ -13,13 +15,16 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
+import repositorio.RepositorioException;
 import sitioTuristico.modelo.InformacionCompleta;
 import sitioTuristico.modelo.SitioTuristico;
 
@@ -37,58 +42,47 @@ public class SitiosTuristicosGeoNames implements SitiosTuristicos {
 	private Repositorio<SitioTuristico, String> repositorio = FactoriaRepositorios.getRepositorio(SitioTuristico.class);
 	
 	@Override
-	public Set<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud) {
+	public Set<SitioTuristico> obtenerSitiosInteres(BigDecimal latitud, BigDecimal longitud) throws Exception {
 		Set<SitioTuristico> set = new HashSet<SitioTuristico>();
 		Document dom;
 		DocumentBuilder analizador;
 		DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
-		try {
-			analizador = factoria.newDocumentBuilder();
-			String formatted_str = FIND_NEARBY_WIKIPEDIA + "&lat=" +latitud.toString() + "&lng=" + longitud.toString();
-			dom= analizador.parse(formatted_str);
-			NodeList nodeListEntries= dom.getElementsByTagName("entry");
-			for (int i =0; i< nodeListEntries.getLength();i++) {
-				Element entry = (Element) nodeListEntries.item(i);
-		        
-				String descripcion = entry.getElementsByTagName("summary").item(0).getTextContent();
-		        Double distancia = Double.parseDouble(entry.getElementsByTagName("distance").item(0).getTextContent());
-		        String url = entry.getElementsByTagName("wikipediaUrl").item(0).getTextContent();
-		        String nombre = entry.getElementsByTagName("title").item(0).getTextContent();
-		        
-		        String[] splitted_url= url.split("/");
-		        String id = splitted_url[splitted_url.length-1];
-		        
-				SitioTuristico sitio = new SitioTuristico(nombre,descripcion,distancia,url,id);
-				set.add(sitio);
-				repositorio.add(sitio);
-			}
-			return set;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+		analizador = factoria.newDocumentBuilder();
+		String formatted_str = FIND_NEARBY_WIKIPEDIA + "&lat=" +latitud.toString() + "&lng=" + longitud.toString();
+		dom= analizador.parse(formatted_str);
+		NodeList nodeListEntries= dom.getElementsByTagName("entry");
+		for (int i =0; i< nodeListEntries.getLength();i++) {
+			Element entry = (Element) nodeListEntries.item(i);
+	        
+			String descripcion = entry.getElementsByTagName("summary").item(0).getTextContent();
+	        Double distancia = Double.parseDouble(entry.getElementsByTagName("distance").item(0).getTextContent());
+	        String url = entry.getElementsByTagName("wikipediaUrl").item(0).getTextContent();
+	        String nombre = entry.getElementsByTagName("title").item(0).getTextContent();
+	        
+	        String[] splitted_url= url.split("/");
+	        String id = splitted_url[splitted_url.length-1];
+	        
+			SitioTuristico sitio = new SitioTuristico(nombre,descripcion,distancia,url,id);
+			set.add(sitio);
+			repositorio.add(sitio);
 		}
+		return set;
 	}
 
 	@Override
-	public InformacionCompleta obtenerInformacionSitoInteres(String idSitio) {
+	public InformacionCompleta obtenerInformacionSitoInteres(String idSitio) throws Exception {
+		
 		String url=DBPEDIA +idSitio + ".json";
-		try {
-			InputStream source = new URL(url).openStream();
-			JsonReader jsonReader = Json.createReader(source);
-			JsonObject obj = jsonReader.readObject();
-			obj = obj.getJsonObject(DBPEDIA_OBJURL+idSitio);
-			//String nombre = obtenerListaElementos(obj, DBPEDIA_NOMBRE).get(0);
-			String resumen = obtenerListaElementos(obj, DBPEDIA_RESUMEN).get(0);
-			List<String> categorias = obtenerListaElementos(obj, DBPEDIA_CATEGORIAS);
-			List<String> enlaces = obtenerListaElementos(obj, DBPEDIA_ENLACES_COMPLEMENTARIOS);
-			String imagen = obtenerListaElementos(obj, DBPEDIA_IMAGEN).get(0);
-			return new InformacionCompleta(resumen, categorias, enlaces, imagen);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
+		InputStream source = new URL(url).openStream();
+		JsonReader jsonReader = Json.createReader(source);
+		JsonObject obj = jsonReader.readObject();
+		obj = obj.getJsonObject(DBPEDIA_OBJURL+idSitio);
+		//String nombre = obtenerListaElementos(obj, DBPEDIA_NOMBRE).get(0);
+		String resumen = obtenerListaElementos(obj, DBPEDIA_RESUMEN).get(0);
+		List<String> categorias = obtenerListaElementos(obj, DBPEDIA_CATEGORIAS);
+		List<String> enlaces = obtenerListaElementos(obj, DBPEDIA_ENLACES_COMPLEMENTARIOS);
+		String imagen = obtenerListaElementos(obj, DBPEDIA_IMAGEN).get(0);
+		return new InformacionCompleta(resumen, categorias, enlaces, imagen);
 	}
 	
 	private List<String> obtenerListaElementos(JsonObject obj,String nombre)
