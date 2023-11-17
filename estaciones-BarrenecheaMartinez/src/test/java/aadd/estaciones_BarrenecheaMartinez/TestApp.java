@@ -3,6 +3,7 @@ package aadd.estaciones_BarrenecheaMartinez;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class TestApp {
 	 System.out.println(inf.getResumenWikipedia());
  }
  
- @Test
+ @Test 
  public void pruebaSitiosTuristicosSitioIncorrecto() {
 	 InformacionCompleta inf = servicioSitios.obtenerInformacionSitoInteres("Catedral de Murcia");
 	 assertEquals(null, inf);
