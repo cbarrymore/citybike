@@ -43,7 +43,7 @@ public class RepositorioHistoricoMongoDB extends RepositorioMongoDB<Historico>{
 		    coleccionSinCodificar = database.getCollection("historicos");
 		    
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 	

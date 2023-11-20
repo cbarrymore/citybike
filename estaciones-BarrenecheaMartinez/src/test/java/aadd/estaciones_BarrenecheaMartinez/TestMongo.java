@@ -2,6 +2,7 @@ package aadd.estaciones_BarrenecheaMartinez;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,10 +73,10 @@ class TestMongo {
 		a.forEach(System.out::print);
 	}
 	@Test
-	public void insertar() {
+	public void insertar() throws RepositorioException {
 		List<Registro> l = new ArrayList<Registro>();
-		l.add(new Registro());
-		repo.add(new Historico("hola", )))
+		l.add(new Registro("e1", LocalDate.now(), LocalDate.now()));
+		repo.add(new Historico("hola",l));
 	}
 
 }
