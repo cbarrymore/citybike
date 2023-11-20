@@ -10,6 +10,13 @@ public class Registro {
 	public Registro() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Registro(String estacion, LocalDate fechaInicio) {
+		this.estacion = estacion;
+		this.fechaFin= null;
+		this.fechaInicio = fechaInicio;
+	}
+	
 	public Registro(String estacion, LocalDate fechaInicio,LocalDate fechaFin) {
 		this.estacion = estacion;
 		this.fechaFin= fechaFin;
@@ -35,4 +42,10 @@ public class Registro {
 	public void setFechaFin(LocalDate fechaFin) {
 		this.fechaFin = fechaFin;
 	}
+	
+	public boolean biciAparcada()
+	{
+		return fechaFin==null;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package historicos.modelo;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bson.BsonType;
@@ -19,6 +20,10 @@ public class Historico implements Identificable{
 	public Historico(String bici, List<Registro> registros) {
 		this.bici=bici;
 		this.registros = registros;
+	}
+	
+	public Historico(String bici) {
+		this(bici, new LinkedList<Registro>());
 	}
 	
 	public Historico() {
@@ -46,5 +51,35 @@ public class Historico implements Identificable{
 	public void setId(String id) {
 		// TODO Auto-generated method stub
 		this.id = id;
+	}
+	
+	public Registro getUltimoRegistro()
+	{
+		return registros.get(registros.size()-1);
+	}
+	
+	public boolean biciAparcada()
+	{
+		return getUltimoRegistro().biciAparcada();
+	}
+	
+	public void marcarEntrada(String estacion, LocalDate date)
+	{
+		registros.add(new Registro(estacion, date));
+	}
+	
+	public void marcarEntrada(String estacion)
+	{
+		marcarEntrada(estacion, LocalDate.now());
+	}
+	
+	public void marcarSalida(LocalDate date)
+	{
+		getUltimoRegistro().setFechaFin(date);
+	}
+	
+	public void marcarSalida()
+	{
+		marcarSalida(LocalDate.now());
 	}
 }

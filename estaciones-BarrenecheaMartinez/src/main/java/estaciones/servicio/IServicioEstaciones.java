@@ -19,4 +19,11 @@ public interface IServicioEstaciones {
 	public void establecerSitiosTuristicos(String id, Set<SitioTuristico> sitiosTuristicos) throws RepositorioException, EntidadNoEncontrada;
 	
 	public Estacion obtenerEstacion(String id) throws RepositorioException, EntidadNoEncontrada;
+	
+	public String altaBici(String modelo ,String idEstacion) throws RepositorioException, EntidadNoEncontrada;
+	
+	public void estacionarBici(String idBici, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
+	
+	public void estacionarBici(String idBici) throws RepositorioException, EntidadNoEncontrada;
+	
 }

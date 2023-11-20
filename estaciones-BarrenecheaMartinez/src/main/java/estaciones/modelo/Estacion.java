@@ -3,9 +3,8 @@ package estaciones.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import repositorio.Identificable;
 import sitioTuristico.modelo.SitioTuristico;
@@ -19,6 +18,12 @@ public class Estacion implements Identificable{
 	private String id;
 	private LocalDate fechaAlta;
 	private Set<SitioTuristico> sitiosInteres;
+	private Set<String> bicisAparcadas;
+	
+	public Estacion()
+	{
+		
+	}
 	
 	public Estacion(String nombre, int numPuestos, long dirPostal, BigDecimal latitud, BigDecimal longitud) {
 		this.id=String.valueOf(0);
@@ -28,6 +33,7 @@ public class Estacion implements Identificable{
 		this.latitud = latitud;
 		this.longitud = longitud;
 		this.fechaAlta = LocalDate.now();
+		this.bicisAparcadas = new HashSet<String>();
 	}
 	
 	@Override
@@ -93,6 +99,28 @@ public class Estacion implements Identificable{
 
 	public void setSitiosInteres(Set<SitioTuristico> sitiosInteres) {
 		this.sitiosInteres = sitiosInteres;
+	}
+	
+	public Set<String> getBicisAparcadas() {
+		return bicisAparcadas;
+	}
+
+	public void setBicisAparcadas(Set<String> bicisAparcadas) {
+		this.bicisAparcadas = bicisAparcadas;
+	}
+	
+	public boolean lleno()
+	{
+		return numPuestos<bicisAparcadas.size();
+	}
+	
+	public void aparcarBici(String idBici) {
+		if(!lleno())
+			this.bicisAparcadas.add(idBici);
+	}
+	
+	public boolean retirarBici(String idBici) {
+		return bicisAparcadas.remove(idBici);
 	}
 	
 }
