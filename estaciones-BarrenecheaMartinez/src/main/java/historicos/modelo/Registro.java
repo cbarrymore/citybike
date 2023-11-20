@@ -6,6 +6,17 @@ public class Registro {
 	private String estacion;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
+	
+	public Registro() {
+		// TODO Auto-generated constructor stub
+	}
+	public Registro(String estacion, LocalDate fechaInicio,LocalDate fechaFin) {
+		this.estacion = estacion;
+		this.fechaFin= fechaFin;
+		this.fechaInicio = fechaInicio;
+	}
+	
+	
 	public String getEstacion() {
 		return estacion;
 	}
