@@ -2,14 +2,40 @@ package bicis.modelo;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import repositorio.Identificable;
 
+@Entity
+@Table(name="bici")
 public class Bici implements Identificable{
+	
+	@Id
 	private String codigo;
+	@Column(name="fecha_de_alta", columnDefinition = "DATE")
 	private LocalDate fechaAlta;
+	@Column(name="modelo")
 	private String modelo;
+	
+	@Column(name="fecha_de_baja", columnDefinition = "DATE")
 	private LocalDate fechaBaja;
+	@Column(name = "motivo_de_baja")
 	private String motivoBaja;
+	
+	public Bici()
+	{
+		
+	}
+	
+	public Bici(String modelo, LocalDate fechaAlta)
+	{
+		this.modelo = modelo;
+		this.fechaAlta = fechaAlta;
+	}
+	
 	public String getCodigo() {
 		return codigo;
 	}
