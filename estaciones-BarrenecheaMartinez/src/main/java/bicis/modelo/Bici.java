@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import repositorio.Identificable;
@@ -24,6 +25,13 @@ public class Bici implements Identificable{
 	private LocalDate fechaBaja;
 	@Column(name = "motivo_de_baja")
 	private String motivoBaja;
+	
+	@Column (name = "disponible")
+	private boolean disponible;
+	
+	@OneToOne
+	private Incidencia incidencia;
+	
 	
 	public Bici()
 	{
