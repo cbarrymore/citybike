@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 
 import bicis.modelo.Bici;
 import estaciones.modelo.Estacion;
+import estaciones.repositorio.FiltroBusquedaEstaciones;
 import historicos.modelo.Historico;
+import historicos.repositorio.FiltroBusquedaHistorico;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
@@ -25,6 +27,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	private Repositorio<Estacion, String> repositorio = FactoriaRepositorios.getRepositorio(Estacion.class);
 	private Repositorio<Bici, String> repoBicis = FactoriaRepositorios.getRepositorio(Bici.class);
 	private Repositorio<Historico, String> repoHistorico = FactoriaRepositorios
+			.getRepositorio(Historico.class);
+	private FiltroBusquedaHistorico filtroHistorico = FactoriaRepositorios
 			.getRepositorio(Historico.class);
 	
 	private SitiosTuristicos servicioTuristico = FactoriaServicios.getServicio(SitiosTuristicos.class);
@@ -57,6 +61,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public String altaBici(String modelo, String idEstacion) throws RepositorioException, EntidadNoEncontrada{
+		if(modelo==null)
+			throw new IllegalArgumentException("El modelo no puede ser nulo");
+		if(idEstacion==null)
+			throw new IllegalArgumentException("El id de la estación no puede ser nulo");
 		Bici bici = new Bici(modelo, LocalDate.now());
 		repoBicis.add(bici);
 		String idBici = bici.getId();
@@ -74,7 +82,11 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public void estacionarBici(String idBici, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
-		Historico historico = repoHistorico.getById(idBici); // Obtener historico
+		if(idEstacion==null)
+			throw new IllegalArgumentException("El id de la estación no puede ser nulo");
+		if(idBici==null)
+			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
+		Historico historico = filtroHistorico.getByBiciId(idBici); // Obtener historico
 		if(historico.biciAparcada())
 			throw new IllegalStateException("La bici ya está aparcada");
 		Estacion estacion = repositorio.getById(idEstacion);
@@ -88,6 +100,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public void estacionarBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
+		if(idBici==null)
+			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
 		// TODO Buscar la estación
 		String idEstacion = "";
 		estacionarBici(idBici, idEstacion);
@@ -96,7 +110,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public void retirarBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
-		Historico historico = repoHistorico.getById(idBici); // Obtener historico
+		if(idBici==null)
+			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
+		Historico historico = filtroHistorico.getByBiciId(idBici); // Obtener historico
 		if(!historico.biciAparcada())
 			throw new IllegalStateException("La bici ya está retirada");
 		String idEstacion = historico.getUltimaEstacion();
@@ -109,7 +125,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
-		Historico historico = repoHistorico.getById(idBici); // Obtener historico
+		if(idBici==null)
+			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
+		Historico historico = filtroHistorico.getByBiciId(idBici); // Obtener historico
 		Bici bici = repoBicis.getById(idBici);
 		if(!historico.biciAparcada())
 			throw new IllegalStateException("La bici está retirada");
@@ -132,6 +150,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 						return repoBicis.getById(t);
 					} catch (RepositorioException | EntidadNoEncontrada e1) {
 						throw e1;
+						
 					}
 				}).filter(b->b.isDisponible)
 				.collect(Collectors.toSet());
