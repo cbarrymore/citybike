@@ -64,7 +64,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		//Obtener la estación y decirle que ahora tiene una bici más, o sea, un sitio menos
 		Estacion estacion = repositorio.getById(idEstacion);
 		if(estacion.lleno())
-			throw new IllegalStateException();
+			throw new IllegalStateException("La estación está llena");
 		estacion.aparcarBici(idBici);
 		repositorio.update(estacion);
 		return idBici;
@@ -74,10 +74,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void estacionarBici(String idBici, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
 		Historico historico = repoHistorico.getById(idBici); // Obtener historico
 		if(historico.biciAparcada())
-			throw new IllegalStateException();
+			throw new IllegalStateException("La bici ya está aparcada");
 		Estacion estacion = repositorio.getById(idEstacion);
 		if(estacion.lleno())
-			throw new IllegalStateException();
+			throw new IllegalStateException("La estación está llena");
 		estacion.aparcarBici(idBici);
 		historico.marcarSalida();
 		repositorio.update(estacion);

@@ -114,9 +114,13 @@ public class Estacion implements Identificable{
 		return numPuestos<bicisAparcadas.size();
 	}
 	
-	public void aparcarBici(String idBici) {
+	public boolean aparcarBici(String idBici) {
 		if(!lleno())
+		{
 			this.bicisAparcadas.add(idBici);
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean retirarBici(String idBici) {
