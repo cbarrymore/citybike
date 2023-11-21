@@ -82,4 +82,9 @@ public class Historico implements Identificable{
 	{
 		marcarSalida(LocalDate.now());
 	}
+	
+	public String getUltimaEstacion()
+	{
+		return getUltimoRegistro().getEstacion();
+	}
 }

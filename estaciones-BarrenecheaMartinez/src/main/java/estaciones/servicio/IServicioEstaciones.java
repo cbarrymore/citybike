@@ -1,10 +1,9 @@
 package estaciones.servicio;
 
 import java.math.BigDecimal;
-import java.text.Bidi;
-import java.util.Collection;
 import java.util.Set;
 
+import bicis.modelo.Bici;
 import estaciones.modelo.Estacion;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
@@ -25,5 +24,11 @@ public interface IServicioEstaciones {
 	public void estacionarBici(String idBici, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 	
 	public void estacionarBici(String idBici) throws RepositorioException, EntidadNoEncontrada;
+	
+	public void retirarBici(String idBici) throws RepositorioException, EntidadNoEncontrada;
+	
+	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada;
+	
+	public Set<Bici> bicisCercanas(BigDecimal longitud, BigDecimal latitud) throws RepositorioException, EntidadNoEncontrada;
 	
 }

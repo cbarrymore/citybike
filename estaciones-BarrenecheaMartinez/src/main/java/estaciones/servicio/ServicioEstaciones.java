@@ -3,7 +3,9 @@ package estaciones.servicio;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import bicis.modelo.Bici;
 import estaciones.modelo.Estacion;
@@ -79,7 +81,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		if(estacion.lleno())
 			throw new IllegalStateException("La estación está llena");
 		estacion.aparcarBici(idBici);
-		historico.marcarSalida();
+		historico.marcarEntrada(idEstacion);
 		repositorio.update(estacion);
 		repoHistorico.update(historico);
 	}
@@ -90,6 +92,58 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		String idEstacion = "";
 		estacionarBici(idBici, idEstacion);
 		
+	}
+
+	@Override
+	public void retirarBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
+		Historico historico = repoHistorico.getById(idBici); // Obtener historico
+		if(!historico.biciAparcada())
+			throw new IllegalStateException("La bici ya está retirada");
+		String idEstacion = historico.getUltimaEstacion();
+		Estacion estacion = repositorio.getById(idEstacion);
+		estacion.retirarBici(idBici);
+		historico.marcarSalida();
+		repositorio.update(estacion);
+		repoHistorico.update(historico);
+	}
+
+	@Override
+	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
+		Historico historico = repoHistorico.getById(idBici); // Obtener historico
+		Bici bici = repoBicis.getById(idBici);
+		if(!historico.biciAparcada())
+			throw new IllegalStateException("La bici está retirada");
+		String idEstacion = historico.getUltimaEstacion();
+		Estacion estacion = repositorio.getById(idEstacion);
+		estacion.retirarBici(idBici);
+		repositorio.update(estacion);
+		repoHistorico.delete(historico);
+		repoBicis.delete(bici);
+	}
+	
+	public Set<Bici> bicisCercanas(BigDecimal longitud, BigDecimal latitud) 
+			throws RepositorioException, EntidadNoEncontrada {
+		/*
+		Set<Estacion> estaciones = filtro
+		Set<Estacion> estaciones = new HashSet<Estacion>();
+		return setBicis = estaciones.stream().flatMap(e -> e.getBicisAparcadas().stream())
+				.map(t -> {
+					try {
+						return repoBicis.getById(t);
+					} catch (RepositorioException | EntidadNoEncontrada e1) {
+						throw e1;
+					}
+				}).filter(b->b.isDisponible)
+				.collect(Collectors.toSet());
+		*/
+		return null;
+	}
+	
+	public Set<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException
+	{
+		return repositorio.getAll().stream()
+		.sorted((e1, e2) -> (e2.getSitiosInteres().size() - e1.getSitiosInteres().size()))
+		.collect(Collectors.toSet());
 	}
 
 }
