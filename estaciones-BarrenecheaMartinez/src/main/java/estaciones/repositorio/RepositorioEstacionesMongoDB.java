@@ -1,5 +1,9 @@
 package estaciones.repositorio;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
+
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -10,6 +14,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 import estaciones.modelo.Estacion;
 import repositorio.RepositorioMongoDB;
@@ -50,5 +55,13 @@ implements FiltroBusquedaEstaciones  {
 	@Override
 	public MongoCollection<Estacion> getColeccion() {
 		return coleccion;
+	}
+
+	@Override
+	public Set<Estacion> getEstacionesProximas(BigDecimal longitud, BigDecimal latitud) {
+		Filters.geoIntersects('coordenadas', Filters.)
+		Document geoFilter = new Document("")
+		coleccion.find
+		
 	}
 }

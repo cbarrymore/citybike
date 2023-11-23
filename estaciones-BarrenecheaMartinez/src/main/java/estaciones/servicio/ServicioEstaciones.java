@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import bicis.modelo.Bici;
+import bicis.repositorio.FiltroBusquedaBici;
 import estaciones.modelo.Estacion;
 import estaciones.repositorio.FiltroBusquedaEstaciones;
 import historicos.modelo.Historico;
@@ -25,6 +26,9 @@ import servicio.FactoriaServicios;
 public class ServicioEstaciones implements IServicioEstaciones {
 	
 	private Repositorio<Estacion, String> repositorio = FactoriaRepositorios.getRepositorio(Estacion.class);
+	private FiltroBusquedaEstaciones filtroEstacion= FactoriaRepositorios
+			.getRepositorio(Estacion.class);
+	
 	private Repositorio<Bici, String> repoBicis = FactoriaRepositorios.getRepositorio(Bici.class);
 	private Repositorio<Historico, String> repoHistorico = FactoriaRepositorios
 			.getRepositorio(Historico.class);
@@ -141,6 +145,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	
 	public Set<Bici> bicisCercanas(BigDecimal longitud, BigDecimal latitud) 
 			throws RepositorioException, EntidadNoEncontrada {
+		filtroEstacion.getEstacionesProximas(longitud, latitud);
 		/*
 		Set<Estacion> estaciones = filtro
 		Set<Estacion> estaciones = new HashSet<Estacion>();

@@ -3,8 +3,13 @@ package estaciones.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
 
 import repositorio.Identificable;
 import sitioTuristico.modelo.SitioTuristico;
@@ -13,6 +18,7 @@ public class Estacion implements Identificable{
 	private String nombre;
 	private int numPuestos;
 	private long dirPostal;
+	private Point coordenadas;
 	private BigDecimal latitud;
 	private BigDecimal longitud;
 	private String id;
@@ -34,6 +40,11 @@ public class Estacion implements Identificable{
 		this.longitud = longitud;
 		this.fechaAlta = LocalDate.now();
 		this.bicisAparcadas = new HashSet<String>();
+		this.coordenadas = new Point(
+									 new Position(
+											 List.of(longitud.doubleValue(),latitud.doubleValue())
+									  )
+							         );
 	}
 	
 	@Override
