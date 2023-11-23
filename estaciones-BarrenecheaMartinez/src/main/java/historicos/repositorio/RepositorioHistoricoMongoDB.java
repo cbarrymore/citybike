@@ -23,7 +23,7 @@ import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
 import utils.PropertiesReader;
 
-public class RepositorioHistoricoMongoDB extends RepositorioMongoDB<Historico>{
+public class RepositorioHistoricoMongoDB extends RepositorioMongoDB<Historico> implements FiltroBusquedaHistorico{
 	protected MongoClient mongoClient;
 	protected MongoDatabase database;
 	protected MongoCollection<Historico> coleccion;

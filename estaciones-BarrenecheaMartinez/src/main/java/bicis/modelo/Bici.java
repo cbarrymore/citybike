@@ -2,19 +2,29 @@ package bicis.modelo;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.mysql.cj.x.protobuf.MysqlxCursor.Fetch;
 
 import repositorio.Identificable;
 
 @Entity
 @Table(name="bici")
+@NamedQuery(name = "Bici.getBicisConIncidencias", query = "SELECT b FROM Bici b WHERE b.incidencia IS NOT NULL")
 public class Bici implements Identificable{
 	
 	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
 	private String codigo;
 	@Column(name="fecha_de_alta", columnDefinition = "DATE")
 	private LocalDate fechaAlta;
@@ -29,7 +39,7 @@ public class Bici implements Identificable{
 	@Column (name = "disponible")
 	private boolean disponible;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Incidencia incidencia;
 	
 	
@@ -82,5 +92,21 @@ public class Bici implements Identificable{
 	public void setId(String codigo) {
 		this.codigo = codigo;
 		
+	}
+
+	public boolean isDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
+	}
+
+	public Incidencia getIncidencia() {
+		return incidencia;
+	}
+
+	public void setIncidencia(Incidencia incidencia) {
+		this.incidencia = incidencia;
 	}
 }

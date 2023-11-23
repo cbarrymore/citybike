@@ -1,6 +1,7 @@
 package bicis.modelo;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,22 +16,29 @@ import javax.persistence.Table;
 @Table(name = "incidencia")
 public class Incidencia {
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 	@Column(name="fecha_de_alta", columnDefinition = "DATE")
 	private LocalDate fechaAlta;
 	
+	
+	@Column (name = "fecha_de_cierre",columnDefinition = "DATE")
+	private LocalDate fechaCierre
+	;
 	@Column(name = "descripcion")
 	private String descripcion;
 	
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
 	
+	public Incidencia() {
+		// TODO Auto-generated constructor stub
+	}
 	
-	public Incidencia(String descripcion) {
+	public Incidencia(String descripcion,String idBici) {
 		this.fechaAlta = LocalDate.now();
 		this.descripcion= descripcion;
 		this.estado = Estado.PENDIENTE;
+		this.id = UUID.randomUUID().toString() + idBici;
 	}
 	
 	
@@ -51,6 +59,22 @@ public class Incidencia {
 	}
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public LocalDate getFechaCierre() {
+		return fechaCierre;
+	}
+
+	public void setFechaCierre(LocalDate fechaCierre) {
+		this.fechaCierre = fechaCierre;
 	}
 	
 }
