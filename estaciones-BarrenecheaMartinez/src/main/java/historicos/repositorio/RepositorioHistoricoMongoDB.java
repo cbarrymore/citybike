@@ -23,12 +23,12 @@ import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
 import utils.PropertiesReader;
 
-public class RepositorioHistoricoMongoDB extends RepositorioMongoDB<Historico> implements FiltroBusquedaHistorico{
+public class RepositorioHistoricoMongoDB extends RepositorioMongoDB<Historico> implements FiltroBusquedaHistorico {
 	protected MongoClient mongoClient;
 	protected MongoDatabase database;
 	protected MongoCollection<Historico> coleccion;
 	protected MongoCollection<Document> coleccionSinCodificar;
-	
+
 	public RepositorioHistoricoMongoDB() {
 		PropertiesReader properties;
 		try {
@@ -47,34 +47,31 @@ public class RepositorioHistoricoMongoDB extends RepositorioMongoDB<Historico> i
 					CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
 			coleccion = database.getCollection("historicos", Historico.class).withCodecRegistry(defaultCodecRegistry);
-		    coleccionSinCodificar = database.getCollection("historicos");
-		    
+			coleccionSinCodificar = database.getCollection("historicos");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public Historico getByBiciId(String idBici) throws RepositorioException{
-	    try {
-	        Bson query = Filters.all("bici", idBici); 
-	        FindIterable<Historico> resultados = getColeccion().find(query);
 
-	        MongoCursor<Historico> it = resultados.iterator();
-	        if (it.hasNext()) {
-	            return it.next();
-	        }
-	    }
-	    catch(Exception e) {
-	        throw new RepositorioException("error getByBiciId", e);
-	    }
+	public Historico getByBiciId(String idBici) throws RepositorioException {
+		try {
+			Bson query = Filters.all("bici", idBici);
+			FindIterable<Historico> resultados = getColeccion().find(query);
+
+			MongoCursor<Historico> it = resultados.iterator();
+			if (it.hasNext()) {
+				return it.next();
+			}
+		} catch (Exception e) {
+			throw new RepositorioException("error getByBiciId", e);
+		}
 		return null;
 	}
-	
+
 	@Override
 	public MongoCollection<Historico> getColeccion() {
 		return coleccion;
 	}
 
-	
-	
 }

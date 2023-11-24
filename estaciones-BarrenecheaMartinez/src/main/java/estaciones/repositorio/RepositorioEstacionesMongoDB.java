@@ -1,6 +1,7 @@
 package estaciones.repositorio;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -73,9 +74,10 @@ implements FiltroBusquedaEstaciones  {
 		         );
 		
 		Bson filter = Filters.nearSphere("coordenadas", coordenadas, null, null);
-        FindIterable<Estacion> resultados = coleccion.find(filter);
-        resultados.
-		
+        FindIterable<Estacion> resultados = coleccion.find(filter).limit(3);
+        Set<Estacion> estacionesProximas = new HashSet<Estacion>();
+        resultados.into(estacionesProximas);
+        return estacionesProximas;
 	}
 	
 }

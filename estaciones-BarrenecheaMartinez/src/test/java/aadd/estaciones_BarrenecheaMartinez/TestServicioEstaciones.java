@@ -3,6 +3,7 @@ package aadd.estaciones_BarrenecheaMartinez;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,10 @@ class TestServicioEstaciones {
 		repoEstaciones.update(estacion1);
 		bici = repoBicis.getById(idBici);
 		assertNotEquals(null, bici);
+	}
+	@Test
+	void testbicisCercanas() throws RepositorioException, EntidadNoEncontrada {
+		Set<Bici> bicis = servicioEstaciones.bicisCercanas(new BigDecimal(12), new BigDecimal(12));
 	}
 
 }
