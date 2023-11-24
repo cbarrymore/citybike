@@ -2,6 +2,7 @@ package aadd.estaciones_BarrenecheaMartinez;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import estaciones.modelo.Estacion;
 import historicos.modelo.Historico;
 import historicos.modelo.Registro;
 import repositorio.FactoriaRepositorios;
@@ -31,12 +33,13 @@ import utils.PropertiesReader;
 
 class TestMongo {
 	
-	private RepositorioString<Historico> repo;
+	private RepositorioString<Estacion> repo;
 
 	@BeforeEach
 	public void setUp() throws RepositorioException {
-		repo = FactoriaRepositorios.getRepositorio(Historico.class);
+		repo = FactoriaRepositorios.getRepositorio(Estacion.class);
 	}
+	/*
 	@Test
 	public void consulta() throws RepositorioException {
 		PropertiesReader properties;
@@ -77,6 +80,13 @@ class TestMongo {
 		List<Registro> l = new ArrayList<Registro>();
 		l.add(new Registro("e1", LocalDate.now(), LocalDate.now()));
 		repo.add(new Historico("hola",l));
+	}
+	*/
+	@Test
+	public void insertar() throws RepositorioException {
+		Estacion es = new Estacion("Estacion22", 10, 30009, new BigDecimal("13.09"), new BigDecimal("13.09"));
+		es.setId("81293jwdsa");
+		System.out.println(repo.add(es));
 	}
 
 }

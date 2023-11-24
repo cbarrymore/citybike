@@ -59,9 +59,7 @@ implements FiltroBusquedaEstaciones  {
 
 	@Override
 	public Set<Estacion> getEstacionesProximas(BigDecimal longitud, BigDecimal latitud) {
-		Filters.geoIntersects('coordenadas', Filters.)
-		Document geoFilter = new Document("")
-		coleccion.find
 		
+		return null;
 	}
 }
