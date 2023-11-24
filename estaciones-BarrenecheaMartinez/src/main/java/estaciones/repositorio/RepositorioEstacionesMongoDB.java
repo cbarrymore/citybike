@@ -1,6 +1,7 @@
 package estaciones.repositorio;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -76,6 +77,19 @@ implements FiltroBusquedaEstaciones  {
         FindIterable<Estacion> resultados = coleccion.find(filter);
         resultados.
 
+	}
+
+	@Override
+	public Estacion getEstacionLibre() {
+		Document filtro = new Document("$expr", 
+			    new Document("$lt", 
+			        Arrays.asList(
+			            new Document("$size", "$bicisAparcadas"),
+			            "$numPuestos"
+			        )
+			    )
+			);
+		return getColeccion().find(filtro).first();
 	}
 	
 }

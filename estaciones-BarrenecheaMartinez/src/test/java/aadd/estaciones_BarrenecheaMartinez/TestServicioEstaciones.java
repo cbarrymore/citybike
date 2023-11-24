@@ -43,7 +43,7 @@ class TestServicioEstaciones {
 		repoBicis = FactoriaRepositorios.getRepositorio(Bici.class);
 		repoHistoricos = FactoriaRepositorios.getRepositorio(Historico.class);
 		filtroHistorico = FactoriaRepositorios.getRepositorio(Historico.class);
-		estacion1 = new Estacion("Estacion1", 10, 30009, new BigDecimal(500), new BigDecimal(500));
+		estacion1 = new Estacion("Estacion1", 10, 30009, new BigDecimal(30), new BigDecimal(40));
 		try {
 			repoEstaciones.add(estacion1);
 		} catch (RepositorioException e) {
@@ -102,7 +102,9 @@ class TestServicioEstaciones {
 	@Test
 	@Order(1)
 	void testAltaBici() throws RepositorioException, EntidadNoEncontrada {
-		String idBici = servicioEstaciones.altaBici("BMX", estacion1.getId());
+		String idBici = servicioEstaciones.altaBici("Montaña", estacion1.getId());
+		System.out.println(idBici);
+		if(idBici==null) fail();
 		repoEstaciones.update(estacion1);
 		bici = repoBicis.getById(idBici);
 		assertNotEquals(null, bici);
