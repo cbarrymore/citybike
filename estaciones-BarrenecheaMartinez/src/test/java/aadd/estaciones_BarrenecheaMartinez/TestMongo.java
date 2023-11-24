@@ -84,8 +84,7 @@ class TestMongo {
 	*/
 	@Test
 	public void insertar() throws RepositorioException {
-		Estacion es = new Estacion("Estacion22", 10, 30009, new BigDecimal("13.09"), new BigDecimal("13.09"));
-		es.setId("81293jwdsa");
+		Estacion es = new Estacion("Estacion33", 10, 30009, new BigDecimal("13.09"), new BigDecimal("13.09"));
 		System.out.println(repo.add(es));
 	}
 
