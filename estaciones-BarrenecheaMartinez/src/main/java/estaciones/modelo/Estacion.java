@@ -8,6 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.BsonBinarySubType;
+import org.bson.BsonContextType;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonExtraElements;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
@@ -18,7 +24,7 @@ public class Estacion implements Identificable{
 	private String nombre;
 	private int numPuestos;
 	private long dirPostal;
-	private Point coordenadas;
+	private List<Double> coordenadas;
 	private BigDecimal latitud;
 	private BigDecimal longitud;
 	private String id;
@@ -40,11 +46,7 @@ public class Estacion implements Identificable{
 		this.longitud = longitud;
 		this.fechaAlta = LocalDate.now();
 		this.bicisAparcadas = new HashSet<String>();
-		this.coordenadas = new Point(
-									 new Position(
-											 List.of(longitud.doubleValue(),latitud.doubleValue())
-									  )
-							         );
+		this.coordenadas = List.of(longitud.doubleValue(),latitud.doubleValue());
 	}
 	
 	@Override

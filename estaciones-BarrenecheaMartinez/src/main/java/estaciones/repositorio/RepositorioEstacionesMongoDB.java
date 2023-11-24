@@ -8,13 +8,19 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 
 import com.mongodb.MongoClientSettings;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.geojson.Position;
+import com.mongodb.client.model.geojson.Point;
+
 
 import estaciones.modelo.Estacion;
 import repositorio.RepositorioMongoDB;
@@ -59,9 +65,17 @@ implements FiltroBusquedaEstaciones  {
 
 	@Override
 	public Set<Estacion> getEstacionesProximas(BigDecimal longitud, BigDecimal latitud) {
-		Filters.geoIntersects('coordenadas', Filters.)
-		Document geoFilter = new Document("")
-		coleccion.find
+		coleccion.createIndex(Indexes.geo2dsphere("coordenadas"));
+		Point coordenadas = new Point(
+				 new Position(
+						 List.of(longitud.doubleValue(),latitud.doubleValue())
+				  )
+		         );
+		
+		Bson filter = Filters.nearSphere("coordenadas", coordenadas, null, null);
+        FindIterable<Estacion> resultados = coleccion.find(filter);
+        resultados.
 		
 	}
+	
 }
