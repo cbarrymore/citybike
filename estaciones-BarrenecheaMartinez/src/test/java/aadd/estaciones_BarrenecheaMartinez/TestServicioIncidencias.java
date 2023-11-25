@@ -37,37 +37,20 @@ class TestServicioIncidencias {
 	private static Bici bici3;
 	private static String estacion;
 	@BeforeAll
-	static void setUp() {
+	static void setUp() throws RepositorioException, EntidadNoEncontrada {
 		String biciId1,biciId2,biciId3;
-		try {
-			estacion = servicioEstaciones.altaEstacion("Estacion1", 10, 30008, new BigDecimal(70),new BigDecimal(70));
-			biciId1=servicioEstaciones.altaBici("Bici1", estacion);
-			biciId2=servicioEstaciones.altaBici("Bici2", estacion);
-			biciId3=servicioEstaciones.altaBici("Bici3", estacion);
-			bici1 = repoBicis.getById(biciId1);
-			bici2 = repoBicis.getById(biciId2);
-			bici3 = repoBicis.getById(biciId3);
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch(EntidadNoEncontrada e) {
-			e.printStackTrace();
-		}
+		estacion = servicioEstaciones.altaEstacion("Estacion1", 10, 30008, new BigDecimal(70),new BigDecimal(70));
+		biciId1=servicioEstaciones.altaBici("Bici1", estacion);
+		biciId2=servicioEstaciones.altaBici("Bici2", estacion);
+		biciId3=servicioEstaciones.altaBici("Bici3", estacion);
+		bici1 = repoBicis.getById(biciId1);
+		bici2 = repoBicis.getById(biciId2);
+		bici3 = repoBicis.getById(biciId3);
 	}
 	@AfterAll
-	static void end() {
-		try {
-			servicioEstaciones.darBajaBici(bici1.getId(), "");
-			servicioEstaciones.darBajaBici(bici2.getId(), "");
-			servicioEstaciones.darBajaBici(bici3.getId(), "");
-
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	static void end() throws RepositorioException, EntidadNoEncontrada {
+		servicioEstaciones.darBajaBici(bici1.getId(), "");
+		servicioEstaciones.darBajaBici(bici2.getId(), "");
 	}
 	
 	@Test 
@@ -82,21 +65,14 @@ class TestServicioIncidencias {
 	}
 	@Test
 	@Order(1)
-	void testCrearIncidencia() {
-		try {
-			servicioIncidencias.crearIncidencia(bici1.getId(),"Incidencia1");
-			servicioIncidencias.crearIncidencia(bici2.getId(),"Incidencia3");
-			servicioIncidencias.crearIncidencia(bici3.getId(),"Incidencia3");
-			bici1 = repoBicis.getById(bici1.getId());
-			bici2 = repoBicis.getById(bici2.getId());
-			bici3 = repoBicis.getById(bici3.getId());
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	void testCrearIncidencia() throws RepositorioException, EntidadNoEncontrada {
+		servicioIncidencias.crearIncidencia(bici1.getId(),"Incidencia1");
+		servicioIncidencias.crearIncidencia(bici2.getId(),"Incidencia3");
+		servicioIncidencias.crearIncidencia(bici3.getId(),"Incidencia3");
+		bici1 = repoBicis.getById(bici1.getId());
+		bici2 = repoBicis.getById(bici2.getId());
+		bici3 = repoBicis.getById(bici3.getId());
+	
 	}
 	@Test
 	@Order(2)
@@ -119,33 +95,19 @@ class TestServicioIncidencias {
 	
 	@Test
 	@Order(5)
-	void testCancelarIncidencia() {
-		try {
-			servicioIncidencias.cancelarIncidencia(bici1.getId(), "Cancelada incidencia de Bici1");
-			assertTrue(bici1.getIncidencia().getEstado() == Estado.CANCELADO);
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	void testCancelarIncidencia() throws RepositorioException, EntidadNoEncontrada {
+
+		servicioIncidencias.cancelarIncidencia(bici1.getId(), "Cancelada incidencia de Bici1");
+		assertTrue(bici1.getIncidencia().getEstado() == Estado.CANCELADO);
+	
 	}
 	@Test
 	@Order(6)
-	void testCancelarIncidenciaNoPendiente() {
+	void testCancelarIncidenciaNoPendiente() throws RepositorioException, EntidadNoEncontrada {
 		bici1.getIncidencia().setEstado(Estado.RESUELTA);
-		try {
-			repoBicis.update(bici1);
-			Assertions.assertThrows(IllegalStateException.class,
-					() -> servicioIncidencias.cancelarIncidencia(bici1.getId(), ""));
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		repoBicis.update(bici1);
+		Assertions.assertThrows(IllegalStateException.class,
+				() -> servicioIncidencias.cancelarIncidencia(bici1.getId(), ""));
 	}
 	
 	@Test
@@ -165,35 +127,19 @@ class TestServicioIncidencias {
 	
 	@Test
 	@Order(9)
-	void testAsignarIncidencia() {
-		try {
-			servicioIncidencias.asignarIncidencia(bici2.getId(), "Pedro");
-			bici2 = repoBicis.getById(bici2.getId());
-			assertTrue(bici2.getIncidencia().getEstado() == Estado.ASIGNADA);
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	void testAsignarIncidencia() throws RepositorioException, EntidadNoEncontrada {
+		servicioIncidencias.asignarIncidencia(bici2.getId(), "Pedro");
+		bici2 = repoBicis.getById(bici2.getId());
+		assertTrue(bici2.getIncidencia().getEstado() == Estado.ASIGNADA);
 	}
 	
 	@Test
 	@Order(10)
-	void testAsignarIncidenciaNoPendiente() {
+	void testAsignarIncidenciaNoPendiente() throws RepositorioException, EntidadNoEncontrada {
 		bici2.getIncidencia().setEstado(Estado.RESUELTA);
-		try {
-			repoBicis.update(bici2);
-			Assertions.assertThrows(IllegalStateException.class,
-					() -> servicioIncidencias.cancelarIncidencia(bici2.getId(), ""));
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		repoBicis.update(bici2);
+		Assertions.assertThrows(IllegalStateException.class,
+				() -> servicioIncidencias.cancelarIncidencia(bici2.getId(), ""));
 	}
 	
 	@Test 
@@ -212,51 +158,25 @@ class TestServicioIncidencias {
 	
 	@Test
 	@Order(13)
-	void testResolverIncidenciaBiciReparada() {
-		try {
-			bici3.getIncidencia().setEstado(Estado.ASIGNADA);
-			repoBicis.update(bici3);
-			servicioIncidencias.resolverIncidencia(bici3.getId(), "IncidenciaReparada",true);
-			assertTrue(bici3.getIncidencia().getEstado() == Estado.RESUELTA);
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	@Test
-	@Order(14)
-	void testResolverIncidenciaBiciNoReparada() {
-			try {
-				bici3.getIncidencia().setEstado(Estado.ASIGNADA);
-				repoBicis.update(bici3);
-				servicioIncidencias.resolverIncidencia(bici3.getId(), "IncidenciaNoReparada",false);
-			} catch (RepositorioException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (EntidadNoEncontrada e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Assertions.assertThrows(EntidadNoEncontrada.class,
-					() -> repoBicis.getById(bici3.getId()));	
+	void testResolverIncidenciaBiciReparada() throws RepositorioException, EntidadNoEncontrada {
+		servicioIncidencias.asignarIncidencia(bici3.getId(), "Paco");
+		servicioIncidencias.resolverIncidencia(bici3.getId(), "IncidenciaReparada",true);
+		bici3 = repoBicis.getById(bici3.getId());
+		assertTrue(bici3.getIncidencia().getEstado() == Estado.RESUELTA);
 	}
 	@Test
 	@Order(15)
-	void testResolverIncidenciaNoAsignada() {
-		bici3.getIncidencia().setEstado(Estado.PENDIENTE);
-		try {
-			repoBicis.update(bici1);
-			Assertions.assertThrows(IllegalStateException.class,
-					() -> servicioIncidencias.resolverIncidencia(bici3.getId(), "",true));
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	void testResolverIncidenciaBiciNoReparada() throws RepositorioException, EntidadNoEncontrada {
+		bici3.getIncidencia().setEstado(Estado.ASIGNADA);
+		repoBicis.update(bici3);
+		servicioIncidencias.resolverIncidencia(bici3.getId(), "IncidenciaNoReparada",false);
+		Assertions.assertThrows(EntidadNoEncontrada.class,
+				() -> repoBicis.getById(bici3.getId()));	
+	}
+	@Test
+	@Order(14)
+	void testResolverIncidenciaNoAsignada() throws RepositorioException, EntidadNoEncontrada {
+		Assertions.assertThrows(IllegalStateException.class,
+				() -> servicioIncidencias.resolverIncidencia(bici3.getId(), "",true));
 	}
 }
