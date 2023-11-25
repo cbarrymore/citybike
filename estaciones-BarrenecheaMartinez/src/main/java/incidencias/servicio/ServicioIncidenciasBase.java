@@ -30,17 +30,15 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		if(idBici == null) {
 			throw new IllegalArgumentException("La id de la bici no puede ser nula");
 		}
-		if(descripcion.isBlank()) {
-			throw new IllegalArgumentException("La descripción debe estár en blanco");
+		if(descripcion == null) {
+			throw new IllegalArgumentException("La descripción no puede ser nula");
 		}
 		Incidencia incidencia = new Incidencia(descripcion,idBici);
 		Bici bici = repoBici.getById(idBici);
 		
 		bici.setDisponible(false);
 		bici.setIncidencia(incidencia);
-		
 		repoBici.update(bici);
-		
 	}
 
 	@Override
@@ -54,19 +52,34 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 
 	@Override
 	public void cancelarIncidencia(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
+		if(idBici == null) {
+			throw new IllegalArgumentException("La id de la bici no puede ser nula");
+		}
+		if(motivo == null) {
+			throw new IllegalArgumentException("El motivo no puede ser nula");
+		}
 		Bici bici = repoBici.getById(idBici);
 		Incidencia incidencia = bici.getIncidencia();
 		if (incidencia.getEstado() != Estado.PENDIENTE) {
-			throw new IllegalStateException("La bici con id "+ idBici + "no no se puede cancelar porque no está pendiente");
+			throw new IllegalStateException("La bici con id "+ idBici + "no se puede cancelar porque no está pendiente");
 		}
 		incidencia.setDescripcion(motivo);
 		incidencia.setEstado(Estado.CANCELADO);
 		incidencia.setFechaCierre(LocalDate.now());
 		bici.setDisponible(true);
+		bici.setIncidencia(incidencia);
+		repoBici.update(bici);
+		bici.setIncidencia(incidencia);
 	}
 
 	@Override
 	public void asignarIncidencia(String idBici, String operario) throws RepositorioException, EntidadNoEncontrada {
+		if(idBici == null) {
+			throw new IllegalArgumentException("La id de la bici no puede ser nula");
+		}
+		if(operario== null) {
+			throw new IllegalArgumentException("Se debe indicar un operario");
+		}
 		Bici bici = repoBici.getById(idBici);
 		Incidencia incidencia = bici.getIncidencia();
 		if (incidencia.getEstado() != Estado.PENDIENTE) {
@@ -76,7 +89,9 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		incidencia.setEstado(Estado.ASIGNADA);
 		incidencia.setFechaCierre(LocalDate.now());
 		servicioEstaciones.retirarBici(idBici);
-		
+		bici.setIncidencia(incidencia);
+		repoBici.update(bici);
+		bici.setIncidencia(incidencia);
 	}
 
 	@Override
@@ -84,15 +99,21 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		if(idBici == null) {
 			throw new IllegalArgumentException("La id de la bici no puede ser nula");
 		}
-		if(motivo.isBlank()) {
+		if(motivo == null) {
 			throw new IllegalArgumentException("La descripción debe estár en blanco");
 		}
 		Bici bici = repoBici.getById(idBici);
 		Incidencia incidencia = bici.getIncidencia();
 		if (incidencia.getEstado() != Estado.ASIGNADA) {
-			throw new IllegalStateException("La bici con id "+ idBici + "no no se puede resolver porque no está asignada");
+			throw new IllegalStateException("La bici con id "+ idBici + "no se puede resolver porque no está asignada");
 		}
+		incidencia.setEstado(Estado.RESUELTA);
+		incidencia.setFechaCierre(LocalDate.now());
+		incidencia.setDescripcion(motivo);
+		bici.setIncidencia(incidencia);
 		if(reparada) {
+			repoBici.update(bici);
+			bici.setIncidencia(incidencia);
 			servicioEstaciones.estacionarBici(idBici);
 		}
 		else

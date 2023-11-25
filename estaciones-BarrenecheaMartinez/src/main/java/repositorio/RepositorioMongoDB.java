@@ -53,7 +53,7 @@ public abstract class RepositorioMongoDB<T extends Identificable> implements Rep
 	@Override
 	public T getById(String id) throws RepositorioException, EntidadNoEncontrada {
 	    try {
-	        T result = getColeccion().find(new Document("_id", id)).first();
+	        T result = getColeccion().find(new Document("_id", new ObjectId(id))).first();
 	        if (result == null) {
 	            throw new EntidadNoEncontrada("No se encontró la entidad");
 	        }

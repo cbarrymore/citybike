@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -106,10 +107,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void estacionarBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
 		if (idBici == null)
 			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
-		// TODO Buscar la estación
-		String idEstacion = "";
-		estacionarBici(idBici, idEstacion);
-
+		Estacion estacion = filtroEstacion.getEstacionLibre();
+		if(estacion != null)
+			estacionarBici(idBici, estacion.getId());
 	}
 
 	@Override

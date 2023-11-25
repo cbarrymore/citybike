@@ -10,4 +10,6 @@ import repositorio.RepositorioString;
 
 public interface FiltroBusquedaEstaciones {
 	public Set<Estacion> getEstacionesProximas(BigDecimal longitud, BigDecimal latitud);
+	
+	public Estacion getEstacionLibre();
 }

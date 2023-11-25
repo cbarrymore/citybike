@@ -2,6 +2,7 @@ package estaciones.repositorio;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -79,6 +80,19 @@ implements FiltroBusquedaEstaciones  {
         resultados.into(estacionesProximas);
         return estacionesProximas;
 
+	}
+
+	@Override
+	public Estacion getEstacionLibre() {
+		Document filtro = new Document("$expr", 
+			    new Document("$lt", 
+			        Arrays.asList(
+			            new Document("$size", "$bicisAparcadas"),
+			            "$numPuestos"
+			        )
+			    )
+			);
+		return getColeccion().find(filtro).first();
 	}
 	
 }
