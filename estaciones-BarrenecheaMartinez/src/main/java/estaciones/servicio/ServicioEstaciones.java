@@ -134,12 +134,13 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
 		Historico historico = filtroHistorico.getByBiciId(idBici); // Obtener historico
 		Bici bici = repoBicis.getById(idBici);
-		if (!historico.biciAparcada())
-			throw new IllegalStateException("La bici está retirada");
-		String idEstacion = historico.getUltimaEstacion();
-		Estacion estacion = repositorio.getById(idEstacion);
-		estacion.retirarBici(idBici);
-		repositorio.update(estacion);
+		if (historico.biciAparcada())
+		{
+			String idEstacion = historico.getUltimaEstacion();
+			Estacion estacion = repositorio.getById(idEstacion);
+			estacion.retirarBici(idBici);
+			repositorio.update(estacion);
+		}
 		repoHistorico.delete(historico);
 		repoBicis.delete(bici);
 	}

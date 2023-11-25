@@ -106,7 +106,6 @@ class TestServicioEstaciones {
 	@Order(1)
 	void testAltaBici() throws RepositorioException, EntidadNoEncontrada {
 		String idBici = servicioEstaciones.altaBici("Montaña", estacion1.getId());
-		System.out.println(idBici);
 		if(idBici==null) fail();
 		repoEstaciones.update(estacion1);
 		bici = repoBicis.getById(idBici);
