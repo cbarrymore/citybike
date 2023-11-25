@@ -3,6 +3,8 @@ package aadd.estaciones_BarrenecheaMartinez;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.AfterAll;
@@ -31,17 +33,18 @@ class TestServicioEstaciones {
 	private static IServicioEstaciones servicioEstaciones;
 	private static Repositorio<Estacion, String> repoEstaciones;
 	private static Repositorio<Bici, String> repoBicis;
-	private static Repositorio<Historico, String> repoHistoricos;
 	private static FiltroBusquedaHistorico filtroHistorico;
 	private static Estacion estacion1;
 	private static Bici bici;
 	@BeforeAll
-	static void initialize()
+	static void initialize() throws RepositorioException, EntidadNoEncontrada
 	{
 		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 		repoEstaciones = FactoriaRepositorios.getRepositorio(Estacion.class);
+		List<String> lista = repoEstaciones.getIds();
+		for(String id : lista)
+			repoEstaciones.delete(repoEstaciones.getById(id));
 		repoBicis = FactoriaRepositorios.getRepositorio(Bici.class);
-		repoHistoricos = FactoriaRepositorios.getRepositorio(Historico.class);
 		filtroHistorico = FactoriaRepositorios.getRepositorio(Historico.class);
 		estacion1 = new Estacion("Estacion1", 10, 30009, new BigDecimal(30), new BigDecimal(40));
 		try {
@@ -175,6 +178,32 @@ class TestServicioEstaciones {
 	{
 		Assertions.assertThrows(IllegalStateException.class,
 				()->servicioEstaciones.estacionarBici(bici.getId()));
+	}
+	
+	@Test
+	void testOrdenarPorSitiosTuristicos() throws RepositorioException, EntidadNoEncontrada
+	{
+		String idEstacion3=servicioEstaciones.altaEstacion("estacion3sitios", 3, 30009, new BigDecimal("49.097")
+				, new BigDecimal("49.097"));
+		String idEstacion1=servicioEstaciones.altaEstacion("estacion1sitios", 3, 30009, new BigDecimal("49.097")
+				, new BigDecimal("49.097"));
+		String idEstacion2=servicioEstaciones.altaEstacion("estacion2sitios", 3, 30009, new BigDecimal("49.097")
+				, new BigDecimal("49.097"));
+		Set<SitioTuristico> set = new HashSet<>();
+		set.add(new SitioTuristico());
+		servicioEstaciones.establecerSitiosTuristicos(idEstacion1, new HashSet<SitioTuristico>(set));
+		set.add(new SitioTuristico());
+		servicioEstaciones.establecerSitiosTuristicos(idEstacion2, new HashSet<SitioTuristico>(set));
+		set.add(new SitioTuristico());
+		servicioEstaciones.establecerSitiosTuristicos(idEstacion3, set);
+		
+		List<Estacion> estaciones = servicioEstaciones.estacionesPorNumeroSitiosTuristicos();
+		int anterior = Integer.MAX_VALUE;
+		for(Estacion estacion : estaciones)
+		{
+			assertTrue(estacion.getSitiosInteres().size()<=anterior);
+			anterior=estacion.getSitiosInteres().size();
+		}
 	}
 	
 }

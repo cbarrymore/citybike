@@ -52,7 +52,7 @@ public class Estacion implements Identificable{
 		this.bicisAparcadas = new HashSet<String>();
 		this.coordenadas = List.of(longitud.doubleValue(),latitud.doubleValue());
 		this.punto = new Point(new Position(coordenadas));
-		
+		this.sitiosInteres = new HashSet<SitioTuristico>();
 	}
 	
 	@Override

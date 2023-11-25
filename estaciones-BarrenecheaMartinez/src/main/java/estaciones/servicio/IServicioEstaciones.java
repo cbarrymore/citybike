@@ -1,6 +1,7 @@
 package estaciones.servicio;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 import bicis.modelo.Bici;
@@ -30,5 +31,7 @@ public interface IServicioEstaciones {
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada;
 	
 	public Set<Bici> bicisCercanas(BigDecimal longitud, BigDecimal latitud) throws RepositorioException, EntidadNoEncontrada;
+	
+	public List<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException;
 	
 }

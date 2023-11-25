@@ -3,7 +3,9 @@ package estaciones.servicio;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -163,11 +165,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		return null;
 	}
 	
-	public Set<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException
+	public List<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException
 	{
-		return repositorio.getAll().stream()
-		.sorted((e1, e2) -> (e2.getSitiosInteres().size() - e1.getSitiosInteres().size()))
-		.collect(Collectors.toSet());
+		return repositorio.getAll().stream().filter(e -> e.getSitiosInteres()!=null)
+		.sorted((e1, e2) -> 
+		(Integer.compare(e2.getSitiosInteres().size(), e1.getSitiosInteres().size())))
+		.collect(Collectors.toList());
 	}
 
 }
