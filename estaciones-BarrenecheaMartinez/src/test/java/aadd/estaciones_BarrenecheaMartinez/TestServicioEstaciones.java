@@ -86,9 +86,9 @@ class TestServicioEstaciones {
 		try
 		{
 			String idEstacion = servicioEstaciones.altaEstacion("Estacion1", 2, 30004, new BigDecimal("47"), new BigDecimal("9"));
-			Estacion estacion = servicioEstaciones.obtenerEstacion(idEstacion);
 			Set<SitioTuristico> set = servicioEstaciones.obtenerSitiosTuristicosProximos(idEstacion);
 			servicioEstaciones.establecerSitiosTuristicos(idEstacion, set);
+			Estacion estacion = servicioEstaciones.obtenerEstacion(idEstacion);
 			assertNotEquals(null, estacion.getSitiosInteres());
 		}
 		catch(Exception e)
