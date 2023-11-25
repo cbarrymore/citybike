@@ -10,8 +10,11 @@ import java.util.Set;
 
 import org.bson.BsonBinarySubType;
 import org.bson.BsonContextType;
+import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonExtraElements;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
 import com.mongodb.client.model.geojson.Point;
@@ -21,16 +24,20 @@ import repositorio.Identificable;
 import sitioTuristico.modelo.SitioTuristico;
 
 public class Estacion implements Identificable{
+	@BsonId
+	@BsonRepresentation(BsonType.OBJECT_ID) 
+	private String id;
 	private String nombre;
 	private int numPuestos;
 	private long dirPostal;
+	@BsonProperty(value="coordenadas")
 	private List<Double> coordenadas;
 	private BigDecimal latitud;
 	private BigDecimal longitud;
-	private String id;
 	private LocalDate fechaAlta;
 	private Set<SitioTuristico> sitiosInteres;
 	private Set<String> bicisAparcadas;
+	private Point punto;
 	
 	public Estacion()
 	{
@@ -38,7 +45,6 @@ public class Estacion implements Identificable{
 	}
 	
 	public Estacion(String nombre, int numPuestos, long dirPostal, BigDecimal latitud, BigDecimal longitud) {
-		this.id=String.valueOf(0);
 		this.nombre = nombre;
 		this.numPuestos = numPuestos;
 		this.dirPostal = dirPostal;
@@ -47,6 +53,8 @@ public class Estacion implements Identificable{
 		this.fechaAlta = LocalDate.now();
 		this.bicisAparcadas = new HashSet<String>();
 		this.coordenadas = List.of(longitud.doubleValue(),latitud.doubleValue());
+		this.punto = new Point(new Position(coordenadas));
+		
 	}
 	
 	@Override
@@ -122,6 +130,22 @@ public class Estacion implements Identificable{
 		this.bicisAparcadas = bicisAparcadas;
 	}
 	
+	public List<Double> getCoordenadas() {
+		return coordenadas;
+	}
+
+	public void setCoordenadas(List<Double> coordenadas) {
+		this.coordenadas = coordenadas;
+	}
+	
+	public Point getPunto() {
+		return punto;
+	}
+
+	public void setPunto(Point punto) {
+		this.punto = punto;
+	}
+
 	public boolean lleno()
 	{
 		return numPuestos<bicisAparcadas.size();

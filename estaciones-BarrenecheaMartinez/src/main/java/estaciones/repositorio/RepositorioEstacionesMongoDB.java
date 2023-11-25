@@ -78,6 +78,7 @@ implements FiltroBusquedaEstaciones  {
         Set<Estacion> estacionesProximas = new HashSet<Estacion>();
         resultados.into(estacionesProximas);
         return estacionesProximas;
+
 	}
 	
 }
