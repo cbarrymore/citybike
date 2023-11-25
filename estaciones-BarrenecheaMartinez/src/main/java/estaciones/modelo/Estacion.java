@@ -14,6 +14,7 @@ import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonExtraElements;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
 import com.mongodb.client.model.geojson.Point;
@@ -29,6 +30,7 @@ public class Estacion implements Identificable{
 	private String nombre;
 	private int numPuestos;
 	private long dirPostal;
+	@BsonProperty(value="coordenadas")
 	private List<Double> coordenadas;
 	private BigDecimal latitud;
 	private BigDecimal longitud;

@@ -112,7 +112,6 @@ class TestServicioEstaciones {
 		bici = repoBicis.getById(idBici);
 		assertNotEquals(null, bici);
 	}
-	
 	@Test
 	void testAltaBiciArgumento1() throws RepositorioException, EntidadNoEncontrada {
 		Assertions.assertThrows(IllegalArgumentException.class,
@@ -171,6 +170,10 @@ class TestServicioEstaciones {
 		Assertions.assertThrows(IllegalArgumentException.class,
 				()->servicioEstaciones.estacionarBici(bici.getId(), null));
 	}
+	@Test
+	void testBicisCercanas() throws RepositorioException, EntidadNoEncontrada {
+		Set<Bici> bicis = servicioEstaciones.bicisCercanas(new BigDecimal(12), new BigDecimal(12));
+	}
 	
 	@Test
 	@Order(5)
@@ -204,6 +207,14 @@ class TestServicioEstaciones {
 			assertTrue(estacion.getSitiosInteres().size()<=anterior);
 			anterior=estacion.getSitiosInteres().size();
 		}
+	}
+	
+	@Test
+	void test() throws RepositorioException, EntidadNoEncontrada {
+		IServicioEstaciones servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+		Set<Bici> bicis = servicioEstaciones.bicisCercanas(new BigDecimal(12), new BigDecimal(12));
+		for(Bici b : bicis)
+			assertTrue(b.isDisponible());
 	}
 	
 }
