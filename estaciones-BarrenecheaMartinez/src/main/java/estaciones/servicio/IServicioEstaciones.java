@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import bicis.dto.BiciDTO;
 import bicis.modelo.Bici;
 import estaciones.modelo.Estacion;
 import repositorio.EntidadNoEncontrada;
@@ -31,6 +32,8 @@ public interface IServicioEstaciones {
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada;
 	
 	public Set<Bici> bicisCercanas(BigDecimal longitud, BigDecimal latitud) throws RepositorioException, EntidadNoEncontrada;
+	
+	public List<BiciDTO> bicisDTOCercanas(BigDecimal longitud, BigDecimal latitud) throws RepositorioException, EntidadNoEncontrada;
 	
 	public List<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException;
 	

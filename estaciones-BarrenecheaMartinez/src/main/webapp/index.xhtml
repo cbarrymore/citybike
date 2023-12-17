@@ -2,12 +2,16 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:b="http://bootsfaces.net/ui">
 
     <ui:define name="title">
-Inicio
-</ui:define>
-	<ui:param name="estilo1" value="current" />
+        Inicio
+    </ui:define>
+
+    <ui:param name="estilo1" value="current" />
+
     <ui:define name="content">
         <section id="banner">
             <header>
@@ -16,7 +20,29 @@ Inicio
             </header>
         </section>
         <!-- Intro -->
-        <div class="row"></div>
-
+       <div style="display: flex; justify-content: center;">
+		    <!-- Formulario de inicio de sesión -->
+		    <h:form style="width: 50%;">
+		        <h:panelGrid columns="3">
+		            <h:outputLabel for="username" value="#{text['usuario']}" />
+		            <h:inputText id="username" value="#{login.username}" required="true"  requiredMessage="#{text['usuario_requerido']}"/>
+					<h:message for="username" style="color:red" />
+					
+		            <h:outputLabel for="password" value="#{text['contraseña']}" />
+		            <p:password id="password" value="#{login.password}" toggleMask="true" redisplay="true" required="true" requiredMessage="#{text['contraseña_requerida']}"/>
+					<h:message for="password" style="color:red" />
+				
+		            <h:outputLabel value="#{text['rol_usuario']}:" />
+		            <p:selectOneRadio id="userRole" value="#{login.role}" layout="pageDirection" required="true" requiredMessage="#{text['rol_usuario_requerido']}">
+		                <f:selectItem itemLabel="#{text['cliente']}" itemValue="cliente"/>
+		                <f:selectItem itemLabel="#{text['gestor']}" itemValue="gestor"/>
+		            </p:selectOneRadio>
+		            <h:message for="userRole" style="color:red" />
+		            
+		            <h:commandButton value="#{text['acceder']}" action="#{login.doLogin}" />
+		        </h:panelGrid>
+		    </h:form>
+		</div>
     </ui:define>
 </ui:composition>
+

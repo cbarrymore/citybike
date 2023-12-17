@@ -56,7 +56,7 @@ implements FiltroBusquedaEstaciones  {
 		    coleccionSinCodificar = database.getCollection("estaciones");
 		    
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 	
