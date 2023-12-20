@@ -37,7 +37,6 @@ public class Estacion implements Identificable{
 	private LocalDate fechaAlta;
 	private Set<SitioTuristico> sitiosInteres;
 	private Set<String> bicisAparcadas;
-	private Point punto;
 	
 	public Estacion()
 	{
@@ -53,7 +52,6 @@ public class Estacion implements Identificable{
 		this.fechaAlta = LocalDate.now();
 		this.bicisAparcadas = new HashSet<String>();
 		this.coordenadas = List.of(longitud.doubleValue(),latitud.doubleValue());
-		this.punto = new Point(new Position(coordenadas));
 		this.sitiosInteres = new HashSet<SitioTuristico>();
 	}
 	
@@ -136,14 +134,6 @@ public class Estacion implements Identificable{
 
 	public void setCoordenadas(List<Double> coordenadas) {
 		this.coordenadas = coordenadas;
-	}
-	
-	public Point getPunto() {
-		return punto;
-	}
-
-	public void setPunto(Point punto) {
-		this.punto = punto;
 	}
 
 	public boolean lleno()

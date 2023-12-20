@@ -120,7 +120,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Historico historico = filtroHistorico.getByBiciId(idBici); // Obtener historico
 		if (!historico.biciAparcada())
 			throw new IllegalStateException("La bici ya está retirada");
-		String idEstacion = historico.getUltimaEstacion();
+		String idEstacion = historico.getEstacion();
 		Estacion estacion = repositorio.getById(idEstacion);
 		estacion.retirarBici(idBici);
 		historico.marcarSalida();
@@ -136,7 +136,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Bici bici = repoBicis.getById(idBici);
 		if (historico.biciAparcada())
 		{
-			String idEstacion = historico.getUltimaEstacion();
+			String idEstacion = historico.getEstacion();
 			Estacion estacion = repositorio.getById(idEstacion);
 			estacion.retirarBici(idBici);
 			repositorio.update(estacion);

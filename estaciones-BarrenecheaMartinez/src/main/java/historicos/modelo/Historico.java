@@ -15,15 +15,15 @@ public class Historico implements Identificable{
 	@BsonRepresentation(BsonType.OBJECT_ID) 
 	private String id;
 	private String bici;
-	private List<Registro> registros;
-	
-	public Historico(String bici, List<Registro> registros) {
-		this.bici=bici;
-		this.registros = registros;
-	}
+	private String estacion;
+	private LocalDate fechaEntrada;
+	private LocalDate fechaSalida;
 	
 	public Historico(String bici) {
-		this(bici, new LinkedList<Registro>());
+		this.bici = bici;
+		this.estacion = null;
+		this.fechaEntrada = null;
+		this.fechaSalida = null;
 	}
 	
 	public Historico() {
@@ -36,36 +36,51 @@ public class Historico implements Identificable{
 	public void setBici(String bici) {
 		this.bici = bici;
 	}
-	public List<Registro> getRegistros() {
-		return registros;
+	
+	public String getEstacion()
+	{
+		return estacion;
 	}
-	public void setRegistros(List<Registro> registros) {
-		this.registros = registros;
+	
+	public void setEstacion(String estacion)
+	{
+		this.estacion = estacion;
 	}
+	
+	public LocalDate getFechaEntrada() {
+		return fechaEntrada;
+	}
+
+	public void setFechaEntrada(LocalDate fechaEntrada) {
+		this.fechaEntrada = fechaEntrada;
+	}
+
+	public LocalDate getFechaSalida() {
+		return fechaSalida;
+	}
+
+	public void setFechaSalida(LocalDate fechaSalida) {
+		this.fechaSalida = fechaSalida;
+	}
+
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 	@Override
 	public void setId(String id) {
-		// TODO Auto-generated method stub
 		this.id = id;
-	}
-	
-	public Registro getUltimoRegistro()
-	{
-		return registros.get(registros.size()-1);
 	}
 	
 	public boolean biciAparcada()
 	{
-		return getUltimoRegistro().biciAparcada();
+		return fechaSalida == null;
 	}
 	
 	public void marcarEntrada(String estacion, LocalDate date)
 	{
-		registros.add(new Registro(estacion, date));
+		this.estacion = estacion;
+		this.fechaEntrada = date;
 	}
 	
 	public void marcarEntrada(String estacion)
@@ -75,7 +90,7 @@ public class Historico implements Identificable{
 	
 	public void marcarSalida(LocalDate date)
 	{
-		getUltimoRegistro().setFechaFin(date);
+		this.fechaSalida = date;
 	}
 	
 	public void marcarSalida()
@@ -83,8 +98,4 @@ public class Historico implements Identificable{
 		marcarSalida(LocalDate.now());
 	}
 	
-	public String getUltimaEstacion()
-	{
-		return getUltimoRegistro().getEstacion();
-	}
 }
