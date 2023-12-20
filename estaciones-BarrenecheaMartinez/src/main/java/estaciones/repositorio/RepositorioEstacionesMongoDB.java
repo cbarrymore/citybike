@@ -57,7 +57,7 @@ implements FiltroBusquedaEstaciones  {
 		    coleccion.createIndex(Indexes.geo2dsphere("coordenadas"));
 		    
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 	
