@@ -54,6 +54,7 @@ implements FiltroBusquedaEstaciones  {
 
 			coleccion = database.getCollection("estaciones", Estacion.class).withCodecRegistry(defaultCodecRegistry);
 		    coleccionSinCodificar = database.getCollection("estaciones");
+		    coleccion.createIndex(Indexes.geo2dsphere("coordenadas"));
 		    
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,7 +68,7 @@ implements FiltroBusquedaEstaciones  {
 
 	@Override
 	public Set<Estacion> getEstacionesProximas(BigDecimal longitud, BigDecimal latitud) {
-		coleccion.createIndex(Indexes.geo2dsphere("coordenadas"));
+		
 		Point coordenadas = new Point(
 				 new Position(
 						 List.of(longitud.doubleValue(),latitud.doubleValue())

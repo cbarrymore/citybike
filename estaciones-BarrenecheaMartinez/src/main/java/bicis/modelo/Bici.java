@@ -1,6 +1,8 @@
 package bicis.modelo;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -20,7 +24,8 @@ import repositorio.Identificable;
 
 @Entity
 @Table(name="bici")
-@NamedQuery(name = "Bici.getBicisConIncidencias", query = "SELECT b FROM Bici b WHERE b.incidencia IS NOT NULL")
+@NamedQuery(name = "Bici.getBicisConIncidencias", query = "SELECT b FROM Bici b WHERE b.codigo IS IN "
+		+ "(SELECT codigo_bici FROM bici_incidencia)")
 public class Bici implements Identificable{
 	
 	@Id
@@ -39,8 +44,15 @@ public class Bici implements Identificable{
 	@Column (name = "disponible")
 	private boolean disponible;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Incidencia incidencia;
+	@JoinTable(
+	        name = "bici_incidencia",
+	        		inverseJoinColumns = @JoinColumn(
+	                        name = "codigo_bici",
+	                        referencedColumnName = "codigo"
+	                )
+	)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<Incidencia> incidencias;
 	
 	
 	public Bici()
@@ -52,6 +64,7 @@ public class Bici implements Identificable{
 	{
 		this.modelo = modelo;
 		this.fechaAlta = fechaAlta;
+		this.incidencias = new LinkedList<Incidencia>();
 	}
 	
 	public String getCodigo() {
@@ -102,11 +115,28 @@ public class Bici implements Identificable{
 		this.disponible = disponible;
 	}
 
-	public Incidencia getIncidencia() {
-		return incidencia;
+	public List<Incidencia> getIncidencias() {
+		return incidencias;
 	}
 
-	public void setIncidencia(Incidencia incidencia) {
-		this.incidencia = incidencia;
+	public void setIncidencias(List<Incidencia> incidencias) {
+		this.incidencias = incidencias;
+	}
+	
+	public void addIncidencia(Incidencia incidencia)
+	{
+		incidencias.add(incidencia);
+	}
+	
+	public boolean ultimaIncidenciaAbierta()
+	{
+		return(incidencias.size() == 0 || incidencias.get(0).isAbierta());
+	}
+	
+	public Incidencia getUltimaIncidencia()
+	{
+		if(incidencias.size()==0)
+			return null;
+		return incidencias.get(0);
 	}
 }

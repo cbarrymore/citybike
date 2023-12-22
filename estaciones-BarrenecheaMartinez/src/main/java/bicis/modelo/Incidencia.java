@@ -77,4 +77,9 @@ public class Incidencia {
 		this.fechaCierre = fechaCierre;
 	}
 	
+	public boolean isAbierta()
+	{
+		return this.estado.abierta();
+	}
+	
 }

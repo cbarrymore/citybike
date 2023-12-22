@@ -24,7 +24,7 @@ class TestJPA {
 		Bici bici = new Bici("BMX", LocalDate.now());
 		String id=repo.add(bici);
 		System.out.println(id + " " + bici.getId());
-		bici.setIncidencia(new Incidencia("hola",id));
+		bici.setIncidencias(new Incidencia("hola",id));
 		try {
 			repo.update(bici);
 		} catch (RepositorioException | EntidadNoEncontrada e) {
@@ -37,7 +37,7 @@ class TestJPA {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		bici.setIncidencia(new Incidencia("hola",id));
+		bici.setIncidencias(new Incidencia("hola",id));
 	}
 	@Test
 	void test2() {

@@ -98,13 +98,13 @@ class TestServicioIncidencias {
 	void testCancelarIncidencia() throws RepositorioException, EntidadNoEncontrada {
 
 		servicioIncidencias.cancelarIncidencia(bici1.getId(), "Cancelada incidencia de Bici1");
-		assertTrue(bici1.getIncidencia().getEstado() == Estado.CANCELADO);
+		assertTrue(bici1.getUltimaIncidencia().getEstado() == Estado.CANCELADO);
 	
 	}
 	@Test
 	@Order(6)
 	void testCancelarIncidenciaNoPendiente() throws RepositorioException, EntidadNoEncontrada {
-		bici1.getIncidencia().setEstado(Estado.RESUELTA);
+		bici1.getUltimaIncidencia().setEstado(Estado.RESUELTA);
 		repoBicis.update(bici1);
 		Assertions.assertThrows(IllegalStateException.class,
 				() -> servicioIncidencias.cancelarIncidencia(bici1.getId(), ""));
@@ -130,13 +130,13 @@ class TestServicioIncidencias {
 	void testAsignarIncidencia() throws RepositorioException, EntidadNoEncontrada {
 		servicioIncidencias.asignarIncidencia(bici2.getId(), "Pedro");
 		bici2 = repoBicis.getById(bici2.getId());
-		assertTrue(bici2.getIncidencia().getEstado() == Estado.ASIGNADA);
+		assertTrue(bici2.getUltimaIncidencia().getEstado() == Estado.ASIGNADA);
 	}
 	
 	@Test
 	@Order(10)
 	void testAsignarIncidenciaNoPendiente() throws RepositorioException, EntidadNoEncontrada {
-		bici2.getIncidencia().setEstado(Estado.RESUELTA);
+		bici2.getUltimaIncidencia().setEstado(Estado.RESUELTA);
 		repoBicis.update(bici2);
 		Assertions.assertThrows(IllegalStateException.class,
 				() -> servicioIncidencias.cancelarIncidencia(bici2.getId(), ""));
@@ -162,12 +162,12 @@ class TestServicioIncidencias {
 		servicioIncidencias.asignarIncidencia(bici3.getId(), "Paco");
 		servicioIncidencias.resolverIncidencia(bici3.getId(), "IncidenciaReparada",true);
 		bici3 = repoBicis.getById(bici3.getId());
-		assertTrue(bici3.getIncidencia().getEstado() == Estado.RESUELTA);
+		assertTrue(bici3.getUltimaIncidencia().getEstado() == Estado.RESUELTA);
 	}
 	@Test
 	@Order(15)
 	void testResolverIncidenciaBiciNoReparada() throws RepositorioException, EntidadNoEncontrada {
-		bici3.getIncidencia().setEstado(Estado.ASIGNADA);
+		bici3.getUltimaIncidencia().setEstado(Estado.ASIGNADA);
 		repoBicis.update(bici3);
 		servicioIncidencias.resolverIncidencia(bici3.getId(), "IncidenciaNoReparada",false);
 		Assertions.assertThrows(EntidadNoEncontrada.class,
