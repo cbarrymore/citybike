@@ -8,6 +8,6 @@ public enum Estado {
 	
 	public boolean abierta()
 	{
-		return this == Estado.CANCELADO || this == Estado.ASIGNADA || this == Estado.ASIGNADA;
+		return this == Estado.ASIGNADA || this == Estado.PENDIENTE;
 	}
 }

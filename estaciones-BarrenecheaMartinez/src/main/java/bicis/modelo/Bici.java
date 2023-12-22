@@ -13,10 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.eclipse.jetty.server.Authentication.User;
 
 import com.mysql.cj.x.protobuf.MysqlxCursor.Fetch;
 
@@ -24,8 +27,10 @@ import repositorio.Identificable;
 
 @Entity
 @Table(name="bici")
-@NamedQuery(name = "Bici.getBicisConIncidencias", query = "SELECT b FROM Bici b WHERE b.codigo IS IN "
-		+ "(SELECT codigo_bici FROM bici_incidencia)")
+@NamedNativeQuery(name = "Bici.getBicisConIncidencias", query = "SELECT bici.* FROM bici WHERE codigo  "
+		+ "in (SELECT codigo_bici FROM bici_incidencia JOIN incidencia WHERE estado in ('ASIGNADA', 'PENDIENTE') )"
+		, resultClass = Bici.class)
+
 public class Bici implements Identificable{
 	
 	@Id
@@ -44,14 +49,17 @@ public class Bici implements Identificable{
 	@Column (name = "disponible")
 	private boolean disponible;
 	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 	        name = "bici_incidencia",
+	        		joinColumns = @JoinColumn(
+	        				name = "codigo_bici",
+	        				referencedColumnName = "codigo"),
 	        		inverseJoinColumns = @JoinColumn(
-	                        name = "codigo_bici",
-	                        referencedColumnName = "codigo"
+	                        name = "codigo_incidencia",
+	                        referencedColumnName = "ID"
 	                )
 	)
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Incidencia> incidencias;
 	
 	
@@ -130,7 +138,7 @@ public class Bici implements Identificable{
 	
 	public boolean ultimaIncidenciaAbierta()
 	{
-		return(incidencias.size() == 0 || incidencias.get(0).isAbierta());
+		return!(incidencias.size() == 0 || !incidencias.get(0).isAbierta());
 	}
 	
 	public Incidencia getUltimaIncidencia()

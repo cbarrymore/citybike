@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +24,8 @@ public class Incidencia {
 	
 	
 	@Column (name = "fecha_de_cierre",columnDefinition = "DATE")
-	private LocalDate fechaCierre
-	;
+	private LocalDate fechaCierre;
+	
 	@Column(name = "descripcion")
 	private String descripcion;
 	

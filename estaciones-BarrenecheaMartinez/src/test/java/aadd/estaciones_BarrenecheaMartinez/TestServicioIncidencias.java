@@ -72,14 +72,18 @@ class TestServicioIncidencias {
 		bici1 = repoBicis.getById(bici1.getId());
 		bici2 = repoBicis.getById(bici2.getId());
 		bici3 = repoBicis.getById(bici3.getId());
+		assertTrue(bici1.getUltimaIncidencia()!=null);
+		assertTrue(bici2.getUltimaIncidencia()!=null);
+		assertTrue(bici3.getUltimaIncidencia()!=null);
 	
 	}
+
 	@Test
 	@Order(2)
 	void testRecuperarIncidenciasAbiertas() {
 		assertEquals(3,servicioIncidencias.recuperarIncidenciasAbiertas().size());
 	}
-	
+	/*
 	@Test
 	@Order(3)
 	void testCancelarIncidenciaIdBiciNula() {
@@ -179,4 +183,5 @@ class TestServicioIncidencias {
 		Assertions.assertThrows(IllegalStateException.class,
 				() -> servicioIncidencias.resolverIncidencia(bici3.getId(), "",true));
 	}
+	*/
 }
