@@ -12,7 +12,7 @@ import javax.inject.Named;
 public class Login implements Serializable{
 	private String username;
 	private String password;
-	private String role;
+	private String role = "";
 	
 	
 	
@@ -20,11 +20,14 @@ public class Login implements Serializable{
     protected FacesContext facesContext;
 
 	public void doLogin() {
-		System.out.println("Acabo de hacer login");
+		System.out.println("Acabo de hacer login con rol " + role);
 		facesContext.getExternalContext().getSessionMap().put("username", username);
 		facesContext.getExternalContext().getSessionMap().put("role", role);
 	}
-
+	public String doLogout() {
+	    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	    return "/index.xhtml?faces-redirect=true";
+	}
 	public String getUsername() {
 		return username;
 	}
