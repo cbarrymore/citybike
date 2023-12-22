@@ -20,7 +20,7 @@
             </header>
         </section>
         <!-- Intro -->
-       <div style="display: flex; justify-content: center;">
+       <div style="#{login.role eq '' ? 'display: flex; justify-content: center;' : 'display:none;'}" >
 		    <!-- Formulario de inicio de sesión -->
 		    <h:form style="width: 50%;">
 		        <h:panelGrid columns="3">

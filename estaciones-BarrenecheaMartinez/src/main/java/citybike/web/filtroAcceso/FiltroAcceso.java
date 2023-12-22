@@ -2,36 +2,45 @@ package citybike.web.filtroAcceso;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.Enumerated;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/*")
+@WebFilter(urlPatterns = "/*",initParams = {
+		@WebInitParam(name = "paginasPorRol",value = "gestor=pagina1,pagina2;cliente=/bici/buscarBicis.xhtml")})
 public class FiltroAcceso implements Filter {
 
-    private Map<String, List<String>> paginasPorRol;
-
+    private static Map<String, List<String>> paginasPorRol;
+    private static ServletContext servletContext;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Obtén la configuración del init-param
         String config = filterConfig.getInitParameter("paginasPorRol");
-
+        servletContext = filterConfig.getServletContext();
         // Rellena el mapa de páginas a partir de la configuración
         if(config != null) {
         	paginasPorRol = parseConfig(config);
         }
+        else
+        	paginasPorRol = Collections.emptyMap();
         
     }
 
@@ -43,22 +52,26 @@ public class FiltroAcceso implements Filter {
 
         HttpSession session = httpRequest.getSession(false);
         String requestURI = httpRequest.getRequestURI();
-
-        if (session != null) {
+        boolean equals = requestURI.equals("/index.xhtml");
+        if (session != null && !requestURI.equals("/index.xhtml") && !requestURI.equals("/accesoNoAutorizado.xhtml")) {
             String role = (String) session.getAttribute("role");
+            Enumeration<String> a = session.getAttributeNames();
             List<String> paginasPermitidas = paginasPorRol.getOrDefault(role, Arrays.asList("/accesoNoAutorizado.xhtml"));
 
             if (paginasPermitidas.contains(requestURI) || requestURI.startsWith(httpRequest.getContextPath() + "/javax.faces.resource/")) {
                 chain.doFilter(request, response);
             } else {
+            	//servletContext.getRequestDispatcher(httpRequest.getContextPath() + "/accesoNoAutorizado.xhtml").forward(httpRequest, httpResponse);
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/accesoNoAutorizado.xhtml");
+            	return;
             }
         } else {
-        	if(requestURI is "index.xhtml") {
-        		chain.doFilter(httpRequest, httpResponse);
-        		return;
-        	}
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/accesoNoAutorizado.xhtml");
+        	chain.doFilter(httpRequest, httpResponse);
+//        	if(requestURI is "index.xhtml"º) {
+//        		chain.doFilter(httpRequest, httpResponse);
+//        		return;
+//        	}
+//            httpResponse.sendRedirect(httpRequest.getContextPath() + "/accesoNoAutorizado.xhtml");
         }
     }
 

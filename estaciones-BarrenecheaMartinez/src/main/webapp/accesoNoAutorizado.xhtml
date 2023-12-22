@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/WEB-INF/template/template.xhtml">
+        <ui:define name="title">Acceso No Autorizado</ui:define>
+        <ui:define name="content">
+            <h:outputText value="Acceso no autorizado. Serás redirigido a la página de inicio en unos segundos." />
+            <meta http-equiv="refresh" content="5;url=index.xhtml" />
+        </ui:define>
+    </ui:composition>
+
+</html>
