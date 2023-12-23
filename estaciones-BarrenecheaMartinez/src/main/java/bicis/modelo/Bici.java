@@ -27,8 +27,8 @@ import repositorio.Identificable;
 
 @Entity
 @Table(name="bici")
-@NamedNativeQuery(name = "Bici.getBicisConIncidencias", query = "SELECT bici.* FROM bici WHERE codigo  "
-		+ "in (SELECT codigo_bici FROM bici_incidencia JOIN incidencia WHERE estado in ('ASIGNADA', 'PENDIENTE') )"
+@NamedNativeQuery(name = "Bici.getBicisConIncidencias", query = "SELECT * FROM bici WHERE codigo  "
+		+ "in (SELECT id_bici FROM incidencia WHERE estado in ('ASIGNADA', 'PENDIENTE') )"
 		, resultClass = Bici.class)
 
 public class Bici implements Identificable{
@@ -50,16 +50,6 @@ public class Bici implements Identificable{
 	private boolean disponible;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-	        name = "bici_incidencia",
-	        		joinColumns = @JoinColumn(
-	        				name = "codigo_bici",
-	        				referencedColumnName = "codigo"),
-	        		inverseJoinColumns = @JoinColumn(
-	                        name = "codigo_incidencia",
-	                        referencedColumnName = "ID"
-	                )
-	)
 	private List<Incidencia> incidencias;
 	
 	

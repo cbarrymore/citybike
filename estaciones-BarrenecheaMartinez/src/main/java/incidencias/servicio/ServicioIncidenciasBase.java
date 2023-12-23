@@ -3,6 +3,8 @@ package incidencias.servicio;
 import java.time.LocalDate;
 import java.util.List;
 
+import bicis.dto.BiciDTO;
+import bicis.dto.IncidenciaDTO;
 import bicis.modelo.Bici;
 import bicis.modelo.Estado;
 import bicis.modelo.Incidencia;
@@ -37,7 +39,6 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		if(bici.ultimaIncidenciaAbierta())
 			throw new IllegalStateException("La bici ya cuenta con una incidencia abierta");
 		Incidencia incidencia = new Incidencia(descripcion,idBici);
-		
 		bici.setDisponible(false);
 		bici.addIncidencia(incidencia);
 		repoBici.update(bici);
@@ -50,6 +51,10 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 				.filter( b -> b.ultimaIncidenciaAbierta())
 				.map(b -> b.getUltimaIncidencia())
 				.toList();
+	}
+	
+	public List<IncidenciaDTO> recuperarIncidenciasAbiertasDTO() {
+		return recuperarIncidenciasAbiertas().stream().map(i -> transformToDTO(i)).toList();
 	}
 
 	@Override
@@ -128,4 +133,10 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		
 	}
 
+	private IncidenciaDTO transformToDTO(Incidencia incidencia)
+	{
+		return new IncidenciaDTO(incidencia.getId(), incidencia.getFechaAlta(), incidencia.getFechaCierre(), 
+				incidencia.getDescripcion(), incidencia.getEstado().toString(), incidencia.getIdBici());
+	}
+	
 }

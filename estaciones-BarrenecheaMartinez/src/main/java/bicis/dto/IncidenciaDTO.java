@@ -10,16 +10,18 @@ public class IncidenciaDTO {
 	private LocalDate fechaCierre;
 	private String descripcion;
 	private String estado;
+	private String idBici;
 	
 	
 	public IncidenciaDTO(String id, LocalDate fechaAlta,
-			LocalDate fechaCierre,String descripcion,String estado) {
+			LocalDate fechaCierre,String descripcion,String estado, String idBici) {
 		
 		this.id=id;
 		this.fechaAlta = fechaAlta;
 		this.fechaCierre = fechaCierre;
 		this.descripcion = descripcion;
 		this.estado = estado;
+		this.idBici = idBici;
 	}
 	
 	
@@ -53,4 +55,15 @@ public class IncidenciaDTO {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
+
+	public String getIdBici() {
+		return idBici;
+	}
+
+
+	public void setIdBici(String idBici) {
+		this.idBici = idBici;
+	}
+	
 }
