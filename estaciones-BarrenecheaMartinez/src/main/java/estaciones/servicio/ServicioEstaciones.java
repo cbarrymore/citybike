@@ -194,7 +194,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		.collect(Collectors.toList());
 	}
 	private BiciDTO transformToDTO(Bici bici) {
-		Incidencia incidencia = bici.getIncidencia();
+		Incidencia incidencia = bici.getUltimaIncidencia();
 		IncidenciaDTO incidenciaDto;
 		if(incidencia != null) {			
 			incidenciaDto = new IncidenciaDTO(incidencia.getId(), incidencia.getFechaAlta(), incidencia.getFechaCierre(), 

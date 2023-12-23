@@ -48,7 +48,11 @@
 				
 				<li class="#{estilo3}" style="#{login.role eq 'gestor' ? '' : 'display:none;'}"><a
 			     	href = "#{request.contextPath}/bici/verIncidenciasAbiertas.xhtml">#{text['ver_incidencias_abiertas']}</a>
-			     </li>        
+			     </li>
+			     <li class="#{estilo4}" style="#{login.role eq 'cliente' ? '' : 'display:none;'}"><a
+			     	href = "#{request.contextPath}/incidencia/crearIncidencia.xhtml">#{text['crear_incidencia']}</a>
+			     
+			     </li>
 			    <li><h:form>
 			            <h:selectOneMenu value="#{activeLocale.languageTag}">
 			                <f:selectItems value="#{activeLocale.localesDisponibles}" var="l"

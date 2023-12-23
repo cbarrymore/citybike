@@ -17,9 +17,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import bicis.dto.BiciDTO;
+import bicis.dto.IncidenciaDTO;
 import estaciones.modelo.Estacion;
 import estaciones.servicio.IServicioEstaciones;
 import estaciones.servicio.ServicioEstaciones;
+import incidencias.servicio.ServicioIncidencias;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 import servicio.FactoriaServicios;
@@ -32,6 +34,7 @@ public class BuscarBiciWeb implements Serializable{
 	private double longitud;
 	
 	private ArrayList<BiciDTO> bicis;
+	private BiciDTO biciSeleccionada;
 	private IServicioEstaciones servicioEstaciones;
 	@Inject
     protected FacesContext facesContext;
@@ -40,12 +43,13 @@ public class BuscarBiciWeb implements Serializable{
 		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 	}
 	
-	
 	public void buscar() {
 		
 		try {
 	        //if (bicis == null ) {
 	        	bicis = (ArrayList<BiciDTO>) servicioEstaciones.bicisDTOCercanas(BigDecimal.valueOf(longitud), BigDecimal.valueOf(latitud));
+	        	bicis.stream().forEach(t -> t.setIncidencia(new IncidenciaDTO("1", LocalDate.now(), LocalDate.now(), "b", "s")));
+	        	bicis.get(0).setIncidencia(null);
 //	        	bicis = new ArrayList<BiciDTO>(List.of(new BiciDTO("3", LocalDate.now(), "a", LocalDate.now(), "b", false, null)));
 	        //}
 //			try {
@@ -60,7 +64,14 @@ public class BuscarBiciWeb implements Serializable{
 		}
 	}
 
-
+	public void gotoCrearIncidencia(String codigo) {
+		try {
+			facesContext.getExternalContext().redirect("/incidencia/crearIncidencia.xhtml?idBici="+codigo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public double getLatitud() {
 		return latitud;
 	}

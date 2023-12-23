@@ -24,7 +24,6 @@ import com.mongodb.client.MongoDatabase;
 
 import estaciones.modelo.Estacion;
 import historicos.modelo.Historico;
-import historicos.modelo.Registro;
 import repositorio.FactoriaRepositorios;
 import repositorio.RepositorioException;
 import repositorio.RepositorioMongoDB;
