@@ -48,7 +48,7 @@ public class BuscarBiciWeb implements Serializable{
 		try {
 	        //if (bicis == null ) {
 	        	bicis = (ArrayList<BiciDTO>) servicioEstaciones.bicisDTOCercanas(BigDecimal.valueOf(longitud), BigDecimal.valueOf(latitud));
-	        	bicis.stream().forEach(t -> t.setIncidencia(new IncidenciaDTO("1", LocalDate.now(), LocalDate.now(), "b", "s")));
+	        	bicis.stream().forEach(t -> t.setIncidencia(new IncidenciaDTO("1", LocalDate.now(), LocalDate.now(), "b", "s", null)));
 	        	bicis.get(0).setIncidencia(null);
 //	        	bicis = new ArrayList<BiciDTO>(List.of(new BiciDTO("3", LocalDate.now(), "a", LocalDate.now(), "b", false, null)));
 	        //}

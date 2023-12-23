@@ -32,6 +32,9 @@ public class Incidencia {
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
 	
+	@Column(name = "id_bici")
+	private String idBici;
+	
 	public Incidencia() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,6 +44,7 @@ public class Incidencia {
 		this.descripcion= descripcion;
 		this.estado = Estado.PENDIENTE;
 		this.id = UUID.randomUUID().toString() + idBici;
+		this.idBici = idBici;
 	}
 	
 	
@@ -79,6 +83,14 @@ public class Incidencia {
 		this.fechaCierre = fechaCierre;
 	}
 	
+	public String getIdBici() {
+		return idBici;
+	}
+
+	public void setIdBici(String idBici) {
+		this.idBici = idBici;
+	}
+
 	public boolean isAbierta()
 	{
 		return this.estado.abierta();

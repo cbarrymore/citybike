@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import incidencias.servicio.ServicioIncidencias;
+import repositorio.EntidadNoEncontrada;
+import repositorio.RepositorioException;
 import servicio.FactoriaServicios;
 
 @Named 
@@ -18,6 +20,7 @@ public class CrearIncidenciaWeb implements Serializable{
 	private ServicioIncidencias servicioIncidencias;
 	private String idBici;
 	private String descripcion;
+	private boolean creada;
 	@Inject
     protected FacesContext facesContext;
 	
@@ -32,7 +35,13 @@ public class CrearIncidenciaWeb implements Serializable{
 //    }
 	
 	public void crear() {
-		
+		try {
+			servicioIncidencias.crearIncidencia(idBici, descripcion);
+			creada = true;
+		} catch (RepositorioException | EntidadNoEncontrada e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	
+		}
 	}
 
 	public String getIdBici() {

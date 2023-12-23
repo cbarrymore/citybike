@@ -2,7 +2,6 @@ package citybike.web.filtroAcceso;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.persistence.Enumerated;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -25,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(urlPatterns = "/*",initParams = {
-		@WebInitParam(name = "paginasPorRol",value = "gestor=pagina1,pagina2;cliente=/bici/buscarBicis.xhtml,/incidencia/crearIncidencia.xhtml")})
+@WebInitParam(name = "paginasPorRol",value = "gestor=/bici/verIncidencias.xhtml;cliente=/bici/buscarBicis.xhtml,/incidencia/crearIncidencia.xhtml")})
 public class FiltroAcceso implements Filter {
 
     private static Map<String, List<String>> paginasPorRol;
@@ -52,10 +50,8 @@ public class FiltroAcceso implements Filter {
 
         HttpSession session = httpRequest.getSession(false);
         String requestURI = httpRequest.getRequestURI();
-        boolean equals = requestURI.equals("/index.xhtml");
         if (session != null && !requestURI.equals("/index.xhtml") && !requestURI.equals("/accesoNoAutorizado.xhtml")) {
             String role = (String) session.getAttribute("role");
-            Enumeration<String> a = session.getAttributeNames();
             List<String> paginasPermitidas = paginasPorRol.getOrDefault(role, Arrays.asList("/accesoNoAutorizado.xhtml"));
 
             if (paginasPermitidas.contains(requestURI) || requestURI.startsWith(httpRequest.getContextPath() + "/javax.faces.resource/")) {
