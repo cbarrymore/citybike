@@ -31,7 +31,7 @@
         <init-param>
             <param-name>paginasPorRol</param-name>
             <param-value>
-                gestor=pagina1,pagina2;cliente=/bici/buscarBicis.xhtml
+                gestor=pagina1,pagina2;cliente=/bici/buscarBicis.xhtml,/incidencia/crearIncidencia.xhtml
             </param-value>
         </init-param>
     </filter>
