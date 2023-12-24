@@ -76,7 +76,7 @@ implements FiltroBusquedaEstaciones  {
 		         );
 		
 		Bson filter = Filters.nearSphere("coordenadas", coordenadas, null, null);
-        FindIterable<Estacion> resultados = coleccion.find(filter).limit(3);
+        FindIterable<Estacion> resultados = coleccion.find(filter).limit(10);
         Set<Estacion> estacionesProximas = new HashSet<Estacion>();
         resultados.into(estacionesProximas);
         return estacionesProximas;

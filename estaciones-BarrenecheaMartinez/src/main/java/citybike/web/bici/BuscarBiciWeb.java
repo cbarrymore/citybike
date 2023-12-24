@@ -36,11 +36,16 @@ public class BuscarBiciWeb implements Serializable{
 	private ArrayList<BiciDTO> bicis;
 	private BiciDTO biciSeleccionada;
 	private IServicioEstaciones servicioEstaciones;
+	private ServicioIncidencias servicioIncidencias;
+
+	
+	
 	@Inject
     protected FacesContext facesContext;
 
 	public BuscarBiciWeb() {
 		servicioEstaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+		servicioIncidencias = FactoriaServicios.getServicio(ServicioIncidencias.class);
 	}
 	
 	public void buscar() {
@@ -48,8 +53,14 @@ public class BuscarBiciWeb implements Serializable{
 		try {
 	        //if (bicis == null ) {
 	        	bicis = (ArrayList<BiciDTO>) servicioEstaciones.bicisDTOCercanas(BigDecimal.valueOf(longitud), BigDecimal.valueOf(latitud));
-	        	bicis.stream().forEach(t -> t.setIncidencia(new IncidenciaDTO("1", LocalDate.now(), LocalDate.now(), "b", "s", null)));
-	        	bicis.get(0).setIncidencia(null);
+	        	bicis.forEach(b -> {
+					try {
+						servicioIncidencias.crearIncidencia(b.getCodigo(),"La bici "+b.getCodigo()+" está rota");
+					} catch (RepositorioException | EntidadNoEncontrada e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				});
 //	        	bicis = new ArrayList<BiciDTO>(List.of(new BiciDTO("3", LocalDate.now(), "a", LocalDate.now(), "b", false, null)));
 	        //}
 //			try {

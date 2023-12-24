@@ -29,7 +29,6 @@
 				<!-- Aquí defines cómo se mostrarán los objetos en la tabla -->
 				
 				<p:column style="width:10rem">
-	               <p:rowToggler rendered="#{bici.incidencia != null}"/>
 	               <p:commandButton rendered="#{bici.incidencia == null}" value="Crear incidencia"
                                  icon="pi pi-plus-circle" title="View" action="#{buscarBiciWeb.gotoCrearIncidencia(bici.codigo)}">
                 	</p:commandButton>
@@ -70,44 +69,6 @@
                     </f:facet>
 					#{bici.disponible ? text['si'] : text['no']}
 				</p:column>
-				<p:rowExpansion>
-	                <div class="incidencia">
-	                    <p:dataTable rendered="#{bici.incidencia != null}" value="#{bici.incidencia}" var="incidencia" rowKey="#{incidencia.id}">
-	                    	<p:column>
-								<f:facet name="header">
-			                        <h:outputText value="#{text['bici_codigo']}" />
-			                    </f:facet>
-								#{incidencia.id}
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-			                        <h:outputText value="#{text['bici_fecha_alta']}" />
-			                    </f:facet>
-								#{incidencia.fechaAlta}
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-			                        <h:outputText value="#{text['bici_modelo']}" />
-			                    </f:facet>
-								#{incidencia.estado}
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-			                        <h:outputText value="#{text['bici_fecha_baja']}" />
-			                    </f:facet>
-								#{incidencia.fechaCierre}
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-			                        <h:outputText value="#{text['bici_motivo_baja']}" />
-			                    </f:facet>
-								#{incidencia.descripcion}
-							</p:column>
-
-	                    </p:dataTable>
-	                  
-	                </div>
-	            </p:rowExpansion>
 				<!-- Puedes agregar más columnas según los atributos de tus objetos -->
 			</p:dataTable>
 		</h:form>
