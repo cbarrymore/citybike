@@ -1,5 +1,6 @@
 package citybike.web.bici;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -48,4 +49,15 @@ public class VerIncidenciaWeb implements Serializable {
 	{
 		this.incidencias = incidencias;
 	}
+	
+	public void goToGestionarIncidencia(String idBici)
+	{
+		try {
+			facesContext.getExternalContext().redirect("/incidencia/gestionarIncidencia.xhtml?idBici="+idBici);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

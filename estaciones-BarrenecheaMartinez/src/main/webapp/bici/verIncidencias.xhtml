@@ -35,7 +35,7 @@
             </p:column>
            
            <p:column style="width:3rem;text-align: center">
-                <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()"
+                <p:commandButton action="verIncidenciaWeb.goToGestionarIncidencia(incidencia.idBici)"
                                  icon="pi pi-search" title="View">
                     <f:setPropertyActionListener value="#{product}"
                                                  target="#{dtSelectionView.selectedProduct}"/>
