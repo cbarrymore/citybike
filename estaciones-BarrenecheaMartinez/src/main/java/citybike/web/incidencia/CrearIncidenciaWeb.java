@@ -37,11 +37,12 @@ public class CrearIncidenciaWeb implements Serializable{
 	public void crear() {
 		try {
 			servicioIncidencias.crearIncidencia(idBici, descripcion);
-			creada = true;
+			setCreada(true);
 		} catch (RepositorioException | EntidadNoEncontrada e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();	
 		}
+		setCreada(true);
 	}
 
 	public String getIdBici() {
@@ -58,5 +59,13 @@ public class CrearIncidenciaWeb implements Serializable{
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public boolean isCreada() {
+		return creada;
+	}
+
+	public void setCreada(boolean creada) {
+		this.creada = creada;
 	}
 }
