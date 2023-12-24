@@ -203,4 +203,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		else incidenciaDto = null;
 		return new BiciDTO(bici.getCodigo(), bici.getFechaAlta(), bici.getModelo(), bici.getFechaBaja(), bici.getMotivoBaja(), bici.isDisponible(),incidenciaDto);
 	}
+
+	@Override
+	public void recuperarBici(String idBIci) throws RepositorioException, EntidadNoEncontrada {
+		repoBicis.getById(idBIci);
+	}
 }

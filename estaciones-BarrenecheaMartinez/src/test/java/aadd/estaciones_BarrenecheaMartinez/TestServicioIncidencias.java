@@ -39,10 +39,10 @@ class TestServicioIncidencias {
 	@BeforeAll
 	static void setUp() throws RepositorioException, EntidadNoEncontrada {
 		String biciId1,biciId2,biciId3;
-		estacion = servicioEstaciones.altaEstacion("Estacion1", 10, 30008, new BigDecimal(70),new BigDecimal(70));
-		biciId1=servicioEstaciones.altaBici("Bici1", estacion);
-		biciId2=servicioEstaciones.altaBici("Bici2", estacion);
-		biciId3=servicioEstaciones.altaBici("Bici3", estacion);
+		estacion = servicioEstaciones.altaEstacion("Estacion2", 10, 30008, new BigDecimal(70),new BigDecimal(70));
+		biciId1=servicioEstaciones.altaBici("Bici1.1", estacion);
+		biciId2=servicioEstaciones.altaBici("Bici2.1", estacion);
+		biciId3=servicioEstaciones.altaBici("Bici3.1", estacion);
 		bici1 = repoBicis.getById(biciId1);
 		bici2 = repoBicis.getById(biciId2);
 		bici3 = repoBicis.getById(biciId3);

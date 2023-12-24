@@ -21,10 +21,10 @@ public class ValidadorIdBici implements Validator {
 	@Override
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		try {
-			servicioEstaciones.recuperarBici(value);
+			servicioEstaciones.recuperarBici((String)value);
 		}
 		catch(Exception e) {
-			FacesMessage msg= new FacesMessage("La bici con código" + value+" no existe");
+			FacesMessage msg= new FacesMessage("La bici con código " + value+" no existe");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(msg);
 		}

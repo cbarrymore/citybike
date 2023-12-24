@@ -36,5 +36,7 @@ public interface IServicioEstaciones {
 	public List<BiciDTO> bicisDTOCercanas(BigDecimal longitud, BigDecimal latitud) throws RepositorioException, EntidadNoEncontrada;
 	
 	public List<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException;
+
+	public void recuperarBici(String idBIci) throws RepositorioException, EntidadNoEncontrada;
 	
 }
