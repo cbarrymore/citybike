@@ -138,5 +138,13 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		return new IncidenciaDTO(incidencia.getId(), incidencia.getFechaAlta(), incidencia.getFechaCierre(), 
 				incidencia.getDescripcion(), incidencia.getEstado().toString(), incidencia.getIdBici());
 	}
+
+	@Override
+	public IncidenciaDTO recuperarIncidenciaAbiertaDTO(String idBici) throws RepositorioException, EntidadNoEncontrada {
+		Incidencia i = repoBici.getById(idBici).getUltimaIncidencia();
+		if(i == null || !i.isAbierta())
+			throw new IllegalStateException("No tiene niguna incidencia abierta");
+		return transformToDTO(i);
+	}
 	
 }

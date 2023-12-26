@@ -1,6 +1,7 @@
 package bicis.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import bicis.modelo.Incidencia;
 
@@ -14,17 +15,17 @@ public class BiciDTO {
 	
 	private boolean disponible;
 	
-	private IncidenciaDTO incidencia;
+	private List<IncidenciaDTO> incidencias;
 	
 	public BiciDTO(String codigo, LocalDate fechaAlta, String modelo, 
-			LocalDate fechaBaja,String motivoBaja, boolean disponible,IncidenciaDTO incidencia) {
+			LocalDate fechaBaja,String motivoBaja, boolean disponible,List<IncidenciaDTO> incidencias) {
 		this.codigo=codigo;
 		this.fechaAlta=fechaAlta;
 		this.modelo = modelo;
 		this.fechaBaja = fechaBaja;
 		this.motivoBaja = motivoBaja;
 		this.disponible = disponible;
-		this.incidencia = incidencia;
+		this.incidencias = incidencias;
 	}
 	
 	
@@ -76,11 +77,18 @@ public class BiciDTO {
 		this.disponible = disponible;
 	}
 
-	public IncidenciaDTO getIncidencia() {
-		return incidencia;
+	public List<IncidenciaDTO> getIncidencias() {
+		return incidencias;
 	}
 
-	public void setIncidencia(IncidenciaDTO incidencia) {
-		this.incidencia = incidencia;
+	public void setIncidencias(List<IncidenciaDTO> incidencias) {
+		this.incidencias = incidencias;
+	}
+	
+	public IncidenciaDTO getUltimaIncidencia()
+	{
+		if(incidencias.size()==0)
+			return null;
+		return incidencias.get(0);
 	}
 }

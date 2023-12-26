@@ -15,4 +15,5 @@ public interface ServicioIncidencias {
 	public void resolverIncidencia(String idBici,String motivo,boolean reparada) throws RepositorioException, EntidadNoEncontrada;	
 	public List<Incidencia> recuperarIncidenciasAbiertas();
 	public List<IncidenciaDTO> recuperarIncidenciasAbiertasDTO();
+	IncidenciaDTO recuperarIncidenciaAbiertaDTO(String idBici) throws RepositorioException, EntidadNoEncontrada;
 }

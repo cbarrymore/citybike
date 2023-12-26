@@ -1,0 +1,57 @@
+<ui:composition template="/WEB-INF/template/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+        BuscarBici
+    </ui:define>
+
+    <ui:param name="estilo4" value="current" />
+
+    <ui:define name="content">
+    <f:metadata>
+                <f:viewParam name="idBici" value="#{gestionarIncidenciaWeb.idBici}" />
+            </f:metadata>
+         <h:form rendered = "#{not gestionarIncidenciaWeb.isAsignada()}">
+         <p:outputLabel for="@next">Motivo de cancelación</p:outputLabel>
+        <p:inputTextarea id="motivo" required="true" rows="5" cols="30" counter="display" maxlength="250"
+                            value="#{gestionarIncidenciaWeb.motivo}"
+                            counterTemplate="{0} characters remaining." autoResize="true"
+                            requiredMessage="#{text['descripción_requerida']}"
+                            validatorMessage="#{text['descripción_no_vacia']}">
+                <f:validateRegex pattern="^(?!\s*$).+" />
+            </p:inputTextarea>
+            <h:outputText id="display" class="block" />
+            <h:message for="motivo" style="color:red" />
+        <p:commandButton value="Cerrar" action="#{gestionarIncidenciaWeb.cerrarIncidencia}" styleClass="mr-2"/>
+        <p:outputLabel for="@next">Nombre de operario</p:outputLabel>
+        <p:inputText id="nombre" required="true" rows="5" cols="30" counter="display2" maxlength="50"
+                            value="#{gestionarIncidenciaWeb.motivo}"
+                            counterTemplate="{0} characters remaining." autoResize="true"
+                            requiredMessage="#{text['descripción_requerida']}"
+                            validatorMessage="#{text['descripción_no_vacia']}">
+                <f:validateRegex pattern="^(?!\s*$).+" />
+            </p:inputText>
+            <h:outputText id="display2" class="block" />
+            <h:message for="nombre" style="color:red" />
+        <p:commandButton value="Asignar" action="#{gestionarIncidenciaWeb.verAsignarIncidencia}" styleClass="mr-2"/>
+    </h:form>
+	 <h:form rendered= "#{gestionarIncidenciaWeb.isAsignada()}">
+         <p:outputLabel for="@next">Descripción</p:outputLabel>
+        <p:inputTextarea id="descripcion" required="true" rows="5" cols="30" counter="display3" maxlength="250"
+                            value="#{gestionarIncidenciaWeb.motivo}"
+                            counterTemplate="{0} characters remaining." autoResize="true"
+                            requiredMessage="#{text['descripción_requerida']}"
+                            validatorMessage="#{text['descripción_no_vacia']}">
+                <f:validateRegex pattern="^(?!\s*$).+" />
+            </p:inputTextarea>
+            <h:outputText id="display3" class="block" />
+            <h:message for="descripcion" style="color:red" />
+        <p:commandButton value="Marcar como arreglada" action="#{gestionarIncidenciaWeb.marcarArregladaIncidencia}" styleClass="mr-2"/>
+        <p:commandButton value="Dar de baja" action="#{gestionarIncidenciaWeb.darBajaIncidencia}" styleClass="mr-2"/>
+    </h:form>
+    </ui:define>
+</ui:composition>

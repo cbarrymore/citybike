@@ -22,23 +22,21 @@
                 <h:outputText value="#{incidencia.descripcion}" />
             </p:column>
 
-            <p:column headerText="text[estado]">
+            <p:column headerText="#{text['estado']}">
                 <h:outputText value="#{incidencia.estado}" />
             </p:column>
 
-            <p:column headerText="text[fecha_alta]">
+            <p:column headerText="#{text['fecha_alta']}">
                 <h:outputText value="#{incidencia.fechaAlta}" />
             </p:column>
 			
-			<p:column headerText="text[id_bici]">
+			<p:column headerText="#{text['id_bici']}">
                 <h:outputText value="#{incidencia.idBici}" />
             </p:column>
            
            <p:column style="width:3rem;text-align: center">
-                <p:commandButton action="verIncidenciaWeb.goToGestionarIncidencia(incidencia.idBici)"
+                <p:commandButton action="#{verIncidenciaWeb.goToGestionarIncidencia(incidencia.idBici)}"
                                  icon="pi pi-search" title="View">
-                    <f:setPropertyActionListener value="#{product}"
-                                                 target="#{dtSelectionView.selectedProduct}"/>
                 </p:commandButton>
             </p:column>
            

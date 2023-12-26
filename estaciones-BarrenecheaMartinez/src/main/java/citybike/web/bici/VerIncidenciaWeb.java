@@ -54,6 +54,7 @@ public class VerIncidenciaWeb implements Serializable {
 	{
 		try {
 			facesContext.getExternalContext().redirect("/incidencia/gestionarIncidencia.xhtml?idBici="+idBici);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

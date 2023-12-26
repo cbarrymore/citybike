@@ -23,7 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(urlPatterns = "/*",initParams = {
-@WebInitParam(name = "paginasPorRol",value = "gestor=/bici/verIncidencias.xhtml;cliente=/bici/buscarBicis.xhtml,/incidencia/crearIncidencia.xhtml")})
+@WebInitParam(name = "paginasPorRol",value = "gestor=/bici/verIncidenciasAbiertas.xhtml,/incidencia/gestionarIncidencia.xhtml;"
+		+ "cliente=/bici/buscarBicis.xhtml,/incidencia/crearIncidencia.xhtml")})
 public class FiltroAcceso implements Filter {
 
     private static Map<String, List<String>> paginasPorRol;

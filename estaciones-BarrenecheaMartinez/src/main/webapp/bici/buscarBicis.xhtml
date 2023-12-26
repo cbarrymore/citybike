@@ -12,7 +12,7 @@
     <ui:param name="estilo2" value="current" />
     
 	<ui:define name="content">
-		<h:form>
+		<h:form>		
 			<p:outputLabel for="inputLongitud" value="#{text['longitud']}" />
 			<p:inputNumber id="inputLongitud" value="#{buscarBiciWeb.longitud}" required="true" decimalPlaces="6" minValue="-180" maxValue="180"/>
 			<h:message for="inputLongitud" style="color:red" />
