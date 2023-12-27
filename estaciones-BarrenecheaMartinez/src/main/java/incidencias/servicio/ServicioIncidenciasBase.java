@@ -76,7 +76,6 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		incidencia.setEstado(Estado.CANCELADO);
 		incidencia.setFechaCierre(LocalDate.now());
 		bici.setDisponible(true);
-		bici.addIncidencia(incidencia);
 		repoBici.update(bici);
 	}
 
@@ -99,9 +98,7 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		incidencia.setEstado(Estado.ASIGNADA);
 		incidencia.setFechaCierre(LocalDate.now());
 		servicioEstaciones.retirarBici(idBici);
-		bici.addIncidencia(incidencia);
 		repoBici.update(bici);
-		bici.addIncidencia(incidencia);
 	}
 
 	@Override
@@ -122,10 +119,8 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		incidencia.setEstado(Estado.RESUELTA);
 		incidencia.setFechaCierre(LocalDate.now());
 		incidencia.setDescripcion(motivo);
-		bici.addIncidencia(incidencia);
 		if(reparada) {
 			repoBici.update(bici);
-			bici.addIncidencia(incidencia);
 			servicioEstaciones.estacionarBici(idBici);
 		}
 		else

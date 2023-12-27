@@ -29,7 +29,7 @@
 				<!-- Aquí defines cómo se mostrarán los objetos en la tabla -->
 				
 				<p:column style="width:10rem">
-	               <p:commandButton rendered="#{bici.incidencia == null}" value="Crear incidencia"
+	               <p:commandButton rendered="#{bici.ultimaIncidencia == null}" value="Crear incidencia"
                                  icon="pi pi-plus-circle" title="View" action="#{buscarBiciWeb.gotoCrearIncidencia(bici.codigo)}">
                 	</p:commandButton>
 	           </p:column>
