@@ -120,6 +120,7 @@ public class ServicioIncidenciasBase implements ServicioIncidencias {
 		incidencia.setFechaCierre(LocalDate.now());
 		incidencia.setDescripcion(motivo);
 		if(reparada) {
+			bici.setDisponible(true);
 			repoBici.update(bici);
 			servicioEstaciones.estacionarBici(idBici);
 		}
