@@ -51,8 +51,15 @@ public class FiltroAcceso implements Filter {
 
         HttpSession session = httpRequest.getSession(false);
         String requestURI = httpRequest.getRequestURI();
-        if (session != null && !requestURI.equals("/index.xhtml") && !requestURI.equals("/accesoNoAutorizado.xhtml")) {
-            String role = (String) session.getAttribute("role");
+        String role;
+        if(session != null) {
+        	role = (String) session.getAttribute("role");
+        }
+        else {
+        	role = null;
+        }
+        
+        if (!requestURI.equals("/index.xhtml") && !requestURI.equals("/accesoNoAutorizado.xhtml")) {
             List<String> paginasPermitidas = paginasPorRol.getOrDefault(role, Arrays.asList("/accesoNoAutorizado.xhtml"));
 
             if (paginasPermitidas.contains(requestURI) || requestURI.startsWith(httpRequest.getContextPath() + "/javax.faces.resource/")) {

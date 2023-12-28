@@ -180,7 +180,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			idsBicisAparcadas = estacion.getBicisAparcadas();
 			for (String idBici : idsBicisAparcadas) {
 				bici = repoBicis.getById(idBici);
-				if (bici.isDisponible())
+//				if (bici.isDisponible())
 					bicisAparcadas.add(transformToDTO(bici));
 			}
 		}

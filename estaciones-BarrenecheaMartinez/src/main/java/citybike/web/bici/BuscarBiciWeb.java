@@ -51,24 +51,7 @@ public class BuscarBiciWeb implements Serializable{
 	public void buscar() {
 		
 		try {
-	        //if (bicis == null ) {
-	        	bicis = (ArrayList<BiciDTO>) servicioEstaciones.bicisDTOCercanas(BigDecimal.valueOf(longitud), BigDecimal.valueOf(latitud));
-	        	bicis.forEach(b -> {
-					try {
-						servicioIncidencias.crearIncidencia(b.getCodigo(),"La bici "+b.getCodigo()+" está rota");
-					} catch (RepositorioException | EntidadNoEncontrada e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				});
-//	        	bicis = new ArrayList<BiciDTO>(List.of(new BiciDTO("3", LocalDate.now(), "a", LocalDate.now(), "b", false, null)));
-	        //}
-//			try {
-//				facesContext.getExternalContext().redirect("buscarBicis.xhtml");
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+        	bicis = (ArrayList<BiciDTO>) servicioEstaciones.bicisDTOCercanas(BigDecimal.valueOf(longitud), BigDecimal.valueOf(latitud));
 		} catch (RepositorioException | EntidadNoEncontrada e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
