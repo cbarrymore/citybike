@@ -38,6 +38,6 @@
             <h:commandButton value="Crear incidencia" action="#{crearIncidenciaWeb.crear()}" />
         </h:form>
 
-        <h:outputText value="La incidencia ha sido creada con éxito." rendered="#{crearIncidenciaWeb.creada}" />
+        <h:outputText value="#{text['indicencia_creada']}" rendered="#{crearIncidenciaWeb.creada}" />
     </ui:define>
 </ui:composition>

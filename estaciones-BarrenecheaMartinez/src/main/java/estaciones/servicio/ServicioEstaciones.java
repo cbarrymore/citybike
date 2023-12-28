@@ -181,7 +181,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			for (String idBici : idsBicisAparcadas) {
 				bici = repoBicis.getById(idBici);
 //				if (bici.isDisponible())
-					bicisAparcadas.add(transformToDTO(bici));
+					bicisAparcadas.add(transformToDTO(bici,estacion.getId()));
 			}
 		}
 		return bicisAparcadas;
@@ -194,12 +194,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		.collect(Collectors.toList());
 	}
 	
-	private BiciDTO transformToDTO(Bici bici) {
+	private BiciDTO transformToDTO(Bici bici, String idEstacion) {
 		List<IncidenciaDTO> incidenciasDTO = bici.getIncidencias().stream()
 				.map(incidencia -> new IncidenciaDTO(incidencia.getId(), incidencia.getFechaAlta(), incidencia.getFechaCierre(), 
 						incidencia.getDescripcion(), incidencia.getEstado().toString(), incidencia.getIdBici()))
 				.toList();
-		return new BiciDTO(bici.getCodigo(), bici.getFechaAlta(), bici.getModelo(), bici.getFechaBaja(), bici.getMotivoBaja(), bici.isDisponible(),incidenciasDTO);
+		return new BiciDTO(bici.getCodigo(), bici.getFechaAlta(), bici.getModelo(), bici.getFechaBaja(), bici.getMotivoBaja(), bici.isDisponible(),incidenciasDTO,idEstacion);
 	}
 
 	@Override

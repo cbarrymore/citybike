@@ -25,7 +25,7 @@
 		</h:form>
 		
 		<h:form>
-			<p:dataTable value="#{buscarBiciWeb.bicis}" var="bici" rowKey="#{bici.codigo}">
+			<p:dataTable value="#{buscarBiciWeb.bicis}" var="bici" rowKey="#{bici.codigo}" allowUnsorting="true" sortMode="single" stripedRows="true">
 				<!-- Aquí defines cómo se mostrarán los objetos en la tabla -->
 				
 				<p:column style="width:10rem">
@@ -33,11 +33,17 @@
                                  icon="pi pi-plus-circle" title="View" action="#{buscarBiciWeb.gotoCrearIncidencia(bici.codigo)}">
                 	</p:commandButton>
 	           </p:column>
-				<p:column>
+	           <p:column sortBy="#{bici.codigo}">
 					<f:facet name="header">
                         <h:outputText value="#{text['bici_codigo']}" />
                     </f:facet>
 					#{bici.codigo}
+				</p:column>
+	           <p:column style="width:200px;">
+					<f:facet name="header" sortBy="#{bici.estacion}">
+                        <h:outputText value="#{text['bici_estacion']}" />
+                    </f:facet>
+					#{bici.estacion}
 				</p:column>
 				<p:column>
 					<f:facet name="header">
@@ -51,18 +57,18 @@
                     </f:facet>
 					#{bici.modelo}
 				</p:column>
-				<p:column>
-					<f:facet name="header">
-                        <h:outputText value="#{text['bici_fecha_baja']}" />
-                    </f:facet>
-					#{bici.fechaBaja}
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-                        <h:outputText value="#{text['bici_motivo_baja']}" />
-                    </f:facet>
-					#{bici.motivoBaja}
-				</p:column>
+<!-- 				<p:column> -->
+<!-- 					<f:facet name="header" > -->
+<!--                         <h:outputText value="#{text['bici_fecha_baja']}" /> -->
+<!--                     </f:facet> -->
+<!-- 					#{bici.fechaBaja} -->
+<!-- 				</p:column> -->
+<!-- 				<p:column> -->
+<!-- 					<f:facet name="header"> -->
+<!--                         <h:outputText value="#{text['bici_motivo_baja']}" /> -->
+<!--                     </f:facet> -->
+<!-- 					#{bici.motivoBaja} -->
+<!-- 				</p:column> -->
 				<p:column>
 					<f:facet name="header">
                         <h:outputText value="#{text['bici_disponible']}" />
