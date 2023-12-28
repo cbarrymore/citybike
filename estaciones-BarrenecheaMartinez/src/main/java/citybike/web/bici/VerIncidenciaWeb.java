@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -15,7 +16,7 @@ import incidencias.servicio.ServicioIncidencias;
 import servicio.FactoriaServicios;
 
 @Named 
-@ViewScoped
+@RequestScoped
 public class VerIncidenciaWeb implements Serializable {
 
 	/**
