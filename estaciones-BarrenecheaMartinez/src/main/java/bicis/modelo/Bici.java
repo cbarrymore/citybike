@@ -11,18 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.eclipse.jetty.server.Authentication.User;
-
-import com.mysql.cj.x.protobuf.MysqlxCursor.Fetch;
-
 import repositorio.Identificable;
 
 @Entity
