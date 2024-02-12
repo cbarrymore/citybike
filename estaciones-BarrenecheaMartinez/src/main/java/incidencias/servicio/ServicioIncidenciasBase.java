@@ -3,17 +3,12 @@ package incidencias.servicio;
 import java.time.LocalDate;
 import java.util.List;
 
-import bicis.dto.BiciDTO;
 import bicis.dto.IncidenciaDTO;
 import bicis.modelo.Bici;
 import bicis.modelo.Estado;
 import bicis.modelo.Incidencia;
 import bicis.repositorio.FiltroBusquedaBici;
-import estaciones.modelo.Estacion;
 import estaciones.servicio.IServicioEstaciones;
-import estaciones.servicio.ServicioEstaciones;
-import historicos.modelo.Historico;
-import historicos.repositorio.FiltroBusquedaHistorico;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.RepositorioException;
