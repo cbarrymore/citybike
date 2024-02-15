@@ -7,7 +7,12 @@ import java.time.temporal.ChronoUnit;
 public class Alquiler {
 	private String idBici;
 	private LocalDateTime inicio;
-	private LocalDateTime fin;	
+	private LocalDateTime fin;
+	
+	public Alquiler()
+	{
+		
+	}
 	
 	public Alquiler(String idBici, LocalDateTime inicio) {
 		this.idBici=idBici;

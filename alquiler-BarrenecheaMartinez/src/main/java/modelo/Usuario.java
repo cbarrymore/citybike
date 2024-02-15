@@ -10,6 +10,10 @@ public class Usuario {
 	private List<Reserva> reservas;
 	private List<Alquiler> alquileres;
 	
+	public Usuario()
+	{
+		
+	}
 	
 	public Usuario(String id) {
 		this.id = id;

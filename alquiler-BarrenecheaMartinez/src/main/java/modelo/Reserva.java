@@ -7,6 +7,10 @@ public class Reserva {
 	private LocalDateTime creada;
 	private LocalDateTime caducidad;
 	
+	public Reserva()
+	{
+		
+	}
 	
 	public Reserva(String idBici, LocalDateTime creada, LocalDateTime caducidad) {
 		this.idBici = idBici;
