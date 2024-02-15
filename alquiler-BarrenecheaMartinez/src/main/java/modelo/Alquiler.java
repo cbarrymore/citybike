@@ -9,7 +9,11 @@ public class Alquiler {
 	private LocalDateTime inicio;
 	private LocalDateTime fin;	
 	
-	
+	public Alquiler(String idBici, LocalDateTime inicio) {
+		this.idBici=idBici;
+		this.inicio=inicio;
+		this.fin =null;
+	}
 	
 	public int tiempo() {
 		LocalDateTime tiempoFin;
