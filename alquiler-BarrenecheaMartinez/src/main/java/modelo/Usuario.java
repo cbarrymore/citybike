@@ -2,12 +2,20 @@ package modelo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
 	private String id;
 	private List<Reserva> reservas;
 	private List<Alquiler> alquileres;
+	
+	
+	public Usuario(String id) {
+		this.id = id;
+		this.alquileres = new ArrayList<Alquiler>();
+		this.reservas = new ArrayList<Reserva>();
+	}
 	
 	public int reservasCaducadas() {
 		return (int)reservas.stream().filter(r -> r.caducada()).count();
@@ -49,6 +57,30 @@ public class Usuario {
 		return reservas.stream()
 				.filter(r -> r.caducada())
 				.count() == 3;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+
+	public List<Alquiler> getAlquileres() {
+		return alquileres;
+	}
+
+	public void setAlquileres(List<Alquiler> alquileres) {
+		this.alquileres = alquileres;
 	}
 	
 	

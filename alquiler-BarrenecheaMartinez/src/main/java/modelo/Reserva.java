@@ -8,6 +8,11 @@ public class Reserva {
 	private LocalDateTime caducidad;
 	
 	
+	public Reserva(String idBici, LocalDateTime creada, LocalDateTime caducidad) {
+		this.idBici = idBici;
+		this.creada = creada;
+		this.caducidad = caducidad;
+	}
 	
 	public boolean caducada() {
 		return LocalDateTime.now().isAfter(caducidad);
