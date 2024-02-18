@@ -12,7 +12,7 @@ import persistencia.UsuarioEntidad;
 public class RepositorioUsuario implements RepositorioString<Usuario>
 {
 
-	Repositorio<UsuarioEntidad, String> repoEntidad = new RepositorioUsuarioEntidadJPA();//Esto se cambia
+	Repositorio<UsuarioEntidad, String> repoEntidad = FactoriaRepositorios.getRepositorio(UsuarioEntidad.class);
 	@Override
 	public String add(Usuario entity) throws RepositorioException
 	{
