@@ -12,7 +12,7 @@ public class EntityManagerHelper {
 
     static {    
 
-        entityManagerFactory = Persistence.createEntityManagerFactory("journals");
+        entityManagerFactory = Persistence.createEntityManagerFactory("alquiler");
 
         entityManagerHolder = new ThreadLocal<EntityManager>();
 
