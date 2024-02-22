@@ -8,15 +8,17 @@ import javax.persistence.Query;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
+import persistencia.Entidad;
 import utils.EntityManagerHelper;
 
-public abstract class RepositorioJPA<T extends Identificable> implements RepositorioString<T> {
+public abstract class RepositorioJPA<T, K extends Entidad<T>> implements RepositorioString<T> {
 	
-	public abstract Class<T> getClase();
+	public abstract Class<K> getClase();
 	public abstract String getNombre();
 	@Override
-	public String add(T entity) throws RepositorioException {
+	public String add(T object) throws RepositorioException {
 		EntityManager em = EntityManagerHelper.getEntityManager();
+		Entidad<T> entity = getEntidad(object);
 		try {
 			em.getTransaction().begin();
 			em.persist(entity);
@@ -33,12 +35,13 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 	}
 
 	@Override
-	public void update(T entity) throws RepositorioException, EntidadNoEncontrada {
+	public void update(T object) throws RepositorioException, EntidadNoEncontrada {
 		EntityManager em = EntityManagerHelper.getEntityManager();
+		Entidad<T> entity = getEntidad(object);
 		try {
 			em.getTransaction().begin();
 			
-			T instance = em.find(getClase(), entity.getId());
+			Entidad<T> instance = em.find(getClase(), entity.getId());
 			if(instance == null) {
 				throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
 			}
@@ -55,11 +58,12 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 	}
 
 	@Override
-	public void delete(T entity) throws RepositorioException, EntidadNoEncontrada {
+	public void delete(T object) throws RepositorioException, EntidadNoEncontrada {
 		EntityManager em = EntityManagerHelper.getEntityManager();
+		Entidad<T> entity = getEntidad(object);
 		try {
 			em.getTransaction().begin();
-			T instance = em.find(getClase(), entity.getId());
+			Entidad<T> instance = em.find(getClase(), entity.getId());
 			if(instance == null) {
 				throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
 			}
@@ -79,7 +83,7 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 	public T getById(String id) throws EntidadNoEncontrada, RepositorioException {
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {			
-			T instance = em.find(getClase(), id);
+			Entidad<T> instance = em.find(getClase(), id);
 
 			if (instance != null) {
 				em.refresh(instance);
@@ -87,7 +91,7 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 				throw new EntidadNoEncontrada(id + " no existe en el repositorio");
 			}
 
-			return instance;
+			return instance.getObject();
 
 		} catch (RuntimeException re) {
 			throw new RepositorioException("Error al recuperar la entidad con id "+id,re);
@@ -104,7 +108,8 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
-			return query.getResultList();
+			List<Entidad<T>> lista = query.getResultList();
+			return lista.stream().map(e -> e.getObject()).toList();
 
 		} catch (RuntimeException re) {
 
@@ -132,5 +137,6 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 		}
 	}
 
+	protected abstract Entidad<T> getEntidad(T object);
 }
 
