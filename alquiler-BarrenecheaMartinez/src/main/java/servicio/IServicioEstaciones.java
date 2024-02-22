@@ -11,6 +11,6 @@ import repositorio.RepositorioException;
 
 public interface IServicioEstaciones {
 	
-	public boolean hayHueco(String idEstacion) throws RepositorioException, EntidadNoEncontrada;
+	public boolean huecoDisponible(String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 	public void estacionarBici(String idBici, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 }

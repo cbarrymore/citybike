@@ -17,7 +17,7 @@ public class ServicioAlquileres implements IServicioAlquileres{
 
 	private Repositorio<Usuario, String> repositorioUsuario = FactoriaRepositorios.getRepositorio(Usuario.class);
 	IServicioTiempo tiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
-	
+	IServicioEstaciones estaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 	@Override
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
@@ -57,16 +57,21 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	}
 
 	@Override
-	public void historialUsuario(String idUsuario) {
-		// TODO Auto-generated method stub
+	public Usuario historialUsuario(String idUsuario) throws RepositorioException {
+		Usuario u = procesarUsuario(idUsuario);
+		return u;
 		
 	}
 
 	@Override
-	public void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException {
+	public void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 		Alquiler a = u.alquilerActivo();
+		if(estaciones.huecoDisponible(idEstacion)) {
+			estaciones.estacionarBici(idUsuario, idEstacion);
+			a.setFin(tiempo.now());
+		}
 	}
 
 	@Override
