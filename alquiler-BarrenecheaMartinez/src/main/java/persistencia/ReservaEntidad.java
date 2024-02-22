@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import modelo.Alquiler;
 import modelo.Reserva;
 
 @Entity
@@ -20,12 +19,10 @@ public class ReservaEntidad
 	@Column(name = "id_bici")
 	private String idBici;
 	
-	@Column(name = "fecha_creada")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_creada", columnDefinition = "TIMESTAMP")
 	private LocalDateTime creada;
 	
-	@Column(name = "fecha_caducidad")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_caducidad", columnDefinition = "TIMESTAMP")
 	private LocalDateTime caducidad;
 	
 	public ReservaEntidad()

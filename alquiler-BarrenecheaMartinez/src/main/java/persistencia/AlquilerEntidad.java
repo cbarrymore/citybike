@@ -3,12 +3,14 @@ package persistencia;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import modelo.Alquiler;
 
+@Entity
 public class AlquilerEntidad {
 	@Id
 	private String id;
@@ -16,12 +18,10 @@ public class AlquilerEntidad {
 	@Column(name = "id_bici")
 	private String idBici;
 	
-	@Column(name = "fecha_inicio")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_inicio", columnDefinition = "TIMESTAMP")
 	private LocalDateTime inicio;
 	
-	@Column(name = "fecha_fin")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_fin", columnDefinition = "TIMESTAMP")
 	private LocalDateTime fin;
 	
 	public AlquilerEntidad()
