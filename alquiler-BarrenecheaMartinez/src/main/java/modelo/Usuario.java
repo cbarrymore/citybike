@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario {
+import repositorio.Identificable;
+
+public class Usuario implements Identificable {
 	private String id;
 	private List<Reserva> reservas;
 	private List<Alquiler> alquileres;

@@ -11,7 +11,7 @@ import javax.persistence.TemporalType;
 import modelo.Reserva;
 
 @Entity
-public class ReservaEntidad
+public class ReservaEntidad implements Entidad<Reserva>
 {
 	@Id
 	private String id;
@@ -30,6 +30,13 @@ public class ReservaEntidad
 		
 	}
 
+	public ReservaEntidad(Reserva reserva)
+	{
+		this.idBici = reserva.getIdBici();
+		this.creada = reserva.getCreada();
+		this.caducidad = reserva.getCaducidad();
+	}
+	
 	public String getId()
 	{
 		return id;

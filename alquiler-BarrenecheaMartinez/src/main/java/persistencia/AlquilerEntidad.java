@@ -10,8 +10,9 @@ import javax.persistence.TemporalType;
 
 import modelo.Alquiler;
 
+
 @Entity
-public class AlquilerEntidad {
+public class AlquilerEntidad implements Entidad<Alquiler>{
 	@Id
 	private String id;
 	
@@ -27,6 +28,13 @@ public class AlquilerEntidad {
 	public AlquilerEntidad()
 	{
 		
+	}
+	
+	public AlquilerEntidad(Alquiler alquiler)
+	{
+		this.idBici = alquiler.getIdBici();
+		this.inicio = alquiler.getInicio();
+		this.fin = alquiler.getFin();
 	}
 
 	public String getId()
