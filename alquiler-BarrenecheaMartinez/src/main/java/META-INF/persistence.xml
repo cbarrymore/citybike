@@ -19,7 +19,7 @@
 				value="CP6Kwn46AFS3Mc" />
 
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://citybikedb.cghoncgzuyes.us-east-1.rds.amazonaws.com:3306/citybike?serverTimezone=CET" />
+				value="jdbc:mysql://citybikedb.cghoncgzuyes.us-east-1.rds.amazonaws.com:3306/alquiler?serverTimezone=CET" />
 
 			<property name="eclipselink.ddl-generation"
 				value="create-or-extend-tables" />

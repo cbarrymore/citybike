@@ -2,7 +2,9 @@ package persistencia;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -12,13 +14,13 @@ import repositorio.Identificable;
 
 
 @Entity
-public class UsuarioEntidad implements Identificable {
+public class UsuarioEntidad implements Entidad<Usuario> {
 
 	@Id
 	private String id;
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<ReservaEntidad> reservas;
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<AlquilerEntidad> alquileres;
 	
 	public UsuarioEntidad()
@@ -26,6 +28,13 @@ public class UsuarioEntidad implements Identificable {
 		
 	}
 
+	public UsuarioEntidad(Usuario usuario)
+	{
+		this.id = usuario.getId();
+		this.reservas = usuario.getReservas().stream().map(r -> new ReservaEntidad(r)).toList();
+		this.alquileres = usuario.getAlquileres().stream().map(a -> new AlquilerEntidad(a)).toList();
+	}
+	
 	public String getId()
 	{
 		return id;
@@ -59,6 +68,9 @@ public class UsuarioEntidad implements Identificable {
 	public Usuario getObject()
 	{
 		Usuario us = new Usuario();
+		us.setId(id);
+		us.setAlquileres(alquileres.stream().map(a -> a.getObject()).toList());
+		us.setReservas(reservas.stream().map(r -> r.getObject()).toList());
 		return us;
 	}
 	

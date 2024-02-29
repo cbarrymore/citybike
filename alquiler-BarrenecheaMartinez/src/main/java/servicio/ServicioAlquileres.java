@@ -22,7 +22,7 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
-		if(u.reservaActiva() != null  &&  u.alquilerActivo()!=null && !u.bloqueado() && !u.superaTiempo()) {
+		if(u.reservaActiva() == null  &&  u.alquilerActivo()==null && !u.bloqueado() && !u.superaTiempo()) {
 			LocalDateTime creada = tiempo.now();
 			Reserva r = new Reserva(idBici,creada,creada.plusMinutes(30));
 			u.getReservas().add(r);
@@ -48,7 +48,7 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	public void alquilar(String idUsuario, String idBici) throws RepositorioException {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
-		if(u.reservaActiva() !=null && u.alquilerActivo() != null && !(u.bloqueado() || u.superaTiempo()) ) {
+		if(u.reservaActiva() !=null && u.alquilerActivo() == null && !(u.bloqueado() || u.superaTiempo()) ) {
 			Alquiler al= new Alquiler(idBici,tiempo.now());
 			u.getAlquileres().add(al);
 		}

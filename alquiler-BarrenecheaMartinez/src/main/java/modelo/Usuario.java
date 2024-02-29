@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import repositorio.Identificable;
 
 @XmlRootElement
-public class Usuario {
+public class Usuario implements Identificable {
 	private String id;
 	private List<Reserva> reservas;
 	private List<Alquiler> alquileres;
@@ -47,14 +48,18 @@ public class Usuario {
 	}
 	
 	public Reserva reservaActiva() {
-		Reserva ultimaReserva = reservas.get(reservas.size());
+		if( reservas.size()== 0)
+			return null;
+		Reserva ultimaReserva = reservas.get(reservas.size()-1);
 		if(ultimaReserva.activa())
 			return ultimaReserva;
 		return null;
 	}
 	
 	public Alquiler alquilerActivo() {
-		Alquiler ultimoAlquiler= alquileres.get(alquileres.size());
+		if(alquileres.size()==0)
+			return null;
+		Alquiler ultimoAlquiler= alquileres.get(alquileres.size()-1);
 		if(ultimoAlquiler.activo())
 			return ultimoAlquiler;
 		return null;
