@@ -3,6 +3,7 @@ package modelo;
 import java.time.LocalDateTime;
 
 public class Reserva {
+	private String id;
 	private String idBici;
 	private LocalDateTime creada;
 	private LocalDateTime caducidad;
@@ -58,5 +59,13 @@ public class Reserva {
 
 	public void setCaducidad(LocalDateTime caducidad) {
 		this.caducidad = caducidad;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

@@ -2,7 +2,9 @@ package persistencia;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -16,9 +18,9 @@ public class UsuarioEntidad implements Entidad<Usuario> {
 
 	@Id
 	private String id;
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<ReservaEntidad> reservas;
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<AlquilerEntidad> alquileres;
 	
 	public UsuarioEntidad()
@@ -66,6 +68,9 @@ public class UsuarioEntidad implements Entidad<Usuario> {
 	public Usuario getObject()
 	{
 		Usuario us = new Usuario();
+		us.setId(id);
+		us.setAlquileres(alquileres.stream().map(a -> a.getObject()).toList());
+		us.setReservas(reservas.stream().map(r -> r.getObject()).toList());
 		return us;
 	}
 	

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,6 +16,7 @@ import modelo.Reserva;
 public class ReservaEntidad implements Entidad<Reserva>
 {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
 	@Column(name = "id_bici")
@@ -80,6 +83,7 @@ public class ReservaEntidad implements Entidad<Reserva>
 	public Reserva getObject()
 	{
 		Reserva res = new Reserva();
+		res.setId(id);
 		res.setIdBici(idBici);
 		res.setCreada(creada);
 		res.setCaducidad(caducidad);

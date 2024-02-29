@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,6 +16,7 @@ import modelo.Alquiler;
 @Entity
 public class AlquilerEntidad implements Entidad<Alquiler>{
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
 	@Column(name = "id_bici")
@@ -80,6 +83,7 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 	public Alquiler getObject()
 	{
 		Alquiler alq = new Alquiler();
+		alq.setId(id);
 		alq.setIdBici(idBici);
 		alq.setInicio(inicio);
 		alq.setFin(fin);

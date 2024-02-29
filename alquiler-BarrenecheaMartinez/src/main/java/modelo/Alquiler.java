@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class Alquiler {
+	private String id;
 	private String idBici;
 	private LocalDateTime inicio;
 	private LocalDateTime fin;
@@ -76,6 +77,14 @@ public class Alquiler {
 
 	public boolean activo() {
 		return fin.equals(null);
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
