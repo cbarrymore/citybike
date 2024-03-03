@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.annotation.Priority;
 import javax.annotation.security.RolesAllowed;
+import javax.crypto.KeyGenerator;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -17,10 +18,13 @@ import javax.ws.rs.ext.Provider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import utils.PropertiesReader;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {
+	private static String SECRET_KEY_FILE = "secret_key.properties";
+	private static String ALGORITHM = "HmacSHA256";
 
 	@Context
 	private ResourceInfo resourceInfo;
@@ -42,7 +46,7 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 		} else {
 			String token = authorization.substring("Bearer ".length()).trim();
 			try {
-				Claims claims = Jwts.parser().setSigningKey("secret").parseClaimsJws(token).getBody();
+				Claims claims = Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token).getBody();
 
 				// comprobar caducidad ...
 
@@ -58,8 +62,24 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 				}
 
 			} catch (Exception e) { // Error de validación
+				e.printStackTrace();
 				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 			}
+		}
+		
+	}
+	private static byte[] getSecretKey() {
+		PropertiesReader reader;
+		try {
+			reader = new PropertiesReader(SECRET_KEY_FILE);
+			String secret_key = reader.getProperty("secret_key");
+			if (secret_key == null) {
+				return KeyGenerator.getInstance(ALGORITHM).generateKey().getEncoded();
+			} else
+				return secret_key.getBytes();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException("La clave secreta no se ha podido obtener");
 		}
 
 	}

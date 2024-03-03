@@ -1,8 +1,10 @@
 package servicio;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +17,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		private String id;
 		private String usuario;
 		private String contraseña;
-		private List<String> roles;
+		private String roles;
 // Métodos get y set
 		public String getUsuario() {
 			return usuario;
@@ -29,10 +31,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		public void setContraseña(String contraseña) {
 			this.contraseña = contraseña;
 		}
-		public List<String> getRoles() {
+		public String getRoles() {
 			return roles;
 		}
-		public void setRoles(List<String> roles) {
+		public void setRoles(String roles) {
 			this.roles = roles;
 		}
 		public String getId() {
@@ -46,32 +48,41 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	
 	private static String USUARIO = "usuario";
 	private static String GESTOR = "gestor";
-	
 	private List<UsuarioAutenticacion> usuarios;
 	public ServicioUsuarios() {
+		this.usuarios = new ArrayList<UsuarioAutenticacion>();
 		UsuarioAutenticacion usuario = new UsuarioAutenticacion();
 		usuario.setUsuario("usuario");
 		usuario.setContraseña("contraseña");
-		usuario.setRoles(Arrays.asList(USUARIO));
+		usuario.setRoles(USUARIO);
 		usuario.setId("1");
 		
 		
 		UsuarioAutenticacion usuarioGestor= new UsuarioAutenticacion();
 		usuarioGestor.setUsuario("usuarioGestor");
 		usuarioGestor.setContraseña("contraseña");
-		usuarioGestor.setRoles(Arrays.asList(USUARIO,GESTOR));
+		usuarioGestor.setRoles( USUARIO + "," +GESTOR);
 		usuarioGestor.setId("2");
+		
+		usuarios.add(usuario);
+		usuarios.add(usuarioGestor);
 	}
 	@Override
 	public Map<String, Object> verificarCredenciales(String usuario, String contraseña) {
+		if(usuarios.isEmpty()) {
+			UsuarioAutenticacion u = new UsuarioAutenticacion();
+			u.setUsuario(usuario);
+			u.setContraseña(contraseña);
+			u.setRoles(USUARIO);
+			usuarios.add(u);
+		}
 		Optional<UsuarioAutenticacion> usuarioOptional= usuarios.stream()
 				.filter(u -> u.getUsuario().equals(usuario))
 				.findFirst();
 		if(usuarioOptional.isPresent()) {
-			Map<String, Object> resultado = Map.of(
-					"sub", usuarioOptional.get().getId(),
-					"roles" , usuarioOptional.get().getRoles()
-			);
+			Map<String, Object> resultado = new HashMap<String, Object>();
+			resultado.put("sub", usuarioOptional.get().getId());
+			resultado.put("roles", usuarioOptional.get().getRoles());
 			return resultado;
 		}
 		return null;

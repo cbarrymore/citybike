@@ -2,10 +2,16 @@ package modelo;
 
 import java.time.LocalDateTime;
 
+import com.google.gson.annotations.JsonAdapter;
+
+import utils.LocalDateTimeAdapter;
+
 public class Reserva {
 	private String id;
 	private String idBici;
+	@JsonAdapter(value = LocalDateTimeAdapter.class)
 	private LocalDateTime creada;
+	@JsonAdapter(value = LocalDateTimeAdapter.class)
 	private LocalDateTime caducidad;
 	
 	public Reserva()
