@@ -48,7 +48,7 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	public void alquilar(String idUsuario, String idBici) throws RepositorioException {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
-		if(u.reservaActiva() !=null && u.alquilerActivo() == null && !(u.bloqueado() || u.superaTiempo()) ) {
+		if(u.reservaActiva() ==null && u.alquilerActivo() == null && !(u.bloqueado() || u.superaTiempo()) ) {
 			Alquiler al= new Alquiler(idBici,tiempo.now());
 			u.getAlquileres().add(al);
 		}
@@ -68,6 +68,8 @@ public class ServicioAlquileres implements IServicioAlquileres{
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 		Alquiler a = u.alquilerActivo();
+		if(a == null)
+			throw new IllegalStateException("No hay alquiler activo");
 		if(estaciones.huecoDisponible(idEstacion)) {
 			estaciones.estacionarBici(idUsuario, idEstacion);
 			a.setFin(tiempo.now());

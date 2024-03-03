@@ -14,7 +14,8 @@ public class Usuario implements Identificable {
 	
 	public Usuario()
 	{
-		
+		this.alquileres = new ArrayList<Alquiler>();
+		this.reservas = new ArrayList<Reserva>();
 	}
 	
 	public Usuario(String id) {
