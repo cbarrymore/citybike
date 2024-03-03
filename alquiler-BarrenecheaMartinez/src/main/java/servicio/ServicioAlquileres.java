@@ -78,7 +78,7 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	public void liberarBloqueo(String idUsuario) throws RepositorioException {
 		Usuario u = procesarUsuario(idUsuario);
 		List<Reserva> caducadas= u.getReservas().stream().filter(r -> r.caducada()).collect(Collectors.toList());
-		caducadas.forEach(r -> u.getReservas().remove(r));
+		u.getReservas().removeAll(caducadas);
 	}
 	private Usuario procesarUsuario(String idUsuario) throws RepositorioException {
 		Usuario u;

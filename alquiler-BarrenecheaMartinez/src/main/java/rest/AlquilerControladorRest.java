@@ -1,5 +1,6 @@
 package rest;
 
+import javax.annotation.security.RolesAllowed;
 import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
@@ -44,6 +45,7 @@ public class AlquilerControladorRest {
 	 * \ --header 'Content-Type: application/x-www-form-urlencoded' \
 	 * --data-urlencode 'idBici=1'
 	 */
+	@RolesAllowed({"usuario","gestor"})
 	public Response createReserva(@PathParam("idUsuario") String idUsuario, @FormParam("idBici") String idBici)
 			throws Exception {
 		servicio.reservar(idUsuario, idBici);
@@ -58,6 +60,7 @@ public class AlquilerControladorRest {
 	 * --header 'Authorization: Bearer
 	 * eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZXMiOiJ1c3VhcmlvIiwiZXhwIjoxNzA5OTg0NDAxfQ.B_2X8OhrpO3VFFipOHBEmL9YZv_Sm13voEvITZ87Oqc'
 	 */
+	@RolesAllowed({"usuario","gestor"})
 	public Response updateReserva(@PathParam("idUsuario") String idUsuario) throws Exception {
 		servicio.confirmarReserva(idUsuario);
 		return Response.status(Response.Status.NO_CONTENT).build();
@@ -73,6 +76,7 @@ public class AlquilerControladorRest {
 	 * \ --header 'Content-Type: application/x-www-form-urlencoded' \
 	 * --data-urlencode 'idBici=1'
 	 */
+	@RolesAllowed({"usuario","gestor"})
 	public Response createAlquiler(@PathParam("idUsuario") String idUsuario, @FormParam("idBici") String idBici)
 			throws Exception {
 		servicio.alquilar(idUsuario, idBici);
@@ -90,6 +94,7 @@ public class AlquilerControladorRest {
 	 * eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZXMiOiJ1c3VhcmlvIiwiZXhwIjoxNzA5OTg0NDAxfQ.B_2X8OhrpO3VFFipOHBEmL9YZv_Sm13voEvITZ87Oqc'
 	 * 
 	 */
+	@RolesAllowed({"usuario","gestor"})
 	public Response getUsuario(@PathParam("idUsuario") String idUsuario) throws Exception {
 		try {
 			System.out.println("Obteniendo usuario " + idUsuario);
@@ -108,6 +113,7 @@ public class AlquilerControladorRest {
 
 	@DELETE
 	@Path("usuarios/{idUsuario}/reservas/bloqueadas")
+	@RolesAllowed("gestor")
 	/**
 	 * curl -X DELETE \
 	 * 'http://localhost:8080/api/alquileres/usuarios/1/reservas/bloqueadas' \
@@ -116,8 +122,13 @@ public class AlquilerControladorRest {
 	 * 
 	 */
 	public Response deleteReservasBloqueadas(@PathParam("idUsuario") String idUsuario) throws Exception {
-		servicio.liberarBloqueo(idUsuario);
-		return Response.status(Response.Status.NO_CONTENT).build();
+		try{
+			servicio.liberarBloqueo(idUsuario);
+			return Response.status(Response.Status.NO_CONTENT).build();
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
 	}
 
 	@POST
@@ -131,6 +142,7 @@ public class AlquilerControladorRest {
 	 * 
 	 * 
 	 */
+	@RolesAllowed({"usuario","gestor"})
 	public Response dejarBicicleta(@PathParam("idUsuario") String idUsuario, @PathParam("idEstacion") String idEstacion)
 			throws Exception {
 		servicio.dejarBicicleta(idUsuario, idEstacion);

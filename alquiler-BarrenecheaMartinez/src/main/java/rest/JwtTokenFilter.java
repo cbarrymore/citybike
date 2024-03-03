@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Priority;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.crypto.KeyGenerator;
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +55,9 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 
 				Set<String> roles = new HashSet<>(Arrays.asList(claims.get("roles", String.class).split(",")));
 				// Consulta si la operación está protegida por rol
+				if (resourceInfo.getResourceMethod().isAnnotationPresent(PermitAll.class)) {
+					return;
+				}
 				if (this.resourceInfo.getResourceMethod().isAnnotationPresent(RolesAllowed.class)) {
 					String[] allowedRoles = resourceInfo.getResourceMethod().getAnnotation(RolesAllowed.class).value();
 					if (roles.stream().noneMatch(userRole -> Arrays.asList(allowedRoles).contains(userRole))) {
@@ -66,8 +70,9 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 			}
 		}
-		
+
 	}
+
 	private static byte[] getSecretKey() {
 		PropertiesReader reader;
 		try {

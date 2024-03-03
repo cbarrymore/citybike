@@ -11,8 +11,8 @@ import repositorio.Identificable;
 @XmlRootElement
 public class Usuario implements Identificable {
 	private String id;
-	private List<Reserva> reservas;
-	private List<Alquiler> alquileres;
+	private ArrayList<Reserva> reservas;
+	private ArrayList<Alquiler> alquileres;
 	
 	public Usuario()
 	{
@@ -84,7 +84,7 @@ public class Usuario implements Identificable {
 	}
 
 	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
+		this.reservas = new ArrayList<Reserva>(reservas);
 	}
 
 	public List<Alquiler> getAlquileres() {
@@ -92,7 +92,7 @@ public class Usuario implements Identificable {
 	}
 
 	public void setAlquileres(List<Alquiler> alquileres) {
-		this.alquileres = alquileres;
+		this.alquileres = new ArrayList<Alquiler>(alquileres);
 	}
 	
 	
