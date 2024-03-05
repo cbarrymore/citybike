@@ -1,10 +1,13 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import com.google.gson.annotations.JsonAdapter;
 
+import servicio.FactoriaServicios;
+import servicio.IServicioTiempo;
 import utils.LocalDateTimeAdapter;
 
 public class Alquiler {
@@ -15,12 +18,15 @@ public class Alquiler {
 	@JsonAdapter(value = LocalDateTimeAdapter.class)
 	private LocalDateTime fin;
 	
+	private IServicioTiempo servTiempo;
+	
 	public Alquiler()
 	{
-		
+		servTiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
 	}
 	
 	public Alquiler(String idBici, LocalDateTime inicio) {
+		this();
 		this.idBici=idBici;
 		this.inicio=inicio;
 		this.fin =null;
@@ -29,7 +35,7 @@ public class Alquiler {
 	public int tiempo() {
 		LocalDateTime tiempoFin;
 		if(activo()) {
-			tiempoFin = LocalDateTime.now();
+			tiempoFin = servTiempo.now();
 		}
 		else tiempoFin = fin;
 		return (int)ChronoUnit.MINUTES.between(inicio, tiempoFin);
@@ -78,10 +84,22 @@ public class Alquiler {
 	}
 
 
-
+	public boolean deHoy()
+	{
+		LocalDateTime ahora = servTiempo.now();
+		LocalDateTime antes = ahora.minusDays(1);
+		return inicio.isBefore(ahora) && inicio.isAfter(antes);
+	}
+	
+	public boolean deEstaSemana()
+	{
+		LocalDateTime ahora = servTiempo.now();
+		LocalDateTime antes = ahora.minusDays(7);
+		return inicio.isBefore(ahora) && inicio.isAfter(antes);
+	}
 
 	public boolean activo() {
-		return fin.equals(null);
+		return fin == null;
 	}
 
 	public String getId() {

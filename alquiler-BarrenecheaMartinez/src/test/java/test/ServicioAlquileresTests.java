@@ -30,7 +30,6 @@ public class ServicioAlquileresTests
 	private static IServicioTiempo servicioTiempo;
 	private static Repositorio<Usuario, String> repositorioUsuario;
 	private static String idUsuario;
-	private static Usuario usuario;
 	
 	@BeforeAll
 	public static void obtenerServicio()
@@ -46,7 +45,7 @@ public class ServicioAlquileresTests
 	{
 		try
 		{
-			usuario = new Usuario(idUsuario);
+			Usuario usuario = new Usuario(idUsuario);
 			repositorioUsuario.add(usuario);
 		}
 		catch (RepositorioException e)
@@ -73,7 +72,7 @@ public class ServicioAlquileresTests
 	{
 		String id = "nuevabicitest";
 		try {
-			usuario = servicioAlquileres.historialUsuario(id);
+			Usuario usuario = servicioAlquileres.historialUsuario(id);
 			assertEquals(usuario.getId(), id);
 		} 
 		catch (RepositorioException e)
@@ -89,13 +88,15 @@ public class ServicioAlquileresTests
 		try
 		{
 			servicioAlquileres.reservar(idUsuario, "bici1");
+			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
+			assertTrue(u.getReservas().size()==1);
 		}
 		catch (RepositorioException | EntidadNoEncontrada e)
 		{
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
-		assertTrue(usuario.getReservas().size()==1);
+		
 	}
 
 	@Test
@@ -103,7 +104,7 @@ public class ServicioAlquileresTests
 	{
 		testReservar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar("nuevabicitest", "bici1"));
+		.isThrownBy(()-> servicioAlquileres.alquilar("nuevabicitest", "bici1"));
 	}
 
 	@Test
@@ -120,13 +121,14 @@ public class ServicioAlquileresTests
 		try
 		{
 			servicioAlquileres.alquilar(idUsuario, "bici1");
+			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
+			assertTrue(u.getAlquileres().size()==1);
 		}
-		catch (RepositorioException e)
+		catch (RepositorioException | EntidadNoEncontrada e)
 		{
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
-		assertTrue(usuario.getAlquileres().size()==1);
 	}
 	
 	@Test
@@ -295,7 +297,7 @@ public class ServicioAlquileresTests
 	private void superarTiempo(String id) throws RepositorioException, EntidadNoEncontrada
 	{
 		servicioAlquileres.alquilar(id, "biciSupTiempo");
-		servicioTiempo.setFixedClockAt(LocalDateTime.now().plusMinutes(61));
+		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(61));
 		servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 	}
 	
