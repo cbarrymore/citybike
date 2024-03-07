@@ -21,6 +21,7 @@ import modelo.Usuario;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.RepositorioException;
+import rest.dto.UsuarioDTO;
 import servicio.FactoriaServicios;
 import servicio.IServicioAlquileres;
 
@@ -100,7 +101,8 @@ public class AlquilerControladorRest {
 			System.out.println("Obteniendo usuario " + idUsuario);
 			Usuario u = servicio.historialUsuario(idUsuario);
 			System.out.println(u.getId());
-			Response r = Response.status(Response.Status.OK).entity(u).build();
+			UsuarioDTO udto = servicio.transformToDto(u);
+			Response r = Response.status(Response.Status.OK).entity(udto).build();
 			System.out.println(r.getEntity());
 			return r;
 
@@ -131,19 +133,16 @@ public class AlquilerControladorRest {
 		}
 	}
 
-	@POST
-	@Path("usuarios/{idUsuario}/estaciones/{idEstacion}")
-	/***
-	 * 
-	 * curl -X POST \ 'http://localhost:8080/api/alquileres/usuarios/1/estaciones/1'
-	 * \ --header 'Authorization: Bearer
-	 * eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZXMiOiJ1c3VhcmlvIiwiZXhwIjoxNzA5OTg0NDAxfQ.B_2X8OhrpO3VFFipOHBEmL9YZv_Sm13voEvITZ87Oqc'
-	 * 
-	 * 
-	 * 
-	 */
+	@PATCH
+	@Path("usuarios/{idUsuario}")
+//	curl  -X PATCH \
+//	  'http://localhost:8080/api/alquileres/usuarios/1' \
+//	  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZXMiOiJ1c3VhcmlvIiwiZXhwIjoxNzA5OTg0NDAxfQ.B_2X8OhrpO3VFFipOHBEmL9YZv_Sm13voEvITZ87Oqc' \
+//	  --header 'Content-Type: application/x-www-form-urlencoded' \
+//	  --data-urlencode 'idEstacion=1'
+	
 	@RolesAllowed({"usuario","gestor"})
-	public Response dejarBicicleta(@PathParam("idUsuario") String idUsuario, @PathParam("idEstacion") String idEstacion)
+	public Response dejarBicicleta(@PathParam("idUsuario") String idUsuario, @FormParam("idEstacion") String idEstacion)
 			throws Exception {
 		servicio.dejarBicicleta(idUsuario, idEstacion);
 		return Response.status(Response.Status.NO_CONTENT).build();

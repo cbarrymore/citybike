@@ -121,7 +121,7 @@ public class ServicioAlquileresTests
 		{
 			servicioAlquileres.alquilar(idUsuario, "bici1");
 		}
-		catch (RepositorioException e)
+		catch (RepositorioException | EntidadNoEncontrada e)
 		{
 			e.printStackTrace();
 			fail("Excepción inesperada");

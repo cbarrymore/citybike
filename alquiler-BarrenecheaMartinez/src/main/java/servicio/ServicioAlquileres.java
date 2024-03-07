@@ -1,5 +1,6 @@
 package servicio;
 
+import java.nio.channels.IllegalSelectorException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -12,55 +13,80 @@ import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import repositorio.RepositorioException;
+import rest.dto.AlquilerDTO;
+import rest.dto.ReservaDTO;
+import rest.dto.UsuarioDTO;
 
-public class ServicioAlquileres implements IServicioAlquileres{
+public class ServicioAlquileres implements IServicioAlquileres {
 
 	private Repositorio<Usuario, String> repositorioUsuario = FactoriaRepositorios.getRepositorio(Usuario.class);
 	IServicioTiempo tiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
 	IServicioEstaciones estaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+
 	@Override
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
-		if(u.reservaActiva() == null  &&  u.alquilerActivo()==null && !u.bloqueado() && !u.superaTiempo()) {
-			LocalDateTime creada = tiempo.now();
-			Reserva r = new Reserva(idBici,creada,creada.plusMinutes(30));
-			u.getReservas().add(r);
-			repositorioUsuario.update(u);
+		if (u.reservaActiva() != null) {
+			throw new IllegalStateException("Ya hay una reserva activa");
 		}
-		else throw new IllegalStateException("");
+		if (u.alquilerActivo() != null) {
+			throw new IllegalStateException("Ya hay un alquiler activo");
+		}
+		if (u.bloqueado()) {
+			throw new IllegalStateException("El usuario está bloqueado");
+		}
+		if (u.superaTiempo()) {
+			throw new IllegalStateException("El usuario ha superado el tiempo de uso");
+		}
+
+		LocalDateTime creada = tiempo.now();
+		Reserva r = new Reserva(idBici, creada, creada.plusMinutes(30));
+		u.getReservas().add(r);
+		repositorioUsuario.update(u);
+
 	}
 
 	@Override
-	public void confirmarReserva(String idUsuario) throws RepositorioException {
+	public void confirmarReserva(String idUsuario) throws RepositorioException, EntidadNoEncontrada {
 		Usuario u = procesarUsuario(idUsuario);
 		Reserva r = u.reservaActiva();
 		if (r != null) {
-			Alquiler al= new Alquiler(r.getIdBici(),tiempo.now());
+			Alquiler al = new Alquiler(r.getIdBici(), tiempo.now());
 			u.getAlquileres().add(al);
-			u.getReservas().remove(u.getReservas().size());
-		}
-		else
-			throw new IllegalStateException();
+			u.getReservas().remove(u.getReservas().size()-1);
+			repositorioUsuario.update(u);
+		} else
+			throw new IllegalStateException("No hay ninguna reserva activa");
 	}
 
 	@Override
-	public void alquilar(String idUsuario, String idBici) throws RepositorioException {
+	public void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
-		if(u.reservaActiva() !=null && u.alquilerActivo() == null && !(u.bloqueado() || u.superaTiempo()) ) {
-			Alquiler al= new Alquiler(idBici,tiempo.now());
-			u.getAlquileres().add(al);
+		if (u.reservaActiva() != null) {
+			throw new IllegalStateException("Para alquilar, debe no haber una reserva activa");
 		}
-		else
-			throw new IllegalStateException();
+		if (u.alquilerActivo() != null) {
+			throw new IllegalStateException("Ya hay un alquiler activo");
+		}
+		if (u.bloqueado()) {
+			throw new IllegalStateException("El usuario está bloqueado");
+		}
+		if (u.superaTiempo()) {
+			throw new IllegalStateException("El usuario ha superado el tiempo de uso");
+		}
+
+		Alquiler al = new Alquiler(idBici, tiempo.now());
+		u.getAlquileres().add(al);
+		repositorioUsuario.update(u);
 	}
 
 	@Override
 	public Usuario historialUsuario(String idUsuario) throws RepositorioException {
 		Usuario u = procesarUsuario(idUsuario);
 		return u;
-		
+
 	}
 
 	@Override
@@ -68,27 +94,39 @@ public class ServicioAlquileres implements IServicioAlquileres{
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 		Alquiler a = u.alquilerActivo();
-		if(estaciones.huecoDisponible(idEstacion)) {
+		if (estaciones.huecoDisponible(idEstacion)) {
 			estaciones.estacionarBici(idUsuario, idEstacion);
 			a.setFin(tiempo.now());
+			repositorioUsuario.update(u);
 		}
 	}
 
 	@Override
-	public void liberarBloqueo(String idUsuario) throws RepositorioException {
+	public void liberarBloqueo(String idUsuario) throws RepositorioException, EntidadNoEncontrada {
 		Usuario u = procesarUsuario(idUsuario);
-		List<Reserva> caducadas= u.getReservas().stream().filter(r -> r.caducada()).collect(Collectors.toList());
+		List<Reserva> caducadas = u.getReservas().stream().filter(r -> r.caducada()).collect(Collectors.toList());
 		u.getReservas().removeAll(caducadas);
+		repositorioUsuario.update(u);
 	}
+
 	private Usuario procesarUsuario(String idUsuario) throws RepositorioException {
 		Usuario u;
 		try {
-			u= repositorioUsuario.getById(idUsuario);
-		}  catch (EntidadNoEncontrada e) {
+			u = repositorioUsuario.getById(idUsuario);
+		} catch (EntidadNoEncontrada e) {
 			// TODO Auto-generated catch block
 			u = new Usuario(idUsuario);
 			repositorioUsuario.add(u);
 		}
 		return u;
 	}
+
+	public UsuarioDTO transformToDto(Usuario u) {
+		List<ReservaDTO> reservas = u.getReservas().stream()
+				.map(r -> new ReservaDTO(r.getId(), r.getIdBici(), r.getCreada(), r.getCaducidad())).toList();
+		List<AlquilerDTO> alquileres = u.getAlquileres().stream()
+				.map(a -> new AlquilerDTO(a.getId(), a.getIdBici(), a.getInicio(), a.getFin())).toList();
+		return new UsuarioDTO(u.getId(), reservas, alquileres);
+	}
+
 }
