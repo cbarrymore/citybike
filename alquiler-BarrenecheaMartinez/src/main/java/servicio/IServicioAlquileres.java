@@ -13,4 +13,5 @@ public interface IServicioAlquileres {
 	public void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 	public void liberarBloqueo(String idUsuario) throws RepositorioException, EntidadNoEncontrada;
 	public UsuarioDTO transformToDto(Usuario u);
+
 }

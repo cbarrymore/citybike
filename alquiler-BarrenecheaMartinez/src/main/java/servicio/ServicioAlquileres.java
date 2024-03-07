@@ -58,12 +58,14 @@ public class ServicioAlquileres implements IServicioAlquileres {
 			repositorioUsuario.update(u);
 		} else
 			throw new IllegalStateException("No hay ninguna reserva activa");
+
 	}
 
 	@Override
 	public void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
+
 		if (u.reservaActiva() != null) {
 			throw new IllegalStateException("Para alquilar, debe no haber una reserva activa");
 		}
@@ -94,7 +96,9 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 		Alquiler a = u.alquilerActivo();
-		if (estaciones.huecoDisponible(idEstacion)) {
+		if(a == null)
+			throw new IllegalStateException("No hay alquiler activo");
+		if(estaciones.huecoDisponible(idEstacion)) {
 			estaciones.estacionarBici(idUsuario, idEstacion);
 			a.setFin(tiempo.now());
 			repositorioUsuario.update(u);

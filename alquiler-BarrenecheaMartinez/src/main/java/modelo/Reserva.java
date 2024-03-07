@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import com.google.gson.annotations.JsonAdapter;
 
+import servicio.FactoriaServicios;
+import servicio.IServicioTiempo;
 import utils.LocalDateTimeAdapter;
 
 public class Reserva {
@@ -14,19 +16,22 @@ public class Reserva {
 	@JsonAdapter(value = LocalDateTimeAdapter.class)
 	private LocalDateTime caducidad;
 	
+	private IServicioTiempo servTiempo;
+	
 	public Reserva()
 	{
-		
+		servTiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
 	}
 	
 	public Reserva(String idBici, LocalDateTime creada, LocalDateTime caducidad) {
+		this();
 		this.idBici = idBici;
 		this.creada = creada;
 		this.caducidad = caducidad;
 	}
 	
 	public boolean caducada() {
-		return LocalDateTime.now().isAfter(caducidad);
+		return servTiempo.now().isAfter(caducidad);
 	}
 
 	public boolean activa() {

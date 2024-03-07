@@ -16,7 +16,8 @@ public class Usuario implements Identificable {
 	
 	public Usuario()
 	{
-		
+		this.alquileres = new ArrayList<Alquiler>();
+		this.reservas = new ArrayList<Reserva>();
 	}
 	
 	public Usuario(String id) {
@@ -31,14 +32,14 @@ public class Usuario implements Identificable {
 	
 	private int tiempoUsoHoy() {
 		return alquileres.stream()
-		.filter(a -> a.activo())
+		.filter(a -> a.deHoy())
 		.mapToInt(a -> a.tiempo())
 		.reduce(0, Integer::sum);
 	}
 	
 	private int tiempoUsoSemana() {
 		return alquileres.stream()
-				.filter(a -> a.getInicio().isAfter(LocalDateTime.now().minusWeeks(1)))
+				.filter(a -> a.deEstaSemana())
 				.mapToInt(a -> a.tiempo())
 				.reduce(0, Integer::sum);
 	}
