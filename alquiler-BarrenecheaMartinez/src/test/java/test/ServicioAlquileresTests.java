@@ -104,7 +104,7 @@ public class ServicioAlquileresTests
 	{
 		testReservar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.alquilar("nuevabicitest", "bici1"));
+		.isThrownBy(()-> servicioAlquileres.alquilar(idUsuario, "bici1"));
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class ServicioAlquileresTests
 	{
 		testReservar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar("nuevabicitest", "bici1"));
+		.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class ServicioAlquileresTests
 	{
 		testReservar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar("nuevabicitest", "bici1"));
+		.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class ServicioAlquileresTests
 	{
 		testAlquilar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar("nuevabicitest", "bici1"));
+		.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
 	}
 	
 	
