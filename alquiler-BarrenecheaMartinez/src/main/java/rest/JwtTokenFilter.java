@@ -1,6 +1,7 @@
 package rest;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +51,9 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 				Claims claims = Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token).getBody();
 
 				// comprobar caducidad ...
+				if(claims.getExpiration().before(new Date())) {
+					requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+				}
 
 				this.servletRequest.setAttribute("claims", claims);
 
