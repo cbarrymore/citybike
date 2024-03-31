@@ -1,4 +1,4 @@
-package repositorio;
+package estaciones2.repositorio;
 
 import java.util.List;
 

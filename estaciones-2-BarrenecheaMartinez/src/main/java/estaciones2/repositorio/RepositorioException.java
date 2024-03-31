@@ -1,4 +1,4 @@
-package repositorio;
+package estaciones2.repositorio;
 
 /*
  * Excepción que representa un fallo en el sistema de persistencia.

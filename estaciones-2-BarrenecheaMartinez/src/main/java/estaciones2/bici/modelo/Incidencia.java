@@ -1,4 +1,4 @@
-package modelo;
+package estaciones2.bici.modelo;
 
 import java.time.LocalDate;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package modelo;
+package estaciones2.estacion.modelo;
 
 
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ import org.bson.codecs.pojo.annotations.BsonRepresentation;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
-import repositorio.Identificable;
+import estaciones2.repositorio.Identificable;
 
 public class Estacion implements Identificable{
 	@BsonId

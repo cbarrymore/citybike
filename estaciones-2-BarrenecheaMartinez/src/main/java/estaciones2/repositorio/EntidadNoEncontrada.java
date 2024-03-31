@@ -1,4 +1,4 @@
-package repositorio;
+package estaciones2.repositorio;
 
 /*
  * Excepción notificada si no existe una entidad con el identificador

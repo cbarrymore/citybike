@@ -1,4 +1,4 @@
-package modelo;
+package estaciones2.bici.modelo;
 
 public enum Estado {
 	CANCELADO,

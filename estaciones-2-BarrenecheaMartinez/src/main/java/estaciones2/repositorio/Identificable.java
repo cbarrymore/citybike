@@ -1,4 +1,4 @@
-package repositorio;
+package estaciones2.repositorio;
 
 public interface Identificable {
 

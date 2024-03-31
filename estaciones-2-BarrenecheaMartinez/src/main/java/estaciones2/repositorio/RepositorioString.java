@@ -1,4 +1,4 @@
-package repositorio;
+package estaciones2.repositorio;
 
 /*
  * Extensión de la interfaz repositorio para concretar

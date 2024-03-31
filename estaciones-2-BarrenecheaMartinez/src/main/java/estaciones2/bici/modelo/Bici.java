@@ -1,4 +1,4 @@
-package modelo;
+package estaciones2.bici.modelo;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -14,7 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import repositorio.Identificable;
+
+import estaciones2.repositorio.Identificable;
 
 @Entity
 @Table(name="bici")

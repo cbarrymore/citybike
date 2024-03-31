@@ -1,9 +1,9 @@
-package repositorio;
+package estaciones2.estacion.repositorio;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import modelo.Estacion;
+import estaciones2.estacion.modelo.Estacion;
 
 
 @NoRepositoryBean

@@ -1,0 +1,91 @@
+package estaciones2.estacion.servicio;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import estaciones2.bici.modelo.Bici;
+import estaciones2.bici.repositorio.RepositorioBicis;
+import estaciones2.estacion.modelo.Estacion;
+import estaciones2.estacion.repositorio.RepositorioEstaciones;
+import estaciones2.repositorio.EntidadNoEncontrada;
+import estaciones2.repositorio.RepositorioException;
+
+@Service
+@Transactional
+public class ServicioEstaciones implements IServicioEstaciones {
+
+	private RepositorioEstaciones repoEstaciones;
+	private RepositorioBicis repoBicis;
+	
+	@Autowired
+	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis)
+	{
+		this.repoEstaciones = repoEstaciones;
+		this.repoBicis = repoBicis;
+	}
+	
+	public void prueba()
+	{
+		repoEstaciones.save(new Estacion("nombre", 0, 0, null, null));
+	}
+
+	@Override
+	public String altaEstacion(String nombre, int numeroPuestos, long dirPostal, BigDecimal longitud,
+			BigDecimal latitud) throws RepositorioException {
+		Estacion nueva = new Estacion(nombre, numeroPuestos, dirPostal, latitud, longitud);
+		repoEstaciones.save(nueva);
+		return nueva.getId();
+	}
+
+	@Override
+	public Estacion obtenerEstacion(String id) throws RepositorioException, EntidadNoEncontrada {
+		return repoEstaciones.findById(id).get();
+	}
+
+	@Override
+	public String altaBici(String modelo, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
+		Bici nueva = new Bici(modelo, LocalDate.now());
+		String id = repoBicis.save(nueva).getId();
+		return id;
+	}
+
+	@Override
+	public void retirarBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Bici> bicisEstacion(String idEstaciones) throws RepositorioException, EntidadNoEncontrada {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Bici> bicisEstacionLimitado(String idEstaciones) throws RepositorioException, EntidadNoEncontrada {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Estacion> obtenerEstaciones() throws RepositorioException {
+		// TODO Auto-generated method stub
+		List<Estacion> lista = new ArrayList<Estacion>();
+		repoEstaciones.findAll().forEach(e -> lista.add(e));
+		return lista;
+	}
+	
+}
