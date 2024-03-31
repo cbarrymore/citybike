@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import estaciones2.dto.EstacionDto;
+import estaciones2.estacion.dto.EstacionDto;
 import estaciones2.estacion.modelo.Estacion;
 import estaciones2.estacion.servicio.IServicioEstaciones;
 import estaciones2.repositorio.RepositorioException;

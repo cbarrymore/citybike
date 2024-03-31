@@ -14,6 +14,8 @@ import estaciones2.bici.modelo.Bici;
 import estaciones2.bici.repositorio.RepositorioBicis;
 import estaciones2.estacion.modelo.Estacion;
 import estaciones2.estacion.repositorio.RepositorioEstaciones;
+import estaciones2.historico.modelo.Historico;
+import estaciones2.historico.repositorio.RepositorioHistorico;
 import estaciones2.repositorio.EntidadNoEncontrada;
 import estaciones2.repositorio.RepositorioException;
 
@@ -23,12 +25,14 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	private RepositorioEstaciones repoEstaciones;
 	private RepositorioBicis repoBicis;
+	private RepositorioHistorico repoHistoricos;
 	
 	@Autowired
-	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis)
+	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis, RepositorioHistorico repoHistoricos)
 	{
 		this.repoEstaciones = repoEstaciones;
 		this.repoBicis = repoBicis;
+		this.repoHistoricos = repoHistoricos;
 	}
 	
 	public void prueba()
@@ -64,25 +68,50 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
-		
+		Bici bici = repoBicis.findById(idBici).get();
+		//Cambiarlo a una sola función
+		bici.setFechaBaja(LocalDate.now());
+		bici.setMotivoBaja(motivo);
+		Historico historico = repoHistoricos.findById(idBici).get();
+		Estacion estacion = repoEstaciones.findById(historico.getEstacion()).get();
+		estacion.retirarBici(idBici);
+		historico.marcarSalida();
+		repoBicis.save(bici);
+		repoHistoricos.save(historico);
+		repoEstaciones.save(estacion);
 	}
 
 	@Override
 	public List<Bici> bicisEstacion(String idEstaciones) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
-		return null;
+		Estacion estacion = repoEstaciones.findById(idEstaciones).get();
+		Iterable<String> it = estacion.getBicisAparcadas();
+		Iterable<Bici> itBicis = repoBicis.findAllById(it);
+		List<Bici> bicis = new ArrayList<Bici>();
+		for(Bici bici : itBicis)
+		{
+			if(bici != null)
+				bicis.add(bici);
+		}
+		return bicis;
 	}
 
 	@Override
 	public List<Bici> bicisEstacionLimitado(String idEstaciones) throws RepositorioException, EntidadNoEncontrada {
 		// TODO Auto-generated method stub
-		return null;
+		Estacion estacion = repoEstaciones.findById(idEstaciones).get();
+		Iterable<String> it = estacion.getBicisAparcadas();
+		Iterable<Bici> itBicis = repoBicis.findAllById(it);
+		List<Bici> bicis = new ArrayList<Bici>();
+		for(Bici bici : itBicis)
+		{
+			if(bici != null && bici.isDisponible())
+				bicis.add(bici);
+		}
+		return bicis;
 	}
 
 	@Override
 	public List<Estacion> obtenerEstaciones() throws RepositorioException {
-		// TODO Auto-generated method stub
 		List<Estacion> lista = new ArrayList<Estacion>();
 		repoEstaciones.findAll().forEach(e -> lista.add(e));
 		return lista;

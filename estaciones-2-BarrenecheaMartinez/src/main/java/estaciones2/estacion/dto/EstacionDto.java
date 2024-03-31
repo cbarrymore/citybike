@@ -1,4 +1,4 @@
-package estaciones2.dto;
+package estaciones2.estacion.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
