@@ -35,11 +35,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		this.repoHistoricos = repoHistoricos;
 	}
 	
-	public void prueba()
-	{
-		repoEstaciones.save(new Estacion("nombre", 0, 0, null, null));
-	}
-
 	@Override
 	public String altaEstacion(String nombre, int numeroPuestos, long dirPostal, BigDecimal longitud,
 			BigDecimal latitud) throws RepositorioException {
@@ -58,12 +53,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Bici nueva = new Bici(modelo, LocalDate.now());
 		String id = repoBicis.save(nueva).getId();
 		return id;
-	}
-
-	@Override
-	public void retirarBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

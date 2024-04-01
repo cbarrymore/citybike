@@ -17,8 +17,6 @@ public interface IServicioEstaciones {
 	
 	public String altaBici(String modelo ,String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 	
-	public void retirarBici(String idBici) throws RepositorioException, EntidadNoEncontrada;
-	
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada;
 	
 	public List<Bici> bicisEstacion(String idEstaciones) throws RepositorioException, EntidadNoEncontrada;
