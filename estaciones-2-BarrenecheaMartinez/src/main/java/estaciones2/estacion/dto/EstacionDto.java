@@ -2,7 +2,7 @@ package estaciones2.estacion.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -14,17 +14,16 @@ public class EstacionDto {
 	private String nombre;
 	private int numPuestos;
 	private long dirPostal;
-	@BsonProperty(value="coordenadas")
+	@BsonProperty(value = "coordenadas")
 	private List<Double> coordenadas;
 	private BigDecimal latitud;
 	private BigDecimal longitud;
 	private LocalDate fechaAlta;
-	
-	public EstacionDto()
-	{
-		
+
+	public EstacionDto() {
+
 	}
-	
+
 	public EstacionDto(String nombre, int numPuestos, long dirPostal, BigDecimal latitud, BigDecimal longitud) {
 		this.nombre = nombre;
 		this.numPuestos = numPuestos;
@@ -32,7 +31,9 @@ public class EstacionDto {
 		this.latitud = latitud;
 		this.longitud = longitud;
 		this.fechaAlta = LocalDate.now();
-		this.coordenadas = List.of(longitud.doubleValue(),latitud.doubleValue());
+		this.coordenadas = new ArrayList<Double>();
+		coordenadas.add(longitud.doubleValue());
+		coordenadas.add(latitud.doubleValue());
 	}
 
 	public String getId() {
@@ -98,13 +99,13 @@ public class EstacionDto {
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-	
-	public static EstacionDto deEntidad(Estacion estacion)
-	{
-		EstacionDto nueva =  new EstacionDto(estacion.getNombre(), estacion.getNumPuestos(), estacion.getDirPostal(), estacion.getLatitud(), 
+
+	public static EstacionDto deEntidad(Estacion estacion) {
+		EstacionDto nueva = new EstacionDto(estacion.getNombre(), estacion.getNumPuestos(), estacion.getDirPostal(),
+				estacion.getLatitud(),
 				estacion.getLongitud());
 		nueva.setId(estacion.getId());
 		return nueva;
 	}
-	
+
 }
