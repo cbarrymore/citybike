@@ -8,6 +8,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import estaciones2.bici.modelo.Bici;
@@ -26,15 +28,15 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	private RepositorioEstaciones repoEstaciones;
 	private RepositorioBicis repoBicis;
 	private RepositorioHistorico repoHistoricos;
-	
+
 	@Autowired
-	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis, RepositorioHistorico repoHistoricos)
-	{
+	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis,
+			RepositorioHistorico repoHistoricos) {
 		this.repoEstaciones = repoEstaciones;
 		this.repoBicis = repoBicis;
 		this.repoHistoricos = repoHistoricos;
 	}
-	
+
 	@Override
 	public String altaEstacion(String nombre, int numeroPuestos, long dirPostal, BigDecimal longitud,
 			BigDecimal latitud) throws RepositorioException {
@@ -45,7 +47,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public Estacion obtenerEstacion(String id) throws RepositorioException, EntidadNoEncontrada {
-		return repoEstaciones.findById(id).get();
+		return repoEstaciones.findById(id).orElseThrow(
+				() -> new EntidadNoEncontrada("Estacion no encontrada"));
 	}
 
 	@Override
@@ -57,8 +60,9 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
-		Bici bici = repoBicis.findById(idBici).get();
-		//Cambiarlo a una sola función
+		Bici bici = repoBicis.findById(idBici).orElseThrow(
+				() -> new EntidadNoEncontrada("Bici no encontrada"));
+		// Cambiarlo a una sola función
 		bici.setFechaBaja(LocalDate.now());
 		bici.setMotivoBaja(motivo);
 		Historico historico = repoHistoricos.findById(idBici).get();
@@ -72,13 +76,13 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public List<Bici> bicisEstacion(String idEstaciones) throws RepositorioException, EntidadNoEncontrada {
-		Estacion estacion = repoEstaciones.findById(idEstaciones).get();
+		Estacion estacion = repoEstaciones.findById(idEstaciones).orElseThrow(
+				() -> new EntidadNoEncontrada("Estacion no encontrada"));
 		Iterable<String> it = estacion.getBicisAparcadas();
 		Iterable<Bici> itBicis = repoBicis.findAllById(it);
 		List<Bici> bicis = new ArrayList<Bici>();
-		for(Bici bici : itBicis)
-		{
-			if(bici != null)
+		for (Bici bici : itBicis) {
+			if (bici != null)
 				bicis.add(bici);
 		}
 		return bicis;
@@ -86,14 +90,13 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	@Override
 	public List<Bici> bicisEstacionLimitado(String idEstaciones) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
-		Estacion estacion = repoEstaciones.findById(idEstaciones).get();
+		Estacion estacion = repoEstaciones.findById(idEstaciones)
+				.orElseThrow(() -> new EntidadNoEncontrada("Estacion no encontrada"));
 		Iterable<String> it = estacion.getBicisAparcadas();
 		Iterable<Bici> itBicis = repoBicis.findAllById(it);
 		List<Bici> bicis = new ArrayList<Bici>();
-		for(Bici bici : itBicis)
-		{
-			if(bici != null && bici.isDisponible())
+		for (Bici bici : itBicis) {
+			if (bici != null && bici.isDisponible())
 				bicis.add(bici);
 		}
 		return bicis;
@@ -105,5 +108,14 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		repoEstaciones.findAll().forEach(e -> lista.add(e));
 		return lista;
 	}
-	
+
+	// @Override
+	// public Page<Bici> bicisEstacionLimitadoPaginado(String idEstaciones, Pageable
+	// paginacion)
+	// throws RepositorioException, EntidadNoEncontrada {
+	// Estacion estacion = repoEstaciones.findById(idEstaciones).get();
+	// Iterable<String> it = estacion.getBicisAparcadas();
+	// Iterable<Bici> itBicis = repoBicis.
+	// }
+
 }

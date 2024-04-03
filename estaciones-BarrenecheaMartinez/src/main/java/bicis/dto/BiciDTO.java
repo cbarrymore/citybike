@@ -9,20 +9,21 @@ public class BiciDTO {
 	private String codigo;
 	private LocalDate fechaAlta;
 	private String modelo;
-	
+
 	private LocalDate fechaBaja;
 	private String motivoBaja;
-	
+
 	private boolean disponible;
-	
+
 	private List<IncidenciaDTO> incidencias;
-	
+
 	private String estacion;
-	
-	public BiciDTO(String codigo, LocalDate fechaAlta, String modelo, 
-			LocalDate fechaBaja,String motivoBaja, boolean disponible,List<IncidenciaDTO> incidencias, String idEstacion) {
-		this.codigo=codigo;
-		this.fechaAlta=fechaAlta;
+
+	public BiciDTO(String codigo, LocalDate fechaAlta, String modelo,
+			LocalDate fechaBaja, String motivoBaja, boolean disponible, List<IncidenciaDTO> incidencias,
+			String idEstacion) {
+		this.codigo = codigo;
+		this.fechaAlta = fechaAlta;
 		this.modelo = modelo;
 		this.fechaBaja = fechaBaja;
 		this.motivoBaja = motivoBaja;
@@ -30,8 +31,7 @@ public class BiciDTO {
 		this.incidencias = incidencias;
 		this.estacion = idEstacion;
 	}
-	
-	
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -87,19 +87,16 @@ public class BiciDTO {
 	public void setIncidencias(List<IncidenciaDTO> incidencias) {
 		this.incidencias = incidencias;
 	}
-	
-	public IncidenciaDTO getUltimaIncidencia()
-	{
-		if(incidencias.size()==0)
+
+	public IncidenciaDTO getUltimaIncidencia() {
+		if (incidencias.size() == 0)
 			return null;
 		return incidencias.get(0);
 	}
 
-
 	public String getEstacion() {
 		return estacion;
 	}
-
 
 	public void setEstacion(String estacion) {
 		this.estacion = estacion;

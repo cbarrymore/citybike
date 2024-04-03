@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import estaciones2.bici.modelo.Bici;
 
 @Repository
-public interface RepositorioBicisJPA extends RepositorioBicis, MongoRepository<Bici, String>{
+public interface RepositorioBicisJPA extends RepositorioBicis, MongoRepository<Bici, String> {
 
 }
