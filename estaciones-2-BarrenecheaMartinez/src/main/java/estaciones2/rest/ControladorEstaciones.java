@@ -39,7 +39,7 @@ public class ControladorEstaciones {
 	}
 
 	@GetMapping
-	public List<EstacionDto> getEstaciones() throws RepositorioException {
+	public List<EstacionDto> getEstaciones() throws Exception {
 		List<Estacion> estaciones = servEstaciones.obtenerEstaciones();
 		return estaciones.stream().map(EstacionDto::deEntidad).collect(Collectors.toList());
 	}
@@ -50,4 +50,8 @@ public class ControladorEstaciones {
 		return EstacionDto.deEntidad(estacion);
 	}
 
+	@GetMapping("/saludo")
+	public String saludo() {
+		return "Hola Mundo";
+	}
 }

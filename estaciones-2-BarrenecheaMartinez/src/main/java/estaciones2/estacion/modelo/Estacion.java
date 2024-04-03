@@ -11,11 +11,16 @@ import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import estaciones2.repositorio.Identificable;
 
+@Document(collection = "estaciones")
 public class Estacion implements Identificable {
 	@BsonId
-	@BsonRepresentation(BsonType.OBJECT_ID)
+	@BsonRepresentation(BsonType.OBJECT_ID)	
+	@Id
 	private String id;
 	private String nombre;
 	private int numPuestos;

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import estaciones2.estacion.modelo.Estacion;
 
-@Repository
 public interface RepositorioEstacionesMongo
 	extends RepositorioEstaciones, MongoRepository<Estacion, String> {
 	
