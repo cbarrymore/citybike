@@ -31,7 +31,7 @@ public class ManegadorExitoSeguridad implements AuthenticationSuccessHandler {
             Date caducidad = Date.from(Instant.now().plusSeconds(3600));
             String token = Jwts.builder()
                         .setClaims(claims)
-                        .signWith(SignatureAlgorithm.HS256, "secreto")
+                        .signWith(SignatureAlgorithm.HS256, "secreto".getBytes())
                         .setExpiration(caducidad)
                         .compact();
             response.getWriter().append(token);
