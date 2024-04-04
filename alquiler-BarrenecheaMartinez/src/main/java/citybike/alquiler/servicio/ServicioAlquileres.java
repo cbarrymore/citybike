@@ -1,17 +1,20 @@
-package servicio;
+package alquiler.servicio;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import modelo.Alquiler;
-import modelo.Reserva;
-import modelo.Usuario;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import repositorio.RepositorioException;
+import servicio.FactoriaServicios;
+import servicio.IServicioEstaciones;
+import servicio.IServicioTiempo;
+import usuario.modelo.Alquiler;
+import usuario.modelo.Reserva;
+import usuario.modelo.Usuario;
 
 public class ServicioAlquileres implements IServicioAlquileres {
 
