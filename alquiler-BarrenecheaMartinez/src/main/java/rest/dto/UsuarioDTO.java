@@ -15,6 +15,14 @@ public class UsuarioDTO {
 		this.alquileres=alquileres;
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public List<AlquilerDTO> getAlquileres() {
 		return alquileres;
 	}

@@ -4,8 +4,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import repositorio.RepositorioException;
-
 @Provider
 public class TratamientoIllegalArgumentException implements ExceptionMapper<IllegalArgumentException> {
 	@Override

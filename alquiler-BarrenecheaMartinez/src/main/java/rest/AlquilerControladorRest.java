@@ -1,10 +1,11 @@
 package rest;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.annotation.security.RolesAllowed;
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
@@ -18,9 +19,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import modelo.Usuario;
-import repositorio.EntidadNoEncontrada;
-import repositorio.FactoriaRepositorios;
-import repositorio.RepositorioException;
+import rest.dto.AlquilerDTO;
+import rest.dto.ReservaDTO;
 import rest.dto.UsuarioDTO;
 import servicio.FactoriaServicios;
 import servicio.IServicioAlquileres;
@@ -101,7 +101,7 @@ public class AlquilerControladorRest {
 			System.out.println("Obteniendo usuario " + idUsuario);
 			Usuario u = servicio.historialUsuario(idUsuario);
 			System.out.println(u.getId());
-			UsuarioDTO udto = servicio.transformToDto(u);
+			UsuarioDTO udto = this.transformToDto(u);
 			Response r = Response.status(Response.Status.OK).entity(udto).build();
 			System.out.println(r.getEntity());
 			return r;
@@ -147,6 +147,15 @@ public class AlquilerControladorRest {
 		servicio.dejarBicicleta(idUsuario, idEstacion);
 		return Response.status(Response.Status.NO_CONTENT).build();
 
+	}
+
+	private UsuarioDTO transformToDto(Usuario u)
+	{
+		List<ReservaDTO> reservas = u.getReservas().stream()
+				.map(r -> new ReservaDTO(r.getId(), r.getIdBici(), r.getCreada(), r.getCaducidad())).collect(Collectors.toList());
+		List<AlquilerDTO> alquileres = u.getAlquileres().stream()
+				.map(a -> new AlquilerDTO(a.getId(), a.getIdBici(), a.getInicio(), a.getFin())).collect(Collectors.toList());
+		return new UsuarioDTO(u.getId(), reservas, alquileres);
 	}
 
 }

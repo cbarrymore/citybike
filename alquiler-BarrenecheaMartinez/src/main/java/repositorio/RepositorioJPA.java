@@ -1,6 +1,7 @@
 package repositorio;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -110,7 +111,7 @@ public abstract class RepositorioJPA<T extends Identificable, K extends Entidad<
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
 			List<Entidad<T>> lista = query.getResultList();
-			return lista.stream().map(e -> e.getObject()).toList();
+			return lista.stream().map(e -> e.getObject()).collect(Collectors.toList());
 
 		} catch (RuntimeException re) {
 

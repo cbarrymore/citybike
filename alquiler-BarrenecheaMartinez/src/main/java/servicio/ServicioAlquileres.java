@@ -1,9 +1,8 @@
 package servicio;
 
-import java.nio.channels.IllegalSelectorException;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import modelo.Alquiler;
@@ -13,9 +12,6 @@ import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import repositorio.RepositorioException;
-import rest.dto.AlquilerDTO;
-import rest.dto.ReservaDTO;
-import rest.dto.UsuarioDTO;
 
 public class ServicioAlquileres implements IServicioAlquileres {
 
@@ -25,7 +21,6 @@ public class ServicioAlquileres implements IServicioAlquileres {
 
 	@Override
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 		if (u.reservaActiva() != null) {
 			throw new IllegalStateException("Ya hay una reserva activa");
@@ -63,7 +58,6 @@ public class ServicioAlquileres implements IServicioAlquileres {
 
 	@Override
 	public void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 
 		if (u.reservaActiva() != null) {
@@ -93,7 +87,6 @@ public class ServicioAlquileres implements IServicioAlquileres {
 
 	@Override
 	public void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
-		// TODO Auto-generated method stub
 		Usuario u = procesarUsuario(idUsuario);
 		Alquiler a = u.alquilerActivo();
 		if(a == null)
@@ -118,19 +111,9 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		try {
 			u = repositorioUsuario.getById(idUsuario);
 		} catch (EntidadNoEncontrada e) {
-			// TODO Auto-generated catch block
 			u = new Usuario(idUsuario);
 			repositorioUsuario.add(u);
 		}
 		return u;
 	}
-
-	public UsuarioDTO transformToDto(Usuario u) {
-		List<ReservaDTO> reservas = u.getReservas().stream()
-				.map(r -> new ReservaDTO(r.getId(), r.getIdBici(), r.getCreada(), r.getCaducidad())).toList();
-		List<AlquilerDTO> alquileres = u.getAlquileres().stream()
-				.map(a -> new AlquilerDTO(a.getId(), a.getIdBici(), a.getInicio(), a.getFin())).toList();
-		return new UsuarioDTO(u.getId(), reservas, alquileres);
-	}
-
 }

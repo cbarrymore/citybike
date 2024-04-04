@@ -5,7 +5,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import repositorio.EntidadNoEncontrada;
-import repositorio.RepositorioException;
 
 @Provider
 public class TratamientoEntidadNoEncontradaException implements ExceptionMapper<EntidadNoEncontrada> {

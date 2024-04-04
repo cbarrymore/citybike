@@ -1,21 +1,15 @@
 package modelo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import com.google.gson.annotations.JsonAdapter;
-
 import servicio.FactoriaServicios;
 import servicio.IServicioTiempo;
-import utils.LocalDateTimeAdapter;
 
 public class Alquiler {
 	private String id;
 	private String idBici;
-	@JsonAdapter(value = LocalDateTimeAdapter.class)
 	private LocalDateTime inicio;
-	@JsonAdapter(value = LocalDateTimeAdapter.class)
 	private LocalDateTime fin;
 
 	

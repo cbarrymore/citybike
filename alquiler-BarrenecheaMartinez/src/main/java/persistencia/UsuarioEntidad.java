@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,9 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import modelo.Reserva;
 import modelo.Usuario;
-import repositorio.Identificable;
 
 
 @Entity
@@ -31,8 +30,8 @@ public class UsuarioEntidad implements Entidad<Usuario> {
 	public UsuarioEntidad(Usuario usuario)
 	{
 		this.id = usuario.getId();
-		this.reservas = usuario.getReservas().stream().map(r -> new ReservaEntidad(r)).toList();
-		this.alquileres = usuario.getAlquileres().stream().map(a -> new AlquilerEntidad(a)).toList();
+		this.reservas = usuario.getReservas().stream().map(r -> new ReservaEntidad(r)).collect(Collectors.toList());
+		this.alquileres = usuario.getAlquileres().stream().map(a -> new AlquilerEntidad(a)).collect(Collectors.toList());
 	}
 	
 	public String getId()
@@ -69,8 +68,8 @@ public class UsuarioEntidad implements Entidad<Usuario> {
 	{
 		Usuario us = new Usuario();
 		us.setId(id);
-		us.setAlquileres(alquileres.stream().map(a -> a.getObject()).toList());
-		us.setReservas(reservas.stream().map(r -> r.getObject()).toList());
+		us.setAlquileres(alquileres.stream().map(a -> a.getObject()).collect(Collectors.toList()));
+		us.setReservas(reservas.stream().map(r -> r.getObject()).collect(Collectors.toList()));
 		return us;
 	}
 	

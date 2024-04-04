@@ -2,9 +2,6 @@ package rest.dto;
 
 import java.time.LocalDateTime;
 
-import com.google.gson.annotations.JsonAdapter;
-
-import utils.LocalDateTimeAdapter;
 
 public class ReservaDTO {
 	

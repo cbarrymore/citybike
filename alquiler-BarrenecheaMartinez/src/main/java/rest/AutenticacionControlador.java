@@ -1,8 +1,6 @@
 package rest;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
@@ -16,7 +14,6 @@ import javax.ws.rs.core.Response;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import servicio.FactoriaServicios;
-import servicio.IServicioAlquileres;
 import servicio.IServicioUsuarios;
 import utils.PropertiesReader;
 

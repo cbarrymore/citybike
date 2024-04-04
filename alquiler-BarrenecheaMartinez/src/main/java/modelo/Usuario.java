@@ -1,14 +1,10 @@
 package modelo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import repositorio.Identificable;
 
-@XmlRootElement
 public class Usuario implements Identificable {
 	private String id;
 	private ArrayList<Reserva> reservas;
