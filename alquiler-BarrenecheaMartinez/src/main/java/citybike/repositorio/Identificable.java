@@ -1,4 +1,4 @@
-package repositorio;
+package citybike.repositorio;
 
 public interface Identificable {
 

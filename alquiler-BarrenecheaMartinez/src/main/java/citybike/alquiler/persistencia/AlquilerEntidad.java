@@ -1,4 +1,4 @@
-package persistencia;
+package citybike.alquiler.persistencia;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import modelo.Alquiler;
+import citybike.alquiler.modelo.Alquiler;
+import citybike.persistencia.Entidad;
 
 
 @Entity

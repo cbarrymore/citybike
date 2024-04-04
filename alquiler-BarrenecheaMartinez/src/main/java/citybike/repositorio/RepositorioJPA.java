@@ -1,4 +1,4 @@
-package repositorio;
+package citybike.repositorio;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,8 +9,8 @@ import javax.persistence.Query;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
-import persistencia.Entidad;
-import utils.EntityManagerHelper;
+import citybike.persistencia.Entidad;
+import citybike.utils.EntityManagerHelper;
 
 public abstract class RepositorioJPA<T extends Identificable, K extends Entidad<T>> implements RepositorioString<T> {
 	

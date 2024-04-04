@@ -1,4 +1,4 @@
-package rest;
+package citybike.rest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +18,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import modelo.Usuario;
-import rest.dto.AlquilerDTO;
-import rest.dto.ReservaDTO;
-import rest.dto.UsuarioDTO;
-import servicio.FactoriaServicios;
-import servicio.IServicioAlquileres;
+import citybike.alquiler.servicio.IServicioAlquileres;
+import citybike.rest.dto.AlquilerDTO;
+import citybike.rest.dto.ReservaDTO;
+import citybike.rest.dto.UsuarioDTO;
+import citybike.servicio.FactoriaServicios;
+import citybike.usuario.modelo.Usuario;
 
 @Path("alquileres")
 public class AlquilerControladorRest {

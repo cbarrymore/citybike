@@ -1,4 +1,4 @@
-package persistencia;
+package citybike.usuario.persistencia;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import modelo.Usuario;
+import citybike.alquiler.persistencia.AlquilerEntidad;
+import citybike.persistencia.Entidad;
+import citybike.usuario.modelo.Usuario;
 
 
 @Entity

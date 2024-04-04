@@ -1,9 +1,9 @@
-package modelo;
+package citybike.usuario.modelo;
 
 import java.time.LocalDateTime;
 
-import servicio.FactoriaServicios;
-import servicio.IServicioTiempo;
+import citybike.servicio.FactoriaServicios;
+import citybike.tiempo.servicio.IServicioTiempo;
 
 public class Reserva {
 	private String id;

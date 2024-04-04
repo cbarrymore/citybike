@@ -1,4 +1,4 @@
-package persistencia;
+package citybike.usuario.persistencia;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import modelo.Reserva;
+import citybike.persistencia.Entidad;
+import citybike.usuario.modelo.Reserva;
 
 @Entity
 public class ReservaEntidad implements Entidad<Reserva>

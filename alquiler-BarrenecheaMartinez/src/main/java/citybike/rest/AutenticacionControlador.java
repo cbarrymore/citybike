@@ -1,4 +1,4 @@
-package rest;
+package citybike.rest;
 
 
 import java.time.Instant;
@@ -11,11 +11,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import citybike.servicio.FactoriaServicios;
+import citybike.usuario.servicio.IServicioUsuarios;
+import citybike.utils.PropertiesReader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import servicio.FactoriaServicios;
-import servicio.IServicioUsuarios;
-import utils.PropertiesReader;
 
 @Path("/auth")
 public class AutenticacionControlador {

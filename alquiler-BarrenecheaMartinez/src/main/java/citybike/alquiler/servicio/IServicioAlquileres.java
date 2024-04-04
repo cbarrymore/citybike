@@ -1,8 +1,8 @@
-package servicio;
+package citybike.alquiler.servicio;
 
-import modelo.Usuario;
-import repositorio.EntidadNoEncontrada;
-import repositorio.RepositorioException;
+import citybike.repositorio.EntidadNoEncontrada;
+import citybike.repositorio.RepositorioException;
+import citybike.usuario.modelo.Usuario;
 
 public interface IServicioAlquileres {
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada;

@@ -22,8 +22,8 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception
     {
         httpSecurity.httpBasic().disable().authorizeRequests()
-        .antMatchers("/login/**").permitAll()
-        .antMatchers("/estaciones/**").authenticated().and()
+        .antMatchers("/login/oauth2/code/github").permitAll()
+        .antMatchers("**").authenticated().and()
         .oauth2Login().successHandler(manegadorExito)
         .and()
         .sessionManagement()

@@ -1,7 +1,7 @@
-package servicio;
+package citybike.servicio;
 	
-import repositorio.EntidadNoEncontrada;
-import repositorio.RepositorioException;
+import citybike.repositorio.EntidadNoEncontrada;
+import citybike.repositorio.RepositorioException;
 
 
 public interface IServicioEstaciones {

@@ -1,4 +1,4 @@
-package repositorio;
+package citybike.repositorio;
 
 /*
  * Excepción notificada si no existe una entidad con el identificador

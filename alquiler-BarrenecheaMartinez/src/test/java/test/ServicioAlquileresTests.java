@@ -13,15 +13,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import modelo.Reserva;
-import modelo.Usuario;
-import repositorio.EntidadNoEncontrada;
-import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio;
-import repositorio.RepositorioException;
-import servicio.FactoriaServicios;
-import servicio.IServicioAlquileres;
-import servicio.IServicioTiempo;
+import citybike.alquiler.servicio.IServicioAlquileres;
+import citybike.repositorio.EntidadNoEncontrada;
+import citybike.repositorio.FactoriaRepositorios;
+import citybike.repositorio.Repositorio;
+import citybike.repositorio.RepositorioException;
+import citybike.servicio.FactoriaServicios;
+import citybike.tiempo.servicio.IServicioTiempo;
+import citybike.usuario.modelo.Reserva;
+import citybike.usuario.modelo.Usuario;
 
 
 public class ServicioAlquileresTests

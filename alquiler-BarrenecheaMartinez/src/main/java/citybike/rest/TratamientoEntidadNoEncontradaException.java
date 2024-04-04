@@ -1,10 +1,10 @@
-package rest;
+package citybike.rest;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import repositorio.EntidadNoEncontrada;
+import citybike.repositorio.EntidadNoEncontrada;
 
 @Provider
 public class TratamientoEntidadNoEncontradaException implements ExceptionMapper<EntidadNoEncontrada> {

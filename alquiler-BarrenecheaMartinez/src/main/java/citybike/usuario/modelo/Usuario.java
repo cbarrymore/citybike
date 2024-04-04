@@ -1,9 +1,10 @@
-package modelo;
+package citybike.usuario.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import repositorio.Identificable;
+import citybike.alquiler.modelo.Alquiler;
+import citybike.repositorio.Identificable;
 
 public class Usuario implements Identificable {
 	private String id;

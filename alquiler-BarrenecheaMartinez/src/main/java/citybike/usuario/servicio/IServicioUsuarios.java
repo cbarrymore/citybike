@@ -1,4 +1,4 @@
-package servicio;
+package citybike.usuario.servicio;
 
 import java.util.Map;
 

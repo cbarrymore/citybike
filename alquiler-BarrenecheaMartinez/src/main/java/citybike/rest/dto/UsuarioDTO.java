@@ -1,4 +1,4 @@
-package rest.dto;
+package citybike.rest.dto;
 
 import java.util.ArrayList;
 import java.util.List;

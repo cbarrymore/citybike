@@ -1,10 +1,10 @@
-package modelo;
+package citybike.alquiler.modelo;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import servicio.FactoriaServicios;
-import servicio.IServicioTiempo;
+import citybike.servicio.FactoriaServicios;
+import citybike.tiempo.servicio.IServicioTiempo;
 
 public class Alquiler {
 	private String id;

@@ -1,4 +1,4 @@
-package rest;
+package citybike.rest;
 
 import java.time.Instant;
 import java.util.Date;

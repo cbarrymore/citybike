@@ -1,8 +1,9 @@
-package repositorio;
+package citybike.usuario.repositorio;
 
-import modelo.Usuario;
-import persistencia.Entidad;
-import persistencia.UsuarioEntidad;
+import citybike.persistencia.Entidad;
+import citybike.repositorio.RepositorioJPA;
+import citybike.usuario.modelo.Usuario;
+import citybike.usuario.persistencia.UsuarioEntidad;
 
 public class RepositorioUsuarioJPA extends RepositorioJPA<Usuario, UsuarioEntidad>
 {

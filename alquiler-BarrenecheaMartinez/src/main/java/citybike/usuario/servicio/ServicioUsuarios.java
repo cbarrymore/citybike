@@ -1,4 +1,4 @@
-package usuario.servicio;
+package citybike.usuario.servicio;
 
 import java.util.ArrayList;
 import java.util.HashMap;

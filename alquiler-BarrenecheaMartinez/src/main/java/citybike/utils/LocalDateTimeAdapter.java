@@ -1,4 +1,4 @@
-package utils;
+package citybike.utils;
 
 import java.time.format.DateTimeFormatter;
 

@@ -1,6 +1,6 @@
-package repositorio;
+package citybike.repositorio;
 
-import utils.PropertiesReader;
+import citybike.utils.PropertiesReader;
 
 /*
  * Factoría que encapsula la implementación del repositorio.

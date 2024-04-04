@@ -1,4 +1,4 @@
-package repositorio;
+package citybike.repositorio;
 
 /*
  * Excepción que representa un fallo en el sistema de persistencia.
