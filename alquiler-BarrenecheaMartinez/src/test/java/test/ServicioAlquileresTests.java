@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -275,7 +275,7 @@ public class ServicioAlquileresTests
 			bloquear(idUsuario);
 			servicioAlquileres.liberarBloqueo(idUsuario);
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
-			List<Reserva> lista = u.getReservas().stream().filter(r -> r.caducada()).toList();
+			List<Reserva> lista = u.getReservas().stream().filter(r -> r.caducada()).collect(Collectors.toList());
 			assertTrue(lista.isEmpty());
 		}
 		catch (RepositorioException | EntidadNoEncontrada e)
