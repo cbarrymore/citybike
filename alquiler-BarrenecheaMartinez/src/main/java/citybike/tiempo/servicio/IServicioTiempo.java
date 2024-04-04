@@ -1,4 +1,4 @@
-package servicio;
+package citybike.tiempo.servicio;
 
 import java.time.LocalDateTime;
 

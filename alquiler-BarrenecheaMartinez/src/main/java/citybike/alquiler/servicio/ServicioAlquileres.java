@@ -1,20 +1,20 @@
-package alquiler.servicio;
+package citybike.alquiler.servicio;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import repositorio.EntidadNoEncontrada;
-import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio;
-import repositorio.RepositorioException;
-import servicio.FactoriaServicios;
-import servicio.IServicioEstaciones;
-import servicio.IServicioTiempo;
-import usuario.modelo.Alquiler;
-import usuario.modelo.Reserva;
-import usuario.modelo.Usuario;
+import citybike.alquiler.modelo.Alquiler;
+import citybike.repositorio.EntidadNoEncontrada;
+import citybike.repositorio.FactoriaRepositorios;
+import citybike.repositorio.Repositorio;
+import citybike.repositorio.RepositorioException;
+import citybike.servicio.FactoriaServicios;
+import citybike.servicio.IServicioEstaciones;
+import citybike.tiempo.servicio.IServicioTiempo;
+import citybike.usuario.modelo.Reserva;
+import citybike.usuario.modelo.Usuario;
 
 public class ServicioAlquileres implements IServicioAlquileres {
 

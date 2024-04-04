@@ -1,10 +1,10 @@
-package rest;
+package citybike.rest;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import repositorio.RepositorioException;
+import citybike.repositorio.RepositorioException;
 
 @Provider
 public class TratamientoRepositorioException implements ExceptionMapper<RepositorioException> {

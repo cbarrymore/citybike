@@ -1,4 +1,4 @@
-package rest;
+package citybike.rest;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,9 +1,9 @@
-package servicio;
+package citybike.servicio;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import utils.PropertiesReader;
+import citybike.utils.PropertiesReader;
 
 /*
  * Factoría que encapsula la implementación de un servicio.

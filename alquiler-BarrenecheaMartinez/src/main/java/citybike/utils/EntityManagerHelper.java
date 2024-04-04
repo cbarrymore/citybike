@@ -1,4 +1,4 @@
-package utils;
+package citybike.utils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

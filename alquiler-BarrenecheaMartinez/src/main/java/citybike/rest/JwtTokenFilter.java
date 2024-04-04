@@ -1,4 +1,4 @@
-package rest;
+package citybike.rest;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -18,9 +18,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
+import citybike.utils.PropertiesReader;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import utils.PropertiesReader;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)

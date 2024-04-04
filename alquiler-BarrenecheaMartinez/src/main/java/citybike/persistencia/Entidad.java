@@ -1,6 +1,6 @@
-package persistencia;
+package citybike.persistencia;
 
-import repositorio.Identificable;
+import citybike.repositorio.Identificable;
 
 public interface Entidad<T> extends Identificable
 {

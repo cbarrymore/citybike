@@ -1,4 +1,4 @@
-package rest;
+package citybike.rest;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
