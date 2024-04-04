@@ -5,23 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import modelo.Reserva;
-import modelo.Usuario;
-import repositorio.EntidadNoEncontrada;
-import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio;
-import repositorio.RepositorioException;
-import servicio.FactoriaServicios;
-import servicio.IServicioAlquileres;
-import servicio.IServicioTiempo;
+import citybike.alquiler.servicio.IServicioAlquileres;
+import citybike.repositorio.EntidadNoEncontrada;
+import citybike.repositorio.FactoriaRepositorios;
+import citybike.repositorio.Repositorio;
+import citybike.repositorio.RepositorioException;
+import citybike.servicio.FactoriaServicios;
+import citybike.tiempo.servicio.IServicioTiempo;
+import citybike.usuario.modelo.Reserva;
+import citybike.usuario.modelo.Usuario;
 
 
 public class ServicioAlquileresTests
@@ -275,7 +275,7 @@ public class ServicioAlquileresTests
 			bloquear(idUsuario);
 			servicioAlquileres.liberarBloqueo(idUsuario);
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
-			List<Reserva> lista = u.getReservas().stream().filter(r -> r.caducada()).toList();
+			List<Reserva> lista = u.getReservas().stream().filter(r -> r.caducada()).collect(Collectors.toList());
 			assertTrue(lista.isEmpty());
 		}
 		catch (RepositorioException | EntidadNoEncontrada e)
