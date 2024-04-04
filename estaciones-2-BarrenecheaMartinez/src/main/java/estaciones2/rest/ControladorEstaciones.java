@@ -5,15 +5,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +38,9 @@ public class ControladorEstaciones {
 	private IServicioEstaciones servEstaciones;
 
 	@Autowired
+	private PagedResourcesAssembler<EstacionDto> pagedResourcesAssembler;
+
+	@Autowired
 	public ControladorEstaciones(IServicioEstaciones servEstaciones) {
 		this.servEstaciones = servEstaciones;
 	}
@@ -44,9 +54,11 @@ public class ControladorEstaciones {
 	}
 
 	@GetMapping
-	public List<EstacionDto> getEstaciones() throws Exception {
-		List<Estacion> estaciones = servEstaciones.obtenerEstaciones();
-		return estaciones.stream().map(EstacionDto::deEntidad).collect(Collectors.toList());
+	public PagedModel<EntityModel<EstacionDto>> getEstaciones(@RequestParam int page, @RequestParam int size)
+			throws Exception {
+		Pageable paginacion = PageRequest.of(page, size);
+		Page<Estacion> estaciones = servEstaciones.obtenerEstacionesPaginado(paginacion);
+		return this.pagedResourcesAssembler.toModel(estaciones.map(EstacionDto::deEntidad));
 	}
 
 	@GetMapping("/{id}")
@@ -77,7 +89,7 @@ public class ControladorEstaciones {
 		return emBicisDto;
 	}
 
-	@DeleteMapping("/{id}/bicis/{idBici}")
+	@PutMapping("/{id}/bicis/{idBici}")
 	public ResponseEntity<Void> darBajaBici(@PathVariable String id, @PathVariable String idBici) throws Exception {
 		servEstaciones.darBajaBici(idBici, "Baja por usuario");
 		// return a string informing the user that the bike was successfully removed

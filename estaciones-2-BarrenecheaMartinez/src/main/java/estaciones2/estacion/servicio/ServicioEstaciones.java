@@ -109,6 +109,11 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		return lista;
 	}
 
+	@Override
+	public Page<Estacion> obtenerEstacionesPaginado(Pageable paginacion) {
+		return repoEstaciones.findAll(paginacion);
+	}
+
 	// @Override
 	// public Page<Bici> bicisEstacionLimitadoPaginado(String idEstaciones, Pageable
 	// paginacion)

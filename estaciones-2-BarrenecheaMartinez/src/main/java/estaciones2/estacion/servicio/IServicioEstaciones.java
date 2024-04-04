@@ -32,4 +32,6 @@ public interface IServicioEstaciones {
 	// throws RepositorioException, EntidadNoEncontrada;
 
 	public List<Estacion> obtenerEstaciones() throws RepositorioException;
+
+	public Page<Estacion> obtenerEstacionesPaginado(Pageable paginacion);
 }
