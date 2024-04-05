@@ -10,9 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,78 +28,127 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import estaciones2.bici.dto.BiciDto;
 import estaciones2.bici.modelo.Bici;
-import estaciones2.estacion.dto.EstacionDto;
+import estaciones2.estacion.dto.NuevaEstacionDto;
 import estaciones2.estacion.modelo.Estacion;
 import estaciones2.estacion.servicio.IServicioEstaciones;
 import estaciones2.repositorio.RepositorioException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import estaciones2.estacion.dto.EstacionDto;
 
 @RestController
 @RequestMapping("/api/estaciones")
+@Tag(name = "Estaciones", description = "Gestión de estaciones")
 public class ControladorEstaciones {
 
 	private IServicioEstaciones servEstaciones;
 
 	@Autowired
-	private PagedResourcesAssembler<EstacionDto> pagedResourcesAssembler;
+	private PagedResourcesAssembler<EstacionDto> pagedResourcesAssemblerEstacionDto;
+
+	@Autowired
+	private PagedResourcesAssembler<BiciDto> pagedResourcesAssemblerBiciDto;
 
 	@Autowired
 	public ControladorEstaciones(IServicioEstaciones servEstaciones) {
 		this.servEstaciones = servEstaciones;
 	}
 
+	// #region gestor
+	@Operation(summary = "Crear una nueva estación", description = "Crea una nueva estación en el sistema")
 	@PostMapping
-	public ResponseEntity<Void> crearEstacion(@RequestBody EstacionDto estacion) throws RepositorioException {
+	public ResponseEntity<Void> crearEstacion(@Validated @RequestBody NuevaEstacionDto estacion)
+			throws RepositorioException {
 		String id = servEstaciones.altaEstacion(estacion.getNombre(), estacion.getNumPuestos(), estacion.getDirPostal(),
 				estacion.getLatitud(), estacion.getLongitud());
 		URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 		return ResponseEntity.created(nuevaURL).build();
 	}
 
-	@GetMapping
-	public PagedModel<EntityModel<EstacionDto>> getEstaciones(@RequestParam int page, @RequestParam int size)
+	@PostMapping("/{id}/bicis/{idBici}")
+	@Operation(summary = "Dar de baja una bicicleta", description = "Da de baja una bicicleta de la estación")
+	public ResponseEntity<Void> darAltaBici(@PathVariable String modelo, @PathVariable String idEstacion)
 			throws Exception {
-		Pageable paginacion = PageRequest.of(page, size);
-		Page<Estacion> estaciones = servEstaciones.obtenerEstacionesPaginado(paginacion);
-		return this.pagedResourcesAssembler.toModel(estaciones.map(EstacionDto::deEntidad));
+		String idBici = servEstaciones.altaBici(modelo, idEstacion);
+		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/{id}")
-	public EstacionDto getEstacion(@PathVariable String id) throws Exception {
-		Estacion estacion = servEstaciones.obtenerEstacion(id);
-		return EstacionDto.deEntidad(estacion);
-	}
-
-	@GetMapping("/id/bicis")
-	public List<EntityModel<BiciDto>> getBicisEstacion(@PathVariable String id) throws Exception {
-		List<Bici> bicis = servEstaciones.bicisEstacionLimitado(id);
-		List<BiciDto> bicisDto = bicis.stream().map(b -> BiciDto.deEntidad(b, id)).collect(Collectors.toList());
-		List<EntityModel<BiciDto>> emBicisDto;
-		emBicisDto = bicisDto.stream().map(b -> EntityModel.of(b)).collect(Collectors.toList());
-		emBicisDto.forEach(b -> {
-			try {
-				String urlEliminar = WebMvcLinkBuilder
-						.linkTo(WebMvcLinkBuilder
-								.methodOn(ControladorEstaciones.class)
-								.darBajaBici(id, b.getContent().getCodigo()))
-						.toUri()
-						.toString();
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		});
-		return emBicisDto;
-	}
-
-	@PutMapping("/{id}/bicis/{idBici}")
-	public ResponseEntity<Void> darBajaBici(@PathVariable String id, @PathVariable String idBici) throws Exception {
+	@DeleteMapping("/{id}/bicis/{idBici}")
+	@Operation(summary = "Dar de baja una bicicleta", description = "Da de baja una bicicleta de la estación")
+	public ResponseEntity<Void> darBajaBicicleta(@PathVariable String id, @PathVariable String idBici)
+			throws Exception {
 		servEstaciones.darBajaBici(idBici, "Baja por usuario");
 		// return a string informing the user that the bike was successfully removed
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/saludo")
-	public String saludo() {
-		return "Hola Mundo";
+	@GetMapping("/id/bicis")
+	@Operation(summary = "Obtener las bicicletas de una estación", description = "Obtiene las bicicletas de una estación")
+	public PagedModel<EntityModel<BiciDto>> getBicisEstacion(@PathVariable String id, @RequestParam int page,
+			@RequestParam int size) throws Exception {
+
+		Pageable paginacion = PageRequest.of(page, size);
+
+		Page<Bici> bicis = servEstaciones.biciEstacionPaginado(id, paginacion);
+		PagedModel<EntityModel<BiciDto>> emBicisDto = this.pagedResourcesAssemblerBiciDto
+				.toModel(bicis.map(b -> BiciDto.deEntidad(b, id)));
+		emBicisDto.forEach(b -> {
+			try {
+				String urlEliminar = WebMvcLinkBuilder
+						.linkTo(WebMvcLinkBuilder
+								.methodOn(ControladorEstaciones.class)
+								.darBajaBicicleta(id, b.getContent().getCodigo()))
+						.toUri()
+						.toString();
+				b.add(Link.of(urlEliminar, "delete"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		});
+
+		return emBicisDto;
 	}
+
+	// #endregion
+
+	// #region all
+	@GetMapping
+	@Operation(summary = "Obtener las estaciones", description = "Obtiene las estaciones del sistema")
+	public PagedModel<EntityModel<EstacionDto>> getEstaciones(@RequestParam int page, @RequestParam int size)
+			throws Exception {
+		Pageable paginacion = PageRequest.of(page, size);
+		Page<Estacion> estaciones = servEstaciones.obtenerEstacionesPaginado(paginacion);
+
+		return this.pagedResourcesAssemblerEstacionDto.toModel(estaciones.map(EstacionDto::deEntidad));
+	}
+
+	@GetMapping("/{id}")
+	@Operation(summary = "Obtener una estación", description = "Obtiene una estación del sistema")
+	public EstacionDto getEstacion(@PathVariable String id) throws Exception {
+		Estacion estacion = servEstaciones.obtenerEstacion(id);
+		return EstacionDto.deEntidad(estacion);
+	}
+
+	@GetMapping("/{id}/bicis/disponibles")
+	@Operation(summary = "Obtener las bicicletas disponibles de una estación", description = "Obtiene las bicicletas disponibles de una estación")
+	public PagedModel<EntityModel<BiciDto>> getBicisDisponiblesEstacion(@PathVariable String id, @RequestParam int page,
+			@RequestParam int size) throws Exception {
+		Pageable paginacion = PageRequest.of(page, size);
+		Page<Bici> bicis = servEstaciones.bicisEstacionLimitadoPaginado(id, paginacion);
+
+		PagedModel<EntityModel<BiciDto>> emBicisDto = this.pagedResourcesAssemblerBiciDto
+				.toModel(bicis.map(b -> BiciDto.deEntidad(b, id)));
+
+		return emBicisDto;
+	}
+
+	@PutMapping("/{id}/bicis/{idBici}")
+	@Operation(summary = "Estacionar una bicicleta", description = "Estaciona una bicicleta en la estación")
+	public ResponseEntity<Void> estacionarBicicleta(@PathVariable String idEstacion, @PathVariable String idBici)
+			throws Exception {
+		servEstaciones.estacionarBici(idEstacion, idBici);
+		return ResponseEntity.noContent().build();
+	}
+	// #endregion
 }

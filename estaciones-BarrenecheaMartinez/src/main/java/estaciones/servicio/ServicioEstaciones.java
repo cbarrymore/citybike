@@ -114,7 +114,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		if (idBici == null)
 			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
 		Estacion estacion = filtroEstacion.getEstacionLibre();
-		if(estacion != null)
+		if (estacion != null)
 			estacionarBici(idBici, estacion.getId());
 	}
 
@@ -139,8 +139,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			throw new IllegalArgumentException("El id de la bici no puede ser nulo");
 		Historico historico = filtroHistorico.getByBiciId(idBici); // Obtener historico
 		Bici bici = repoBicis.getById(idBici);
-		if (historico.biciAparcada())
-		{
+		if (historico.biciAparcada()) {
 			String idEstacion = historico.getEstacion();
 			Estacion estacion = repositorio.getById(idEstacion);
 			estacion.retirarBici(idBici);
@@ -152,7 +151,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 
 	public Set<Bici> bicisCercanas(BigDecimal longitud, BigDecimal latitud)
 			throws RepositorioException, EntidadNoEncontrada {
-		
+
 		Set<Estacion> estaciones = filtroEstacion.getEstacionesProximas(longitud, latitud);
 		Set<String> idsBicisAparcadas;
 		Set<Bici> bicisAparcadas = new HashSet<Bici>();
@@ -168,9 +167,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		}
 		return bicisAparcadas;
 	}
+
 	public List<BiciDTO> bicisDTOCercanas(BigDecimal longitud, BigDecimal latitud)
 			throws RepositorioException, EntidadNoEncontrada {
-		
+
 		Set<Estacion> estaciones = filtroEstacion.getEstacionesProximas(longitud, latitud);
 		Set<String> idsBicisAparcadas;
 		List<BiciDTO> bicisAparcadas = new ArrayList<BiciDTO>();
@@ -180,26 +180,27 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			idsBicisAparcadas = estacion.getBicisAparcadas();
 			for (String idBici : idsBicisAparcadas) {
 				bici = repoBicis.getById(idBici);
-//				if (bici.isDisponible())
-					bicisAparcadas.add(transformToDTO(bici,estacion.getId()));
+				// if (bici.isDisponible())
+				bicisAparcadas.add(transformToDTO(bici, estacion.getId()));
 			}
 		}
 		return bicisAparcadas;
 	}
-	public List<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException
-	{
-		return repositorio.getAll().stream().filter(e -> e.getSitiosInteres()!=null)
-		.sorted((e1, e2) -> 
-		(Integer.compare(e2.getSitiosInteres().size(), e1.getSitiosInteres().size())))
-		.collect(Collectors.toList());
+
+	public List<Estacion> estacionesPorNumeroSitiosTuristicos() throws RepositorioException {
+		return repositorio.getAll().stream().filter(e -> e.getSitiosInteres() != null)
+				.sorted((e1, e2) -> (Integer.compare(e2.getSitiosInteres().size(), e1.getSitiosInteres().size())))
+				.collect(Collectors.toList());
 	}
-	
+
 	private BiciDTO transformToDTO(Bici bici, String idEstacion) {
 		List<IncidenciaDTO> incidenciasDTO = bici.getIncidencias().stream()
-				.map(incidencia -> new IncidenciaDTO(incidencia.getId(), incidencia.getFechaAlta(), incidencia.getFechaCierre(), 
+				.map(incidencia -> new IncidenciaDTO(incidencia.getId(), incidencia.getFechaAlta(),
+						incidencia.getFechaCierre(),
 						incidencia.getDescripcion(), incidencia.getEstado().toString(), incidencia.getIdBici()))
 				.toList();
-		return new BiciDTO(bici.getCodigo(), bici.getFechaAlta(), bici.getModelo(), bici.getFechaBaja(), bici.getMotivoBaja(), bici.isDisponible(),incidenciasDTO,idEstacion);
+		return new BiciDTO(bici.getCodigo(), bici.getFechaAlta(), bici.getModelo(), bici.getFechaBaja(),
+				bici.getMotivoBaja(), bici.isDisponible(), incidenciasDTO, idEstacion);
 	}
 
 	@Override

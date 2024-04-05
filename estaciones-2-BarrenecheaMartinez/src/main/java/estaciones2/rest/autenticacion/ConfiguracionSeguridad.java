@@ -19,16 +19,18 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
     private FiltroRespuestaJwt filtroRespuesta;
 
     @Override
-    public void configure(HttpSecurity httpSecurity) throws Exception
-    {
+    public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic().disable().authorizeRequests()
-        .antMatchers("/login/oauth2/code/github").permitAll()
-        .antMatchers("**").authenticated().and()
-        .oauth2Login().successHandler(manegadorExito)
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .antMatchers("/login/oauth2/code/github").permitAll()
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
+                        "/webjars/**")
+                .permitAll()
+                .antMatchers("/api/*").authenticated().and()
+                .oauth2Login().successHandler(manegadorExito)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(this.filtroRespuesta, UsernamePasswordAuthenticationFilter.class);
     }
-    
+
 }

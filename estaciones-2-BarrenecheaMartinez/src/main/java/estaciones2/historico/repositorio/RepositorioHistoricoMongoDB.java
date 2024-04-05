@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import estaciones2.historico.modelo.Historico;
 
 @Repository
-public interface RepositorioHistoricoMongoDB extends RepositorioHistorico, MongoRepository<Historico, String>
-{
+public interface RepositorioHistoricoMongoDB extends RepositorioHistorico, MongoRepository<Historico, String> {
 
+    public Historico findByIdBici(String idBici);
 }

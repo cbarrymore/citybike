@@ -21,27 +21,30 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @Component
-public class FiltroRespuestaJwt extends OncePerRequestFilter{
+public class FiltroRespuestaJwt extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No hay token o no es correcto");
             return;
         }
         String token = authorization.substring("Bearer ".length()).trim();
-        Claims claims = Jwts.parser().setSigningKey("secreto").parseClaimsJws(token).getBody(); //Hay que codificarlo
-		if(claims.getExpiration().before(new Date())) {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token caducado");
+        Claims claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que
+                                                                                                           // codificarlo
+        if (claims.getExpiration().before(new Date())) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token caducado");
             return;
-		}
+        }
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority((String)claims.get("rol")));
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null, authorities);
+        authorities.add(new SimpleGrantedAuthority((String) claims.get("rol")));
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
+                authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
         filterChain.doFilter(request, response);
 
     }
-    
+
 }

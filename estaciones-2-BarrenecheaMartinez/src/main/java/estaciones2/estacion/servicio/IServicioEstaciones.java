@@ -21,15 +21,19 @@ public interface IServicioEstaciones {
 
 	public String altaBici(String modelo, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 
+	public void estacionarBici(String idEstacion, String idBici) throws RepositorioException, EntidadNoEncontrada;
+
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada;
 
-	public List<Bici> bicisEstacion(String idEstaciones) throws RepositorioException, EntidadNoEncontrada;
+	public List<Bici> bicisEstacion(String idEstaciones)
+			throws RepositorioException, EntidadNoEncontrada;
+
+	public Page<Bici> biciEstacionPaginado(String idEstacion, Pageable paginacion) throws RepositorioException;
 
 	public List<Bici> bicisEstacionLimitado(String idEstaciones) throws RepositorioException, EntidadNoEncontrada;
 
-	// public Page<Bici> bicisEstacionLimitadoPaginado(String idEstaciones,Pageable
-	// paginacion) throws RepositorioException, EntidadNoEncontrada;
-	// throws RepositorioException, EntidadNoEncontrada;
+	public Page<Bici> bicisEstacionLimitadoPaginado(String idEstaciones, Pageable paginacion)
+			throws RepositorioException;
 
 	public List<Estacion> obtenerEstaciones() throws RepositorioException;
 

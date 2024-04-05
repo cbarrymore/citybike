@@ -9,60 +9,55 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "incidencia")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "incidencias")
 public class Incidencia {
 	@Id
 	private String id;
-	@Column(name="fecha_de_alta", columnDefinition = "DATE")
 	private LocalDate fechaAlta;
-	
-	
-	@Column (name = "fecha_de_cierre",columnDefinition = "DATE")
 	private LocalDate fechaCierre;
-	
-	@Column(name = "descripcion")
 	private String descripcion;
-	
-	@Enumerated(EnumType.STRING)
 	private Estado estado;
-	
-	@Column(name = "id_bici")
 	private String idBici;
-	
+
 	public Incidencia() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Incidencia(String descripcion,String idBici) {
+
+	public Incidencia(String descripcion, String idBici) {
 		this.fechaAlta = LocalDate.now();
-		this.descripcion= descripcion;
+		this.descripcion = descripcion;
 		this.estado = Estado.PENDIENTE;
 		this.id = UUID.randomUUID().toString() + idBici;
 		this.idBici = idBici;
 	}
-	
-	
+
 	public LocalDate getFechaAlta() {
 		return fechaAlta;
 	}
+
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}
+
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
 	public Estado getEstado() {
 		return estado;
 	}
+
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
@@ -82,7 +77,7 @@ public class Incidencia {
 	public void setFechaCierre(LocalDate fechaCierre) {
 		this.fechaCierre = fechaCierre;
 	}
-	
+
 	public String getIdBici() {
 		return idBici;
 	}
@@ -91,9 +86,8 @@ public class Incidencia {
 		this.idBici = idBici;
 	}
 
-	public boolean isAbierta()
-	{
+	public boolean isAbierta() {
 		return this.estado.abierta();
 	}
-	
+
 }

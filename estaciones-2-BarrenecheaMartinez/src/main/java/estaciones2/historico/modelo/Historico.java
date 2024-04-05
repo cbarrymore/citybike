@@ -11,13 +11,13 @@ public class Historico {
 	@BsonId
 	@BsonRepresentation(BsonType.OBJECT_ID) 
 	private String id;
-	private String bici;
+	private String idBici;
 	private String estacion;
 	private LocalDate fechaEntrada;
 	private LocalDate fechaSalida;
 	
-	public Historico(String bici) {
-		this.bici = bici;
+	public Historico(String idBici) {
+		this.idBici = idBici;
 		this.estacion = null;
 		this.fechaEntrada = null;
 		this.fechaSalida = null;
@@ -28,10 +28,10 @@ public class Historico {
 	}
 	
 	public String getBici() {
-		return bici;
+		return idBici;
 	}
 	public void setBici(String bici) {
-		this.bici = bici;
+		this.idBici = bici;
 	}
 	
 	public String getEstacion()
