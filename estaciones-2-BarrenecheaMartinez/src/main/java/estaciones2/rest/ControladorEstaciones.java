@@ -94,8 +94,9 @@ public class ControladorEstaciones {
 		Pageable paginacion = PageRequest.of(page, size);
 
 		Page<Bici> bicis = servEstaciones.biciEstacionPaginado(id, paginacion);
+		Page<BiciDto> bicisDto = bicis.map(b -> BiciDto.deEntidad(b, id));
 		PagedModel<EntityModel<BiciDto>> emBicisDto = this.pagedResourcesAssemblerBiciDto
-				.toModel(bicis.map(b -> BiciDto.deEntidad(b, id)));
+				.toModel(bicisDto);
 		emBicisDto.forEach(b -> {
 			try {
 				String urlEliminar = WebMvcLinkBuilder

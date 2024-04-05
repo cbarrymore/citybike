@@ -1,5 +1,7 @@
 package estaciones2.bici.dto;
 
+import java.time.LocalDate;
+
 public class IncidenciaDto {
     private String id;
     private String fechaAlta;
@@ -13,6 +15,19 @@ public class IncidenciaDto {
         this.id = id;
         this.fechaAlta = fechaAlta;
         this.fechaCierre = fechaCierre;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.idBici = idBici;
+    }
+
+    public IncidenciaDto(String id, LocalDate fechaAlta, LocalDate fechaCierre, String descripcion, String estado,
+            String idBici) {
+        this.id = id;
+        this.fechaAlta = fechaAlta.toString();
+        if(fechaCierre!=null)
+            this.fechaCierre = fechaCierre.toString();
+        else
+            this.fechaCierre=null;
         this.descripcion = descripcion;
         this.estado = estado;
         this.idBici = idBici;
