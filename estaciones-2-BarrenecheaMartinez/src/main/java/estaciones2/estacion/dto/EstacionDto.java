@@ -8,16 +8,27 @@ import java.util.List;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import estaciones2.estacion.modelo.Estacion;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "DTO para la creacion de una nueva estacion en el sistema")
 public class EstacionDto {
+    @Schema(description = "Identificador de la estacion")
     private String id;
+    @Schema(description = "Nombre de la estacion")
     private String nombre;
+    @Schema(description = "Indica si la estacion esta llena")
     private boolean lleno;
+    @Schema(description = "Direccion postal de la estacion")
     private long dirPostal;
+
     @BsonProperty(value = "coordenadas")
+    @Schema(description = "Coordenadas de la estacion")
     private List<Double> coordenadas;
+    @Schema(description = "Latitud de la estacion")
     private BigDecimal latitud;
+    @Schema(description = "Longitud de la estacion")
     private BigDecimal longitud;
+    @Schema(description = "Fecha de alta de la estacion")
     private LocalDate fechaAlta;
 
     public EstacionDto() {
