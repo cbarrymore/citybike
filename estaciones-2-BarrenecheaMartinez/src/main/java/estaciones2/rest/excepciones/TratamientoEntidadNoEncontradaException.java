@@ -14,7 +14,7 @@ public class TratamientoEntidadNoEncontradaException {
     @ExceptionHandler(EntidadNoEncontrada.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public String manejarEntidadNoEncontradaException(EntidadNoEncontrada ex) {
-        return ex.getMessage();
+    public RespuestaError manejarEntidadNoEncontradaException(EntidadNoEncontrada ex) {
+        return new RespuestaError("Not found", ex.getMessage());
     }
 }
