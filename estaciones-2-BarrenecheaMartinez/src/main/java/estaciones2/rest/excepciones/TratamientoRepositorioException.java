@@ -13,10 +13,10 @@ public class TratamientoRepositorioException {
 
     @ExceptionHandler(RepositorioException.class)
     @ResponseBody
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 
-    public String manejarRepositorioException(RepositorioException ex) {
-        return ex.getMessage();
+    public RespuestaError manejarRepositorioException(RepositorioException ex) {
+        return new RespuestaError("Internal server error", ex.getMessage());
     }
 
 }

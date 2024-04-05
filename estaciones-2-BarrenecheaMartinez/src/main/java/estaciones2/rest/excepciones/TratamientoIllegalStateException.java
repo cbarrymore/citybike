@@ -11,7 +11,7 @@ public class TratamientoIllegalStateException {
     @ExceptionHandler(IllegalStateException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public String manejarIllegalStateException(IllegalStateException ex) {
-        return ex.getMessage();
+    public RespuestaError manejarIllegalStateException(IllegalStateException ex) {
+        return new RespuestaError("Bad request", ex.getMessage());
     }
 }

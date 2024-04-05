@@ -11,8 +11,8 @@ public class TratamientoRunTimeException {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public String manejarRuntimeException(RuntimeException ex) {
-        return ex.getMessage();
+    public RespuestaError manejarRuntimeException(RuntimeException ex) {
+        return new RespuestaError("Internal server error", ex.getMessage());
     }
 
 }
