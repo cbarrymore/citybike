@@ -65,7 +65,7 @@ public class ControladorEstaciones {
 		return ResponseEntity.created(nuevaURL).build();
 	}
 
-	@PostMapping("/{id}/bicis")
+	@PostMapping("/{idEstacion}/bicis")
 	@Operation(summary = "Dar de alta una bicicleta", description = "Da de alta una bicicleta de la estación")
 	public ResponseEntity<Void> darAltaBici(@RequestParam String modelo, @PathVariable String idEstacion)
 			throws Exception {
