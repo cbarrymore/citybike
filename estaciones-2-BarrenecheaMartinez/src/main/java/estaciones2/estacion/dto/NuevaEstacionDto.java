@@ -14,8 +14,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "DTO para la creacion de una nueva estacion en el sistema")
 public class NuevaEstacionDto {
-	@Schema(description = "Identificador de la estacion")
-	private String id;
 	@NotNull
 	@Schema(description = "Nombre de la estacion")
 	private String nombre;
@@ -51,14 +49,6 @@ public class NuevaEstacionDto {
 		this.coordenadas = new ArrayList<Double>();
 		coordenadas.add(longitud.doubleValue());
 		coordenadas.add(latitud.doubleValue());
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getNombre() {
@@ -115,15 +105,6 @@ public class NuevaEstacionDto {
 
 	public void setFechaAlta(LocalDate fechaAlta) {
 		this.fechaAlta = fechaAlta;
-	}
-
-	public static NuevaEstacionDto deEntidad(Estacion estacion) {
-		NuevaEstacionDto nueva = new NuevaEstacionDto(estacion.getNombre(), estacion.getNumPuestos(),
-				estacion.getDirPostal(),
-				estacion.getLatitud(),
-				estacion.getLongitud());
-		nueva.setId(estacion.getId());
-		return nueva;
 	}
 
 }

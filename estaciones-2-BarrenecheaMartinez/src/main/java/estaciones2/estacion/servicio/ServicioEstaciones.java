@@ -87,6 +87,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		bici.setFechaBaja(LocalDate.now());
 		bici.setMotivoBaja(motivo);
 		bici.setEstacion(null);
+		bici.setDisponible(false);
 		Historico historico = repoHistoricos.findByIdBici(idBici);
 		Estacion estacion = repoEstaciones.findById(historico.getEstacion()).orElseThrow(
 				() -> new EntidadNoEncontrada("Estacion no encontrada"));
@@ -183,6 +184,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		estacion.aparcarBici(idBici);
 		historico.marcarEntrada(idEstacion);
 		bici.setEstacion(idEstacion);
+		bici.setDisponible(true);
 		repoBicis.save(bici);
 		repoEstaciones.save(estacion);
 		repoHistoricos.save(historico);

@@ -65,9 +65,9 @@ public class ControladorEstaciones {
 		return ResponseEntity.created(nuevaURL).build();
 	}
 
-	@PostMapping("/{id}/bicis/{idBici}")
-	@Operation(summary = "Dar de baja una bicicleta", description = "Da de baja una bicicleta de la estación")
-	public ResponseEntity<Void> darAltaBici(@PathVariable String modelo, @PathVariable String idEstacion)
+	@PostMapping("/{id}/bicis")
+	@Operation(summary = "Dar de alta una bicicleta", description = "Da de alta una bicicleta de la estación")
+	public ResponseEntity<Void> darAltaBici(@RequestParam String modelo, @PathVariable String idEstacion)
 			throws Exception {
 		String idBici = servEstaciones.altaBici(modelo, idEstacion);
 		return ResponseEntity.noContent().build();
@@ -86,7 +86,7 @@ public class ControladorEstaciones {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/id/bicis")
+	@GetMapping("/{id}/bicis")
 	@Operation(summary = "Obtener las bicicletas de una estación", description = "Obtiene las bicicletas de una estación")
 	public PagedModel<EntityModel<BiciDto>> getBicisEstacion(@PathVariable String id, @RequestParam int page,
 			@RequestParam int size) throws Exception {

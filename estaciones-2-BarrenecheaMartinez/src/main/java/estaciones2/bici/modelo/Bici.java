@@ -39,6 +39,7 @@ public class Bici implements Identificable {
 		this.modelo = modelo;
 		this.fechaAlta = fechaAlta;
 		this.incidencias = new LinkedList<Incidencia>();
+		this.disponible = true;
 	}
 
 	public String getCodigo() {
