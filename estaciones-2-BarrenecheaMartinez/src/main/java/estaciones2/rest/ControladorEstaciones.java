@@ -82,7 +82,7 @@ public class ControladorEstaciones {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/id/bicis")
+	@GetMapping("/{id}/bicis")
 	@Operation(summary = "Obtener las bicicletas de una estación", description = "Obtiene las bicicletas de una estación")
 	public PagedModel<EntityModel<BiciDto>> getBicisEstacion(@PathVariable String id, @RequestParam int page,
 			@RequestParam int size) throws Exception {
@@ -90,8 +90,9 @@ public class ControladorEstaciones {
 		Pageable paginacion = PageRequest.of(page, size);
 
 		Page<Bici> bicis = servEstaciones.biciEstacionPaginado(id, paginacion);
+		Page<BiciDto> bicisDto = bicis.map(b -> BiciDto.deEntidad(b, id));
 		PagedModel<EntityModel<BiciDto>> emBicisDto = this.pagedResourcesAssemblerBiciDto
-				.toModel(bicis.map(b -> BiciDto.deEntidad(b, id)));
+				.toModel(bicisDto);
 		emBicisDto.forEach(b -> {
 			try {
 				String urlEliminar = WebMvcLinkBuilder

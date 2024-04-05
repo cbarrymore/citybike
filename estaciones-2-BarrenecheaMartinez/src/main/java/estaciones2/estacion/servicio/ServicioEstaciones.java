@@ -131,6 +131,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public Page<Bici> biciEstacionPaginado(String idEstacion, Pageable paginacion) {
 		Page<Bici> bicis = repoBicis.findByEstacion(idEstacion, null);
+		System.out.println(bicis.getNumberOfElements());
 		return bicis;
 	}
 
