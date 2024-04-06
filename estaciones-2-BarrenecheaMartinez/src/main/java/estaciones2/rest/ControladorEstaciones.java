@@ -160,4 +160,11 @@ public class ControladorEstaciones {
 		return ResponseEntity.noContent().build();
 	}
 	// #endregion
+
+	@GetMapping("/{id}/hueco")
+	@Operation(summary = "Comprobar si hay hueco en la estación", description = "Comprueba si hay hueco en la estación")
+	public boolean huecoDisponible(@PathVariable String id) throws Exception {
+		return servEstaciones.huecoDisponible(id);
+	}
+
 }

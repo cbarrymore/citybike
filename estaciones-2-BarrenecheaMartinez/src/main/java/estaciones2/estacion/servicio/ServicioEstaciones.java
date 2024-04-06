@@ -191,4 +191,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		repoHistoricos.save(historico);
 	}
 
+	@Override
+	public boolean huecoDisponible(String idEstacion) throws RepositorioException, EntidadNoEncontrada {
+		Estacion estacion = repoEstaciones.findById(idEstacion).orElseThrow(
+				() -> new EntidadNoEncontrada("Estacion no encontrada"));
+		return !estacion.lleno();
+	}
 }

@@ -92,6 +92,20 @@
 		<artifactId>jjwt</artifactId>
 		<version>0.9.1</version>
 	</dependency>
+  <dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-amqp</artifactId>
+</dependency>
+<!-- serialización JSON con Jackson -->
+<dependency>
+<groupId>com.fasterxml.jackson.core</groupId>
+<artifactId>jackson-databind</artifactId>
+</dependency>
+<!-- Tipos temporales -->
+<dependency>
+<groupId>com.fasterxml.jackson.datatype</groupId>
+<artifactId>jackson-datatype-jsr310</artifactId>
+</dependency>
   </dependencies>
   <build>
     <plugins>

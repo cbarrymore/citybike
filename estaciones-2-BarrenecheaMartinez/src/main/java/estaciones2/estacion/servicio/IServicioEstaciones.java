@@ -38,4 +38,7 @@ public interface IServicioEstaciones {
 	public List<Estacion> obtenerEstaciones() throws RepositorioException;
 
 	public Page<Estacion> obtenerEstacionesPaginado(Pageable paginacion);
+
+	public boolean huecoDisponible(String idEstacion) throws RepositorioException, EntidadNoEncontrada;
+
 }
