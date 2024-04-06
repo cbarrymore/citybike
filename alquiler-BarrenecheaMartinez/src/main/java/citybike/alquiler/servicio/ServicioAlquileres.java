@@ -1,6 +1,6 @@
 package citybike.alquiler.servicio;
 
-
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +12,7 @@ import citybike.repositorio.Repositorio;
 import citybike.repositorio.RepositorioException;
 import citybike.servicio.FactoriaServicios;
 import citybike.servicio.IServicioEstaciones;
+import citybike.servicio.ServicioEstacionesException;
 import citybike.tiempo.servicio.IServicioTiempo;
 import citybike.usuario.modelo.Reserva;
 import citybike.usuario.modelo.Usuario;
@@ -52,7 +53,7 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		if (r != null) {
 			Alquiler al = new Alquiler(r.getIdBici(), tiempo.now());
 			u.getAlquileres().add(al);
-			u.getReservas().remove(u.getReservas().size()-1);
+			u.getReservas().remove(u.getReservas().size() - 1);
 			repositorioUsuario.update(u);
 		} else
 			throw new IllegalStateException("No hay ninguna reserva activa");
@@ -89,12 +90,13 @@ public class ServicioAlquileres implements IServicioAlquileres {
 	}
 
 	@Override
-	public void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
+	public void dejarBicicleta(String idUsuario, String idEstacion)
+			throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException {
 		Usuario u = procesarUsuario(idUsuario);
 		Alquiler a = u.alquilerActivo();
-		if(a == null)
+		if (a == null)
 			throw new IllegalStateException("No hay alquiler activo");
-		if(estaciones.huecoDisponible(idEstacion)) {
+		if (estaciones.huecoDisponible(idEstacion)) {
 			estaciones.estacionarBici(idUsuario, idEstacion);
 			a.setFin(tiempo.now());
 			repositorioUsuario.update(u);
