@@ -14,6 +14,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,7 @@ public class ControladorEstaciones {
 	// #region gestor
 	@Operation(summary = "Crear una nueva estación", description = "Crea una nueva estación en el sistema")
 	@PostMapping
+	@PreAuthorize("hasAuthority('gestor')")
 	public ResponseEntity<Void> crearEstacion(@Validated @RequestBody NuevaEstacionDto estacion)
 			throws RepositorioException {
 		String id = servEstaciones.altaEstacion(estacion.getNombre(), estacion.getNumPuestos(), estacion.getDirPostal(),
@@ -67,6 +69,7 @@ public class ControladorEstaciones {
 
 	@PostMapping("/{idEstacion}/bicis")
 	@Operation(summary = "Dar de alta una bicicleta", description = "Da de alta una bicicleta de la estación")
+	@PreAuthorize("hasAuthority('gestor')")
 	public ResponseEntity<Void> darAltaBici(@RequestParam String modelo, @PathVariable String idEstacion)
 			throws Exception {
 		String idBici = servEstaciones.altaBici(modelo, idEstacion);
@@ -78,7 +81,7 @@ public class ControladorEstaciones {
 	@io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Bicicleta dada de baja"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Bicicleta no encontrada") })
-
+	@PreAuthorize("hasAuthority('gestor')")
 	public ResponseEntity<Void> darBajaBicicleta(@PathVariable String id, @PathVariable String idBici)
 			throws Exception {
 		servEstaciones.darBajaBici(idBici, "Baja por usuario");
@@ -88,6 +91,7 @@ public class ControladorEstaciones {
 
 	@GetMapping("/{id}/bicis")
 	@Operation(summary = "Obtener las bicicletas de una estación", description = "Obtiene las bicicletas de una estación")
+	@PreAuthorize("hasAuthority('gestor')")
 	public PagedModel<EntityModel<BiciDto>> getBicisEstacion(@PathVariable String id, @RequestParam int page,
 			@RequestParam int size) throws Exception {
 
