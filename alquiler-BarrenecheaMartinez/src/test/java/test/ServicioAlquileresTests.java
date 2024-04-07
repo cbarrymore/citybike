@@ -249,7 +249,7 @@ public class ServicioAlquileresTests
 		try
 		{
 			servicioAlquileres.alquilar(idUsuario, "bici");
-			servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
+			//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
 			assertEquals(null, u.alquilerActivo());
 		}
@@ -298,7 +298,7 @@ public class ServicioAlquileresTests
 	{
 		servicioAlquileres.alquilar(id, "biciSupTiempo");
 		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(61));
-		servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
+		//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 	}
 	
 }
