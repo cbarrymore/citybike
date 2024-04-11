@@ -151,11 +151,11 @@ public class ControladorEstaciones {
 		return emBicisDto;
 	}
 
-	@PutMapping("/{id}/bicis/{idBici}")
+	@PutMapping("/{id}/bicis/{idBici}/aparcar")
 	@Operation(summary = "Estacionar una bicicleta", description = "Estaciona una bicicleta en la estación")
-	public ResponseEntity<Void> estacionarBicicleta(@PathVariable String idEstacion, @PathVariable String idBici)
+	public ResponseEntity<Void> estacionarBicicleta(@PathVariable String id, @PathVariable String idBici)
 			throws Exception {
-		servEstaciones.estacionarBici(idEstacion, idBici);
+		servEstaciones.estacionarBici(id, idBici);
 		return ResponseEntity.noContent().build();
 	}
 	// #endregion

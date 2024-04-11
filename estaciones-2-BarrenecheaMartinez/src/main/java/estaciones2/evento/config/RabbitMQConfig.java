@@ -23,10 +23,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 public class RabbitMQConfig {
     public static final String QUEUE_NAME = "citybike.estaciones2";
-    public static final String QUEUE_NAME_ALQUILER = "citybike.alquiler";
     public static final String EXCHANGE_NAME = "Citybike";
     public static final String ROUTING_KEY = "citybike.estaciones2.";
-    public static final String ROUTING_KEY_ALQUILER = "citybike.alquiler.";
 
     @Bean
     public TopicExchange exchange()
@@ -42,30 +40,14 @@ public class RabbitMQConfig {
         boolean autodelete = false;
         return new Queue(QUEUE_NAME, durable, exclusive, autodelete);
     }
-/*
-    @Bean
-    public Queue queueAlquiler()
-    {
-        boolean durable = true;
-        boolean exclusive = false;
-        boolean autodelete = false;
-        return new Queue(QUEUE_NAME_ALQUILER, durable, exclusive, autodelete);
-    }
-*/
+
     @Bean
     public Binding binding(Queue queue, Exchange exchange)
     {
         Map<String, Object> propiedades = null;
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY+"*").and(propiedades);
     }
-/* 
-    @Bean
-    public Binding bindingAlquiler(Queue queueAlquiler, Exchange exchange)
-    {
-        Map<String, Object> propiedades = null;
-        return BindingBuilder.bind(queueAlquiler).to(exchange).with(ROUTING_KEY_ALQUILER+"*").and(propiedades);
-    }
-*/
+
     @Bean
     public MessageConverter jsonMessageConverter()
     {

@@ -23,13 +23,11 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
         httpSecurity.httpBasic().disable().csrf().disable().authorizeRequests()
                 .antMatchers("/login/oauth2/code/github").permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
-                        "/webjars/**")
+                        "/webjars/**","/api/estaciones/*/hueco", "api/estaciones/*/bicis/*/aparcar")
                 .permitAll()
-                //.antMatchers("/api/estaciones/**")
-                //.permitAll()
-                .antMatchers("/**")
-                .authenticated().and()
-                .oauth2Login().successHandler(manegadorExito)
+                //.antMatchers("/**")
+                //.authenticated().and()
+                //.oauth2Login().successHandler(manegadorExito)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

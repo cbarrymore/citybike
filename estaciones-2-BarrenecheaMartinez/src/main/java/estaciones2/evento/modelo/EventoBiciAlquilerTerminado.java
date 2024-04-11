@@ -3,7 +3,7 @@ package estaciones2.evento.modelo;
 import java.time.LocalDateTime;
 
 public class EventoBiciAlquilerTerminado implements Evento {
-    public static String ID_EVENTO = "bicicleta-desactivada";
+    public static String ID_EVENTO = "bicicleta-alquiler-concluido";
 
     private String idEvento;
     private String idBici;

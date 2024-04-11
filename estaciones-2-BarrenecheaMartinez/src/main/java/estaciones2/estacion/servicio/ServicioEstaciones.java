@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -86,10 +85,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
 		Bici bici = repoBicis.findById(idBici).orElseThrow(
 				() -> new EntidadNoEncontrada("Bici no encontrada"));
-		/*if(bici.getFechaBaja()!=null)
+		if(bici.getFechaBaja()!=null)
 		{
 			throw new IllegalStateException("La bici ya está dada de baja");
-		}*/
+		}
 		bici.setFechaBaja(LocalDate.now());
 		bici.setMotivoBaja(motivo);
 		bici.setEstacion(null);
@@ -188,6 +187,8 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Estacion estacion = repoEstaciones.findById(idEstacion).get();
 		if (estacion.lleno())
 			throw new IllegalStateException("La estación está llena");
+		if(bici.getFechaBaja()!=null)
+			throw new IllegalStateException("La bici está dada de baja");
 		estacion.aparcarBici(idBici);
 		historico.marcarEntrada(idEstacion);
 		bici.setEstacion(idEstacion);

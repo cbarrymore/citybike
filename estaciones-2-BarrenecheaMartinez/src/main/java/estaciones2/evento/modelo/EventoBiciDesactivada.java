@@ -67,5 +67,10 @@ public class EventoBiciDesactivada implements Evento {
     {
         return idEvento;
     }
+
+    @Override
+    public void setIdEvento(String idEvento) {
+        this.idEvento = idEvento;
+    }
     
 }

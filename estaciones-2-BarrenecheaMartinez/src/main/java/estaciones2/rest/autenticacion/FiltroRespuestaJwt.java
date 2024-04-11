@@ -28,11 +28,13 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
         // if request path is "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
         // "/swagger-resources/**","/webjars/**" then permitAll
+        System.out.println(request.getRequestURI());
+        System.out.println(request.getRequestURI().matches("/api/estaciones/.*/hueco"));
         if (request.getRequestURI().startsWith("/swagger-ui.html") || request.getRequestURI().startsWith("/swagger-ui")
                 || request.getRequestURI().startsWith("/v3/api-docs")
                 || request.getRequestURI().startsWith("/swagger-resources")
                 || request.getRequestURI().startsWith("/webjars")
-                || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*") && request.getMethod().equals("PUT"))
+                || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*/aparcar") && request.getMethod().equals("PUT"))
                 || request.getRequestURI().matches("/api/estaciones/.*/hueco")) {
             filterChain.doFilter(request, response);
             return;
@@ -42,11 +44,14 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
             return;
         }
         String token = authorization.substring("Bearer ".length()).trim();
-        //TODO tratar excepción quitar date
-        Claims claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que
-                                                                                                           // codificarlo
-        if (claims.getExpiration().before(new Date())) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token caducado");
+        Claims claims;
+        try
+        {
+            claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que codificarlo
+        }
+        catch(Exception e)
+        {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             return;
         }
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();

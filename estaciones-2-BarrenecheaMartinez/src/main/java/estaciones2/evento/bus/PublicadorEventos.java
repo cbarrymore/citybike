@@ -15,14 +15,6 @@ public class PublicadorEventos {
     
     public void sendMessage(Evento evento)
     {
-        try
-        {
-            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME,RabbitMQConfig.ROUTING_KEY+evento.getIdEvento(),evento);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME,RabbitMQConfig.ROUTING_KEY+evento.getIdEvento(),evento);
     }
 }
