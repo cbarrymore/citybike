@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import citybike.alquiler.modelo.Alquiler;
+import citybike.eventos.servicio.EventosEmitir;
+import citybike.eventos.servicio.IServicioEventos;
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.FactoriaRepositorios;
 import citybike.repositorio.Repositorio;
@@ -22,6 +24,8 @@ public class ServicioAlquileres implements IServicioAlquileres {
 	private Repositorio<Usuario, String> repositorioUsuario = FactoriaRepositorios.getRepositorio(Usuario.class);
 	IServicioTiempo tiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
 	IServicioEstaciones estaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
+
+	IServicioEventos servicioEventos = FactoriaServicios.getServicio(IServicioEventos.class);
 
 	@Override
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
@@ -76,10 +80,20 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		if (u.superaTiempo()) {
 			throw new IllegalStateException("El usuario ha superado el tiempo de uso");
 		}
-
-		Alquiler al = new Alquiler(idBici, tiempo.now());
+		LocalDateTime creada = tiempo.now();
+		Alquiler al = new Alquiler(idBici, creada);
 		u.getAlquileres().add(al);
 		repositorioUsuario.update(u);
+
+		String eventInfo = "{ \"idBici\": \"" + idBici + "\", \"fecha-creacion\": \"" + creada.toString() + "\" }";
+
+		try {
+			servicioEventos.publicarEvento("citybike.estaciones2", EventosEmitir.BICICLETA_ALQUILADA, eventInfo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new InternalError("Error al publicar evento");
+		}
+
 	}
 
 	@Override
@@ -99,6 +113,25 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		if (estaciones.huecoDisponible(idEstacion)) {
 			estaciones.estacionarBici(idUsuario, idEstacion);
 			a.setFin(tiempo.now());
+			repositorioUsuario.update(u);
+
+			String eventInfo = "{ \"idBici\": \"" + a.getIdBici() + "\", \"fecha-creacion\": \""
+					+ a.getInicio().toString()
+					+ "\", \"fecha-fin\": \"" + a.getFin().toString() + "\" }";
+
+			servicioEventos.publicarEvento("citybike.alquiler", EventosEmitir.BICICLETA_ALQUILER_CONCLUIDO,
+					eventInfo);
+
+		}
+	}
+
+	@Override
+	public void eliminarReservaDeBici(String idBici) throws RepositorioException, EntidadNoEncontrada {
+		List<Usuario> usuarios = repositorioUsuario.getAll();
+		for (Usuario u : usuarios) {
+			List<Reserva> reservas = u.getReservas().stream().filter(r -> r.getIdBici().equals(idBici))
+					.collect(Collectors.toList());
+			u.getReservas().removeAll(reservas);
 			repositorioUsuario.update(u);
 		}
 	}
