@@ -86,7 +86,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
 		Bici bici = repoBicis.findById(idBici).orElseThrow(
 				() -> new EntidadNoEncontrada("Bici no encontrada"));
-		// Cambiarlo a una sola función
+		/*if(bici.getFechaBaja()!=null)
+		{
+			throw new IllegalStateException("La bici ya está dada de baja");
+		}*/
 		bici.setFechaBaja(LocalDate.now());
 		bici.setMotivoBaja(motivo);
 		bici.setEstacion(null);
@@ -94,7 +97,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Historico historico = repoHistoricos.findByIdBici(idBici);
 		Estacion estacion = repoEstaciones.findById(historico.getEstacion()).orElseThrow(
 				() -> new EntidadNoEncontrada("Estacion no encontrada"));
-		estacion.retirarBici(idBici);
 		historico.marcarSalida();
 		repoBicis.save(bici);
 		repoHistoricos.save(historico);

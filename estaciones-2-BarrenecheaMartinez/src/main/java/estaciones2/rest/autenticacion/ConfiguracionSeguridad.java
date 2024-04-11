@@ -20,15 +20,14 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.httpBasic().disable().authorizeRequests()
+        httpSecurity.httpBasic().disable().csrf().disable().authorizeRequests()
                 .antMatchers("/login/oauth2/code/github").permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
                         "/webjars/**")
                 .permitAll()
-                .antMatchers("/api**")
-                .permitAll()
-                //.antMatchers("/**")
-                .anyRequest()
+                //.antMatchers("/api/estaciones/**")
+                //.permitAll()
+                .antMatchers("/**")
                 .authenticated().and()
                 .oauth2Login().successHandler(manegadorExito)
                 .and()

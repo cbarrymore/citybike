@@ -1,5 +1,7 @@
 package estaciones2.evento.modelo;
 
-public interface Evento {
+import java.io.Serializable;
+
+public interface Evento extends Serializable {
     public String getIdEvento();
 }

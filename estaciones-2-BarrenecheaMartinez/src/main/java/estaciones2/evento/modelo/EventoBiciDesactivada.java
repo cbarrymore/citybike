@@ -2,15 +2,23 @@ package estaciones2.evento.modelo;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class EventoBiciDesactivada implements Evento {
 
-    private static final String ID_EVENTO = "bicicleta-desactivada";
-
+    @JsonProperty("idEvento")
+    private String idEvento;
+    @JsonProperty("idBici")
     private String idBici;
+    @JsonProperty("motivoBaja")
     private String motivoBaja;
+    @JsonProperty("fechaBaja")
     private String fechaBaja;
 
+    public static String ID_EVENTO = "bicicleta-desactivada";
 
+    @JsonCreator
     public EventoBiciDesactivada()
     {
         
@@ -18,6 +26,7 @@ public class EventoBiciDesactivada implements Evento {
 
     public EventoBiciDesactivada(String idBici, String motivoBaja, LocalDate fechaBaja)
     {
+        this.idEvento = ID_EVENTO;
         this.idBici = idBici;
         this.motivoBaja = motivoBaja;
         this.fechaBaja = fechaBaja.toString();
@@ -56,7 +65,7 @@ public class EventoBiciDesactivada implements Evento {
     @Override
     public String getIdEvento()
     {
-        return ID_EVENTO;
+        return idEvento;
     }
     
 }

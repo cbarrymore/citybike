@@ -81,7 +81,6 @@ public class ControladorEstaciones {
 	@io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Bicicleta dada de baja"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Bicicleta no encontrada") })
-	@PreAuthorize("hasAuthority('gestor')")
 	public ResponseEntity<Void> darBajaBicicleta(@PathVariable String id, @PathVariable String idBici)
 			throws Exception {
 		servEstaciones.darBajaBici(idBici, "Baja por usuario");
