@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import citybike.alquiler.servicio.IServicioAlquileres;
+import citybike.estaciones.servicio.ServicioEstacionesException;
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.FactoriaRepositorios;
 import citybike.repositorio.Repositorio;
@@ -23,200 +25,155 @@ import citybike.tiempo.servicio.IServicioTiempo;
 import citybike.usuario.modelo.Reserva;
 import citybike.usuario.modelo.Usuario;
 
-
-public class ServicioAlquileresTests
-{
+public class ServicioAlquileresTests {
 	private static IServicioAlquileres servicioAlquileres;
 	private static IServicioTiempo servicioTiempo;
 	private static Repositorio<Usuario, String> repositorioUsuario;
 	private static String idUsuario;
-	
+
 	@BeforeAll
-	public static void obtenerServicio()
-	{
+	public static void obtenerServicio() {
 		servicioAlquileres = FactoriaServicios.getServicio(IServicioAlquileres.class);
 		servicioTiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
 		repositorioUsuario = FactoriaRepositorios.getRepositorio(Usuario.class);
 		idUsuario = "usuarioBase";
 	}
-	
+
 	@BeforeEach
-	public void insertarUsuario()
-	{
-		try
-		{
+	public void insertarUsuario() {
+		try {
 			Usuario usuario = new Usuario(idUsuario);
 			repositorioUsuario.add(usuario);
-		}
-		catch (RepositorioException e)
-		{
+		} catch (RepositorioException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@AfterEach
-	public void eliminarTests()
-	{
-		try
-		{
+	public void eliminarTests() {
+		try {
 			repositorioUsuario.delete(servicioAlquileres.historialUsuario(idUsuario));
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testHistorialUsuarioNuevo()
-	{
+	public void testHistorialUsuarioNuevo() {
 		String id = "nuevabicitest";
 		try {
 			Usuario usuario = servicioAlquileres.historialUsuario(id);
 			assertEquals(usuario.getId(), id);
-		} 
-		catch (RepositorioException e)
-		{
+		} catch (RepositorioException e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
 	}
 
 	@Test
-	public void testReservar()
-	{
-		try
-		{
+	public void testReservar() {
+		try {
 			servicioAlquileres.reservar(idUsuario, "bici1");
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
-			assertTrue(u.getReservas().size()==1);
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+			assertTrue(u.getReservas().size() == 1);
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
-		
+
 	}
 
 	@Test
-	public void testAlquilarConReserva()
-	{
+	public void testAlquilarConReserva() {
 		testReservar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.alquilar(idUsuario, "bici1"));
+				.isThrownBy(() -> servicioAlquileres.alquilar(idUsuario, "bici1"));
 	}
 
 	@Test
-	public void testReservarConReserva()
-	{
+	public void testReservarConReserva() {
 		testReservar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
+				.isThrownBy(() -> servicioAlquileres.reservar(idUsuario, "bici1"));
 	}
-	
+
 	@Test
-	public void testAlquilar()
-	{
-		try
-		{
+	public void testAlquilar() {
+		try {
 			servicioAlquileres.alquilar(idUsuario, "bici1");
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
-			assertTrue(u.getAlquileres().size()==1);
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+			assertTrue(u.getAlquileres().size() == 1);
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
-	}
-	
-	@Test
-	public void testAlquilarConAlquiler()
-	{
-		testReservar();
-		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
 	}
 
 	@Test
-	public void testReservarConAlquiler()
-	{
+	public void testAlquilarConAlquiler() {
+		testReservar();
+		assertThatExceptionOfType(IllegalStateException.class)
+				.isThrownBy(() -> servicioAlquileres.reservar(idUsuario, "bici1"));
+	}
+
+	@Test
+	public void testReservarConAlquiler() {
 		testAlquilar();
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
+				.isThrownBy(() -> servicioAlquileres.reservar(idUsuario, "bici1"));
 	}
-	
-	
+
 	@Test
-	public void testReservarBloqueado()
-	{
-		try
-		{
+	public void testReservarBloqueado() {
+		try {
 			bloquear(idUsuario);
 			assertThatExceptionOfType(IllegalStateException.class)
-			.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici4"));
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+					.isThrownBy(() -> servicioAlquileres.reservar(idUsuario, "bici4"));
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
 	}
-	
+
 	@Test
-	public void testAlquilarBloqueado()
-	{
-		try
-		{
+	public void testAlquilarBloqueado() {
+		try {
 			bloquear(idUsuario);
 			assertThatExceptionOfType(IllegalStateException.class)
-			.isThrownBy(()-> servicioAlquileres.alquilar(idUsuario, "bici4"));
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+					.isThrownBy(() -> servicioAlquileres.alquilar(idUsuario, "bici4"));
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
 	}
-	
+
 	@Test
-	public void testReservarSuperaTiempo()
-	{
-		try
-		{
+	public void testReservarSuperaTiempo() throws IOException, ServicioEstacionesException {
+		try {
 			superarTiempo(idUsuario);
 			assertThatExceptionOfType(IllegalStateException.class)
-			.isThrownBy(()-> servicioAlquileres.reservar(idUsuario, "bici1"));
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+					.isThrownBy(() -> servicioAlquileres.reservar(idUsuario, "bici1"));
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
 	}
-	
+
 	@Test
-	public void testAquilarSuperaTiempo()
-	{
-		try
-		{
+	public void testAquilarSuperaTiempo() throws IOException, ServicioEstacionesException {
+		try {
 			superarTiempo(idUsuario);
 			assertThatExceptionOfType(IllegalStateException.class)
-			.isThrownBy(()-> servicioAlquileres.alquilar(idUsuario, "bici1"));
-		} 
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+					.isThrownBy(() -> servicioAlquileres.alquilar(idUsuario, "bici1"));
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
 	}
-	
+
 	@Test
-	public void testConfirmarReserva()
-	{
-		try
-		{
+	public void testConfirmarReserva() {
+		try {
 			servicioAlquileres.reservar(idUsuario, "bici");
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
 			int antesAlquiler = u.getAlquileres().size();
@@ -225,67 +182,54 @@ public class ServicioAlquileresTests
 			u = servicioAlquileres.historialUsuario(idUsuario);
 			int despuesAlquiler = u.getAlquileres().size();
 			int despuesReserva = u.getReservas().size();
-			assertTrue(antesAlquiler+1 == despuesAlquiler);
-			assertTrue(antesReserva == despuesReserva+1);
-			
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+			assertTrue(antesAlquiler + 1 == despuesAlquiler);
+			assertTrue(antesReserva == despuesReserva + 1);
+
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 			fail("Excepción inesperada");
 		}
 	}
-	
+
 	@Test
-	public void testConfirmarReservaSinReserva()
-	{
+	public void testConfirmarReservaSinReserva() {
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.confirmarReserva(idUsuario));
+				.isThrownBy(() -> servicioAlquileres.confirmarReserva(idUsuario));
 	}
-	
+
 	@Test
-	public void testDejarBicicleta()
-	{
-		try
-		{
+	public void testDejarBicicleta() throws IOException, ServicioEstacionesException {
+		try {
 			servicioAlquileres.alquilar(idUsuario, "bici");
 			//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
 			assertEquals(null, u.alquilerActivo());
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Test
-	public void testDejarBicicletaSinAlquiler()
-	{
+	public void testDejarBicicletaSinAlquiler() {
 		assertThatExceptionOfType(IllegalStateException.class)
-		.isThrownBy(()-> servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba"));
+				.isThrownBy(() -> servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba"));
 	}
-	
+
 	@Test
-	public void testLiberarBloqueo()
-	{
-		try
-		{
+	public void testLiberarBloqueo() {
+		try {
 			bloquear(idUsuario);
 			servicioAlquileres.liberarBloqueo(idUsuario);
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
 			List<Reserva> lista = u.getReservas().stream().filter(r -> r.caducada()).collect(Collectors.toList());
 			assertTrue(lista.isEmpty());
-		}
-		catch (RepositorioException | EntidadNoEncontrada e)
-		{
+		} catch (RepositorioException | EntidadNoEncontrada e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private void bloquear(String id) throws RepositorioException, EntidadNoEncontrada
-	{
+
+	private void bloquear(String id) throws RepositorioException, EntidadNoEncontrada {
 		servicioAlquileres.reservar(id, "bici1");
 		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(31));
 		servicioAlquileres.reservar(id, "bici2");
@@ -293,12 +237,12 @@ public class ServicioAlquileresTests
 		servicioAlquileres.reservar(id, "bici3");
 		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(31));
 	}
-	
-	private void superarTiempo(String id) throws RepositorioException, EntidadNoEncontrada
-	{
+
+	private void superarTiempo(String id)
+			throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException {
 		servicioAlquileres.alquilar(id, "biciSupTiempo");
 		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(61));
 		//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 	}
-	
+
 }

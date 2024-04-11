@@ -1,4 +1,4 @@
-package citybike.servicio;
+package citybike.estaciones.servicio;
 
 public class ServicioEstacionesException extends Exception {
 
