@@ -17,6 +17,7 @@ import estaciones2.bici.modelo.Bici;
 import estaciones2.bici.repositorio.RepositorioBicis;
 import estaciones2.estacion.modelo.Estacion;
 import estaciones2.estacion.repositorio.RepositorioEstaciones;
+import estaciones2.evento.servicio.IServicioEventos;
 import estaciones2.historico.modelo.Historico;
 import estaciones2.historico.repositorio.RepositorioHistorico;
 import estaciones2.repositorio.EntidadNoEncontrada;
@@ -29,13 +30,15 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	private RepositorioEstaciones repoEstaciones;
 	private RepositorioBicis repoBicis;
 	private RepositorioHistorico repoHistoricos;
+	private IServicioEventos servicioEventos;
 
 	@Autowired
 	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis,
-			RepositorioHistorico repoHistoricos) {
+			RepositorioHistorico repoHistoricos, IServicioEventos servicioEventos) {
 		this.repoEstaciones = repoEstaciones;
 		this.repoBicis = repoBicis;
 		this.repoHistoricos = repoHistoricos;
+		this.servicioEventos = servicioEventos;
 	}
 
 	@Override
@@ -83,7 +86,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada {
 		Bici bici = repoBicis.findById(idBici).orElseThrow(
 				() -> new EntidadNoEncontrada("Bici no encontrada"));
-		// Cambiarlo a una sola función
+		/*if(bici.getFechaBaja()!=null)
+		{
+			throw new IllegalStateException("La bici ya está dada de baja");
+		}*/
 		bici.setFechaBaja(LocalDate.now());
 		bici.setMotivoBaja(motivo);
 		bici.setEstacion(null);
@@ -91,11 +97,11 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Historico historico = repoHistoricos.findByIdBici(idBici);
 		Estacion estacion = repoEstaciones.findById(historico.getEstacion()).orElseThrow(
 				() -> new EntidadNoEncontrada("Estacion no encontrada"));
-		estacion.retirarBici(idBici);
 		historico.marcarSalida();
 		repoBicis.save(bici);
 		repoHistoricos.save(historico);
 		repoEstaciones.save(estacion);
+		servicioEventos.enviarBiciDesactivada(idBici, motivo, bici.getFechaBaja());
 	}
 
 	@Override

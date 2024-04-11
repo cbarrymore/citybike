@@ -47,7 +47,7 @@ public class ManegadorExitoSeguridad implements AuthenticationSuccessHandler {
         Map<String, Object> claims = new HashMap<>();
         System.out.println(usuario.getName());
         claims.put("sub", usuario.getName());
-        claims.put("rol", "usuario");
+        claims.put("rol", "gestor");
 
         return claims;
     }

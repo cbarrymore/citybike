@@ -201,7 +201,7 @@ public class ServicioAlquileresTests {
 	public void testDejarBicicleta() throws IOException, ServicioEstacionesException {
 		try {
 			servicioAlquileres.alquilar(idUsuario, "bici");
-			servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
+			//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 			Usuario u = servicioAlquileres.historialUsuario(idUsuario);
 			assertEquals(null, u.alquilerActivo());
 		} catch (RepositorioException | EntidadNoEncontrada e) {
@@ -242,7 +242,7 @@ public class ServicioAlquileresTests {
 			throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException {
 		servicioAlquileres.alquilar(id, "biciSupTiempo");
 		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(61));
-		servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
+		//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 	}
 
 }

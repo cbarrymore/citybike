@@ -31,7 +31,9 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
         if (request.getRequestURI().startsWith("/swagger-ui.html") || request.getRequestURI().startsWith("/swagger-ui")
                 || request.getRequestURI().startsWith("/v3/api-docs")
                 || request.getRequestURI().startsWith("/swagger-resources")
-                || request.getRequestURI().startsWith("/webjars")) {
+                || request.getRequestURI().startsWith("/webjars")
+                || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*") && request.getMethod().equals("PUT"))
+                || request.getRequestURI().matches("/api/estaciones/.*/hueco")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -40,6 +42,7 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
             return;
         }
         String token = authorization.substring("Bearer ".length()).trim();
+        //TODO tratar excepción quitar date
         Claims claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que
                                                                                                            // codificarlo
         if (claims.getExpiration().before(new Date())) {
