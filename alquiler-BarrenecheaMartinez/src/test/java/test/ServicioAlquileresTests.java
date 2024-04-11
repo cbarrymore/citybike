@@ -15,12 +15,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import citybike.alquiler.servicio.IServicioAlquileres;
+import citybike.estaciones.servicio.ServicioEstacionesException;
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.FactoriaRepositorios;
 import citybike.repositorio.Repositorio;
 import citybike.repositorio.RepositorioException;
 import citybike.servicio.FactoriaServicios;
-import citybike.servicio.ServicioEstacionesException;
 import citybike.tiempo.servicio.IServicioTiempo;
 import citybike.usuario.modelo.Reserva;
 import citybike.usuario.modelo.Usuario;

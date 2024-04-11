@@ -1,4 +1,5 @@
 package estaciones2.rest.autenticacion;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +43,7 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
             return;
         }
         String token = authorization.substring("Bearer ".length()).trim();
-        //TODO tratar excepción quitar date
+        // TODO tratar excepción quitar date
         Claims claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que
                                                                                                            // codificarlo
         if (claims.getExpiration().before(new Date())) {

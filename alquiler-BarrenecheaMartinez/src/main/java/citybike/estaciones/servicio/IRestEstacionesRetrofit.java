@@ -1,4 +1,4 @@
-package citybike.servicio;
+package citybike.estaciones.servicio;
 
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.RepositorioException;

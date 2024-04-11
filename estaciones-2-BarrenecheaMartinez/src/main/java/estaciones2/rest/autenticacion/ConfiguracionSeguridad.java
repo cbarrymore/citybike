@@ -25,8 +25,8 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
                         "/webjars/**")
                 .permitAll()
-                //.antMatchers("/api/estaciones/**")
-                //.permitAll()
+                // .antMatchers("/api/estaciones/**")
+                // .permitAll()
                 .antMatchers("/**")
                 .authenticated().and()
                 .oauth2Login().successHandler(manegadorExito)

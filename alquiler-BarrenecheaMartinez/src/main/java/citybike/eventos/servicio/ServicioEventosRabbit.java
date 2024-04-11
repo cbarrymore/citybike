@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.concurrent.TimeoutException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -20,21 +18,24 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 import citybike.alquiler.servicio.IServicioAlquileres;
-import citybike.eventos.dtos.BicicletaDesactivadaEventDto;
+import citybike.eventos.dtos.Evento;
+import citybike.eventos.dtos.EventoBiciDesactivada;
+import citybike.repositorio.EntidadNoEncontrada;
+import citybike.repositorio.RepositorioException;
 import citybike.servicio.FactoriaServicios;
 
 public class ServicioEventosRabbit implements IServicioEventos {
 
-    ConnectionFactory factory;
-    Connection connection;
-    Channel channel;
+    private ConnectionFactory factory;
+    private Connection connection;
+    private Channel channel;
 
     private static final String EXCHANGE_NAME = "Citybike";
     private static final String URI = "amqps://wjmgyyga:Ap642XV6hyZ0k0xwU4eTFmkH5DfyzHbt@whale.rmq.cloudamqp.com/wjmgyyga";
+    private static final String ROUTING_KEY = "citybike.alquiler";
     private final HashMap<String, String> QUEUE_KEY = new HashMap<String, String>();
 
-    // private IServicioAlquileres servicioAlquileres =
-    // FactoriaServicios.getServicio(IServicioAlquileres.class);
+    private IServicioAlquileres servicioAlquileres = FactoriaServicios.getServicio(IServicioAlquileres.class);
 
     public ServicioEventosRabbit()
             throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException, TimeoutException {
@@ -58,7 +59,12 @@ public class ServicioEventosRabbit implements IServicioEventos {
                             long deliveryTag = envelope.getDeliveryTag();
                             String contenido = new String(body);
 
-                            procesarEvento(routingKey, contentType, contenido);
+                            try {
+                                procesarEvento(routingKey, contentType, contenido);
+                            } catch (IOException | RepositorioException | EntidadNoEncontrada e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
 
                             channel.basicAck(deliveryTag, false);
                         }
@@ -68,9 +74,11 @@ public class ServicioEventosRabbit implements IServicioEventos {
     }
 
     @Override
-    public void publicarEvento(String routingKey, EventosEmitir idEvento, String mensaje) throws IOException {
-        String evento = EVENTOS_EMITIR[idEvento.ordinal()];
-        String finalRoutingKey = routingKey + "." + evento;
+    public void publicarEvento(Evento evento) throws IOException {
+        String finalRoutingKey = ROUTING_KEY + "." + evento.getIdEvento();
+        Gson g = new Gson();
+        String mensaje = g.toJson(evento);
+
         channel.basicPublish(EXCHANGE_NAME, finalRoutingKey,
                 new AMQP.BasicProperties.Builder()
                         .contentType("application/json")
@@ -79,7 +87,8 @@ public class ServicioEventosRabbit implements IServicioEventos {
     }
 
     @Override
-    public void suscribirse(String queue, String routingKey) throws IOException {
+    public void suscribirse(String queue, String routingKey)
+            throws IOException {
         this.QUEUE_KEY.put(queue, routingKey);
         this.channel.basicConsume(queue, false, queue + "-consumer",
                 new DefaultConsumer(channel) {
@@ -91,7 +100,12 @@ public class ServicioEventosRabbit implements IServicioEventos {
                         long deliveryTag = envelope.getDeliveryTag();
                         String contenido = new String(body);
 
-                        procesarEvento(routingKey, contentType, contenido);
+                        try {
+                            procesarEvento(routingKey, contentType, contenido);
+                        } catch (IOException | RepositorioException | EntidadNoEncontrada e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 
                         channel.basicAck(deliveryTag, false);
                     }
@@ -100,7 +114,7 @@ public class ServicioEventosRabbit implements IServicioEventos {
 
     @Override
     public void procesarEvento(String routingKey, String contentType, String contenido)
-            throws JsonParseException, JsonMappingException, IOException {
+            throws JsonParseException, JsonMappingException, IOException, RepositorioException, EntidadNoEncontrada {
         // extract eventId from routingKey (last part of routingKey by ".")
         String[] routingKeyParts = routingKey.split("\\.");
         String idEvento = routingKeyParts[routingKeyParts.length - 1];
@@ -112,10 +126,9 @@ public class ServicioEventosRabbit implements IServicioEventos {
             Gson g = new Gson();
             switch (idEvento) {
                 case "bicicleta-desactivada":
-                    BicicletaDesactivadaEventDto evento = g.fromJson(contenido, BicicletaDesactivadaEventDto.class);
-                    System.out.println("Evento recibido: " + idEvento);
-                    break;
-                case "bicicleta-activada":
+                    EventoBiciDesactivada evento = g.fromJson(contenido, EventoBiciDesactivada.class);
+                    String idBici = evento.getIdBici();
+                    servicioAlquileres.eliminarReservaDeBici(idBici);
                     break;
                 default:
                     break;

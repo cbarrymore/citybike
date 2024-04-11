@@ -6,15 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import citybike.alquiler.modelo.Alquiler;
-import citybike.eventos.servicio.EventosEmitir;
+import citybike.estaciones.servicio.IServicioEstaciones;
+import citybike.estaciones.servicio.ServicioEstacionesException;
+import citybike.eventos.dtos.Evento;
+import citybike.eventos.dtos.EventoBiciAlquilada;
+import citybike.eventos.dtos.EventoBiciAlquilerConcluido;
 import citybike.eventos.servicio.IServicioEventos;
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.FactoriaRepositorios;
 import citybike.repositorio.Repositorio;
 import citybike.repositorio.RepositorioException;
 import citybike.servicio.FactoriaServicios;
-import citybike.servicio.IServicioEstaciones;
-import citybike.servicio.ServicioEstacionesException;
 import citybike.tiempo.servicio.IServicioTiempo;
 import citybike.usuario.modelo.Reserva;
 import citybike.usuario.modelo.Usuario;
@@ -25,7 +27,7 @@ public class ServicioAlquileres implements IServicioAlquileres {
 	IServicioTiempo tiempo = FactoriaServicios.getServicio(IServicioTiempo.class);
 	IServicioEstaciones estaciones = FactoriaServicios.getServicio(IServicioEstaciones.class);
 
-	IServicioEventos servicioEventos = FactoriaServicios.getServicio(IServicioEventos.class);
+	IServicioEventos servicioEventos; 
 
 	@Override
 	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
@@ -85,10 +87,10 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		u.getAlquileres().add(al);
 		repositorioUsuario.update(u);
 
-		String eventInfo = "{ \"idBici\": \"" + idBici + "\", \"fecha-creacion\": \"" + creada.toString() + "\" }";
+		Evento eventoBiciAlquilada = new EventoBiciAlquilada(idBici, creada.toString());
 
 		try {
-			servicioEventos.publicarEvento("citybike.estaciones2", EventosEmitir.BICICLETA_ALQUILADA, eventInfo);
+			getServicioEventos().publicarEvento(eventoBiciAlquilada);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			throw new InternalError("Error al publicar evento");
@@ -115,12 +117,8 @@ public class ServicioAlquileres implements IServicioAlquileres {
 			a.setFin(tiempo.now());
 			repositorioUsuario.update(u);
 
-			String eventInfo = "{ \"idBici\": \"" + a.getIdBici() + "\", \"fecha-creacion\": \""
-					+ a.getInicio().toString()
-					+ "\", \"fecha-fin\": \"" + a.getFin().toString() + "\" }";
-
-			servicioEventos.publicarEvento("citybike.alquiler", EventosEmitir.BICICLETA_ALQUILER_CONCLUIDO,
-					eventInfo);
+			Evento evento = new EventoBiciAlquilerConcluido(a.getIdBici(), a.getFin().toString());
+			getServicioEventos().publicarEvento(evento);
 
 		}
 	}
@@ -153,5 +151,12 @@ public class ServicioAlquileres implements IServicioAlquileres {
 			repositorioUsuario.add(u);
 		}
 		return u;
+	}
+	
+	private IServicioEventos getServicioEventos() {
+		if(this.servicioEventos == null) {
+			this.servicioEventos= FactoriaServicios.getServicio(IServicioEventos.class);
+		}
+		return this.servicioEventos;
 	}
 }

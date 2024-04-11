@@ -2,9 +2,9 @@ package citybike.alquiler.servicio;
 
 import java.io.IOException;
 
+import citybike.estaciones.servicio.ServicioEstacionesException;
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.RepositorioException;
-import citybike.servicio.ServicioEstacionesException;
 import citybike.usuario.modelo.Usuario;
 
 public interface IServicioAlquileres {

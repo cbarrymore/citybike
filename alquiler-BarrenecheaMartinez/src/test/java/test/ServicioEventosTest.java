@@ -9,10 +9,10 @@ import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import citybike.eventos.servicio.EventosEmitir;
+import citybike.eventos.dtos.EventoBiciAlquilada;
+import citybike.eventos.dtos.EventoBiciDesactivada;
 import citybike.eventos.servicio.IServicioEventos;
 import citybike.eventos.servicio.ServicioEventosRabbit;
-import citybike.servicio.FactoriaServicios;
 
 public class ServicioEventosTest {
 
@@ -26,8 +26,9 @@ public class ServicioEventosTest {
 
     @Test
     public void testPublicarEvento() throws IOException {
-        String eventInfo = "Bicicleta alquilada";
-        servicioEventos.publicarEvento("citybike.alquiler", EventosEmitir.BICICLETA_ALQUILADA, eventInfo);
+        EventoBiciAlquilada eventInfo = new EventoBiciAlquilada("idBici", "12-12-2020 12:00:00");
+        EventoBiciDesactivada evento = new EventoBiciDesactivada("3", "era fea", "12-12-2020 12:00:00");
+        servicioEventos.publicarEvento(eventInfo);
     }
 
 }
