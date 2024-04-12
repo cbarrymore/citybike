@@ -44,12 +44,10 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
         }
         String token = authorization.substring("Bearer ".length()).trim();
         Claims claims;
-        try
-        {
-            claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que codificarlo
-        }
-        catch(Exception e)
-        {
+        try {
+            claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que
+                                                                                                        // codificarlo
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             return;
         }

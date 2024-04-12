@@ -163,7 +163,8 @@ public class ControladorEstaciones {
 	@GetMapping("/{id}/hueco")
 	@Operation(summary = "Comprobar si hay hueco en la estación", description = "Comprueba si hay hueco en la estación")
 	public boolean huecoDisponible(@PathVariable String id) throws Exception {
-		return servEstaciones.huecoDisponible(id);
+		boolean result = servEstaciones.huecoDisponible(id);
+		return result;
 	}
 
 }
