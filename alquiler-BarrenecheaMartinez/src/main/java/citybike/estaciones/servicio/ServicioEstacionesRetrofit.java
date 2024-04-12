@@ -14,7 +14,7 @@ public class ServicioEstacionesRetrofit implements IServicioEstaciones {
 
 	public ServicioEstacionesRetrofit() {
 		retrofit = new Retrofit.Builder()
-				.baseUrl("http://localhost:4040/api/estaciones/")
+				.baseUrl("http://localhost:4040/")
 				.addConverterFactory(JacksonConverterFactory.create())
 				.build();
 		restEstaciones = retrofit.create(IRestEstacionesRetrofit.class);

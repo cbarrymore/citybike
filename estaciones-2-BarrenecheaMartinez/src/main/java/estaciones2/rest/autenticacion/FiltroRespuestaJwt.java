@@ -35,8 +35,11 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
                 || request.getRequestURI().startsWith("/v3/api-docs")
                 || request.getRequestURI().startsWith("/swagger-resources")
                 || request.getRequestURI().startsWith("/webjars")
-                || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*/aparcar") && request.getMethod().equals("PUT"))
-                || request.getRequestURI().matches("/api/estaciones/.*/hueco")) {
+                || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*/aparcar")
+                        && request.getMethod().equals("PUT"))
+                || request.getRequestURI().matches("/api/estaciones/.*/hueco")
+                || request.getRequestURI().matches("/.*/hueco")
+                || request.getRequestURI().matches("/.*/bicis/.*/aparcar")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,12 +49,10 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
         }
         String token = authorization.substring("Bearer ".length()).trim();
         Claims claims;
-        try
-        {
-            claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que codificarlo
-        }
-        catch(Exception e)
-        {
+        try {
+            claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody(); // Hay que
+                                                                                                        // codificarlo
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             return;
         }
