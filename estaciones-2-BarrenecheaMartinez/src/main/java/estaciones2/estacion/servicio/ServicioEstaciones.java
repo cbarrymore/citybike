@@ -109,22 +109,6 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		Estacion estacion = repoEstaciones.findById(idEstacion).orElseThrow(
 				() -> new EntidadNoEncontrada("Estacion no encontrada"));
 		Iterable<String> it = estacion.getBicisAparcadas();
-
-		// Page<Historico> historicosBicisEnEstacion =
-		// repoHistoricos.findByEstacionId(idEstaciones, null);
-		// List<String> bicisEnEstacion = new ArrayList<String>();
-		// for (Historico historico : historicosBicisEnEstacion) {
-		// if (historico.biciAparcada())
-		// bicisEnEstacion.add(historico.getBici());
-		// }
-		// Iterable<Bici> itBicis = repoBicis.findAllById(bicisEnEstacion);
-		// List<Bici> bicis = new ArrayList<Bici>();
-		// for (Bici bici : itBicis) {
-		// if (bici != null)
-		// bicis.add(bici);
-		// }
-		// return new PageImpl<Bici>(bicis);
-
 		Iterable<Bici> itBicis = repoBicis.findAllById(it);
 		List<Bici> bicis = new ArrayList<Bici>();
 		for (Bici bici : itBicis) {

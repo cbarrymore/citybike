@@ -1,6 +1,5 @@
 package estaciones2.estacion.repositorio;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

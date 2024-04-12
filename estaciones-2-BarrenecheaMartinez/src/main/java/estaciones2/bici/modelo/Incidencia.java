@@ -2,17 +2,6 @@ package estaciones2.bici.modelo;
 
 import java.time.LocalDate;
 import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,7 +16,6 @@ public class Incidencia {
 	private String idBici;
 
 	public Incidencia() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Incidencia(String descripcion, String idBici) {

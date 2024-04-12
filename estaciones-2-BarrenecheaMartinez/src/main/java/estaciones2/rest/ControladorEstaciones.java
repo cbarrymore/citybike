@@ -1,8 +1,6 @@
 package estaciones2.rest;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,12 +70,13 @@ public class ControladorEstaciones {
 	@PreAuthorize("hasAuthority('gestor')")
 	public ResponseEntity<Void> darAltaBici(@RequestParam String modelo, @PathVariable String idEstacion)
 			throws Exception {
-		String idBici = servEstaciones.altaBici(modelo, idEstacion);
+		servEstaciones.altaBici(modelo, idEstacion);
 		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/{id}/bicis/{idBici}")
 	@Operation(summary = "Dar de baja una bicicleta", description = "Da de baja una bicicleta de la estación")
+	@PreAuthorize("hasAuthority('gestor')")
 	@io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Bicicleta dada de baja"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Bicicleta no encontrada") })

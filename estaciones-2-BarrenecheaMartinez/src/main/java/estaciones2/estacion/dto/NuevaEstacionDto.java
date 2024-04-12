@@ -8,8 +8,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
-
-import estaciones2.estacion.modelo.Estacion;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "DTO para la creacion de una nueva estacion en el sistema")
