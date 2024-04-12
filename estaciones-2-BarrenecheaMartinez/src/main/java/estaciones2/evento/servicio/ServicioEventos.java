@@ -14,16 +14,13 @@ import estaciones2.evento.modelo.EventoBiciDesactivada;
 import estaciones2.repositorio.EntidadNoEncontrada;
 
 @Service
-public class ServicioEventos implements IServicioEventos
-{
+public class ServicioEventos implements IServicioEventos {
 
-    
     private PublicadorEventos publicadorEventos;
     private RepositorioBicis repositorioBicis;
 
     @Autowired
-    public ServicioEventos(PublicadorEventos publicadorEventos, RepositorioBicis repositorioBicis)
-    {
+    public ServicioEventos(PublicadorEventos publicadorEventos, RepositorioBicis repositorioBicis) {
         this.publicadorEventos = publicadorEventos;
         this.repositorioBicis = repositorioBicis;
     }
@@ -36,22 +33,22 @@ public class ServicioEventos implements IServicioEventos
 
     @Override
     public void biciAlquilada(String idBici, LocalDateTime fechaHoraAlquiler) throws EntidadNoEncontrada {
-        Bici bici =repositorioBicis.findById(idBici).orElseThrow(
-            () -> new EntidadNoEncontrada("Bici no encontrada"));
-        if(bici.isDisponible())
-            throw new IllegalStateException("La bici se encuentra no disponible");
+        Bici bici = repositorioBicis.findById(idBici).orElse(null);
+        if (bici == null)
+            return;
+        // if(bici.isDisponible())
+        // throw new IllegalStateException("La bici se encuentra no disponible");
         bici.setDisponible(false);
         repositorioBicis.save(bici);
     }
 
     @Override
     public void biciTerminaAlquiler(String idBici, LocalDateTime fechaHoraTermino) throws EntidadNoEncontrada {
-        Bici bici =repositorioBicis.findById(idBici).orElseThrow(
-            () -> new EntidadNoEncontrada("Bici no encontrada"));
-        if(bici.isDisponible())
-            throw new IllegalStateException("La bici se encontraba ya disponible");
+        Bici bici = repositorioBicis.findById(idBici).orElse(null);
+        if (bici == null)
+            return;
         bici.setDisponible(true);
         repositorioBicis.save(bici);
     }
-    
+
 }
