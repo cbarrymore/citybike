@@ -151,7 +151,7 @@ public class ControladorEstaciones {
 		return emBicisDto;
 	}
 
-	@PutMapping("/{id}/bicis/{idBici}/aparcar")
+	@PutMapping("/{id}/bicis/{idBici}/estacionar")
 	@Operation(summary = "Estacionar una bicicleta", description = "Estaciona una bicicleta en la estación")
 	public ResponseEntity<Void> estacionarBicicleta(@PathVariable String id, @PathVariable String idBici)
 			throws Exception {
