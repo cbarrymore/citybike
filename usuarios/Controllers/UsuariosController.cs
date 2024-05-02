@@ -27,7 +27,7 @@ namespace usuarios.Controllers
             return NoContent();
         }
 
-        [HttpPost("/{idUsuario}/solicitud")]
+        [HttpPost("solicitud/{idUsuario}")]
         public ActionResult<string> solicitudCodigo(string idUsuario)
         {
             string codigo = _servicioUsuarios.solicitudCodigo(idUsuario);
@@ -41,14 +41,14 @@ namespace usuarios.Controllers
             return Ok(usuario);
         }
 
-        [HttpGet("/verificar/{idUsuario}")]
+        [HttpGet("verificar/{idUsuario}")]
         public ActionResult<Dictionary<string, string>> verificarUsuario(string idUsuario, string acceso)
         {
             Dictionary<string, string> claims = _servicioUsuarios.verificarUsuario(idUsuario, acceso);
             return Ok(claims);
         }
 
-        [HttpGet("/verificar/OAuth2/{idUsuario}")]
+        [HttpGet("verificar/OAuth2/{idUsuario}")]
         public ActionResult<Dictionary<string, string>> verificarUsuarioOAuth2(string idUsuario, string acceso)
         {
             Dictionary<string, string> claims = _servicioUsuarios.verificarUsuarioOAuth2(idUsuario, acceso);
@@ -66,12 +66,21 @@ namespace usuarios.Controllers
             base.OnException(context);
             if(context.Exception is ArgumentException || context.Exception is FormatException)
             {
+                Console.WriteLine(context.Exception.Message);
                 context.Result = new BadRequestResult();
             }
 
             else if(context.Exception is EntidadNoEncontradaException)
             {
+                Console.WriteLine(context.Exception.Message);
                 context.Result = new NotFoundResult();
+            }
+
+            else if(context.Exception is InvalidOperationException)
+            {
+                //Algo
+                Console.WriteLine(context.Exception.Message);
+                context.Result = new BadRequestResult();
             }
             
         }

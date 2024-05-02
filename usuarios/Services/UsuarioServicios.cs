@@ -46,7 +46,6 @@ namespace usuarios.servicios
         {
             if(repositorioUsuarios.GetById(idUsuario) != null)
                 throw new InvalidOperationException("El usuario ya está dado de alta");
-            //TODO generar el codigo bien
             string codigo = idUsuario;
             CodigoActivacion codigoActivacion = new CodigoActivacion(codigo,idUsuario);
             repositorioCodigos.Add(codigoActivacion);
