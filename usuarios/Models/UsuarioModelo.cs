@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -55,17 +56,18 @@ namespace usuarios.modelo
         public string Codigo{ get; set; }
         public string IdUsuario{ get; set; }
         public bool Utilizado{ get; set; }
-
+        public DateTime Validez{ get; set; }
         public CodigoActivacion()
         {
 
         }
 
-        public CodigoActivacion(string Codigo, string IdUsuario, bool Utilizado)
+        public CodigoActivacion(string Codigo, string IdUsuario, bool Utilizado, DateTime Validez)
         {
             this.Codigo = Codigo;
             this.IdUsuario = IdUsuario;
             this.Utilizado = Utilizado;
+            this.Validez = Validez;
         }
 
         public CodigoActivacion(string Codigo, string IdUsuario)
@@ -73,6 +75,12 @@ namespace usuarios.modelo
             this.Codigo = Codigo;
             this.IdUsuario = IdUsuario;
             this.Utilizado = false;
+            this.Validez = DateAndTime.Now.AddDays(7);
+        }
+
+        public bool isValido()
+        {
+            return !Utilizado && (Validez.CompareTo(Validez) > 0);
         }
 
     }

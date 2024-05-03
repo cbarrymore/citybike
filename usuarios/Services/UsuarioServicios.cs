@@ -57,7 +57,7 @@ namespace usuarios.servicios
             if(repositorioUsuarios.GetById(idUsuario) != null)
                 throw new InvalidOperationException("El usuario ya se ha dado de alta");
             CodigoActivacion codigoActivacion = repositorioCodigos.GetById(codigo);
-            if(codigoActivacion == null || !codigoActivacion.IdUsuario.Equals(idUsuario))
+            if(codigoActivacion == null || !codigoActivacion.isValido())
                 throw new Exception("El codigo de activación no es válido");
             Usuario usuario = new Usuario(idUsuario,nombre,"Usuario",acceso);
             repositorioUsuarios.Add(usuario);
