@@ -3,6 +3,7 @@ package pasarela.configuracion;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import pasarela.usuarios.servicio.IServicioUsuarios;
@@ -34,11 +35,10 @@ public class ManejadorExitoSeguridad implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
         DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
-        Map<String, Object> claims = fetchUserInfo(usuario);
+        //Map<String, Object> claims = fetchUserInfo(usuario);
         System.out.println(usuario.getAttributes());
         String oauth2Code = usuario.getAttribute("id");
-       Map<String,String> claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);        
-        
+        Map<String,Object> claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);//Resolver
         if(claims != null)
         {
             Date caducidad = Date.from(Instant.now().plusSeconds(3600));

@@ -110,16 +110,14 @@ namespace usuarios.modelo
         public string Username{ get; set; }
         public string Nombre{ get; set; }
         public string Codigo{ get; set; }
-        [ValidateNever]
         public string Acceso{ get; set; }
-        [ValidateNever]
-        public string OAuth2{ get; set; }
+        public bool OAuth2{ get; set; }
         public NuevoUsuarioDTO()
         {
 
         }
 
-        public NuevoUsuarioDTO(string Id, string Username, string Nombre, string Codigo, string Acceso, string OAuth2)
+        public NuevoUsuarioDTO(string Id, string Username, string Nombre, string Codigo, string Acceso, bool OAuth2)
         {
             this.Id = Id;
             this.Username = Username;

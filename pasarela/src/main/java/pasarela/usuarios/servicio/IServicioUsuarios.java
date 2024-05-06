@@ -3,9 +3,9 @@ package pasarela.usuarios.servicio;
 import java.util.Map;
 
 public interface IServicioUsuarios {
-	public Map<String, String> verificarUsuario(String idUsuario, String acceso);
+	public Map<String, String> verificarUsuario(String username, String acceso);
 	
 	public Map<String, String> verificarUsuarioOAuth2(String idUsuario);
 	
-	public String darAlta(String Id, String Nombre, String Acceso, String Codigo);
+	public void darAlta(String Id, String Nombre, String Acceso, String Codigo, boolean oauth2);
 }

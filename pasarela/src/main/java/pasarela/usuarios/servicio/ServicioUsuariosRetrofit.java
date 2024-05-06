@@ -1,5 +1,6 @@
 package pasarela.usuarios.servicio;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.security.core.Transient;
@@ -23,24 +24,30 @@ public class ServicioUsuariosRetrofit implements IServicioUsuarios{
 	}
 	
 	@Override
-	public Map<String, String> verificarUsuario(String idUsuario, String acceso) {
-		Response<Boolean> respuesta = restUsuarios.verificarUsuario(idEstacion).execute();
+	public Map<String, String> verificarUsuario(String username, String acceso) {
+		Response<Map<String, String>> respuesta = restUsuarios.verificarUsuario(username, acceso).execute();
 		if (!respuesta.isSuccessful()) {
-			throw new ServicioEstacionesException("Error al comprobar hueco disponible\n" + respuesta.body());
+			throw new ServicioUsuariosException("Error al obtener claims\n" + respuesta.body());
 		}
 		return respuesta.body();
 	}
 
 	@Override
 	public Map<String, String> verificarUsuarioOAuth2(String idUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+		Response<Map<String, String>> respuesta = restUsuarios.verificarUsuarioOAuth2(idUsuario).execute();
+		if (!respuesta.isSuccessful()) {
+			throw new ServicioUsuariosException("Error al obtener claims\n" + respuesta.body());
+		}
+		return respuesta.body();// resolver esto
+	}
+ 
+	@Override
+	public void darAlta(String id, String nombre, String acceso, String codigo, boolean oauth2){
+		Response<Void> respuesta = restUsuarios.darAlta(new NuevoUsuarioDTO(id, id, nombre, acceso, codigo, oauth2)).execute();
+		if (!respuesta.isSuccessful()) {
+			throw new ServicioUsuariosException("Error al obtener claims\n" + respuesta.body());
+		}
 	}
 
-	@Override
-	public UsuarioDto darAlta(String Id, String Nombre, String Acceso, String Codigo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

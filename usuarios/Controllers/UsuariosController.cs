@@ -34,31 +34,23 @@ namespace usuarios.Controllers
         }
         
         [HttpPost]
-        public ActionResult<string> darAlta(NuevoUsuarioDTO usuarioDTO)
-        {
-            bool accion = usuarioDTO.OAuth2 != null;
-            string acceso;
-            if(usuarioDTO.OAuth2 != null)
-                acceso = usuarioDTO.OAuth2;
-            else if(usuarioDTO.Acceso != null)
-                acceso = usuarioDTO.Acceso;
-            else
-                throw new FormatException("\"Acceso\" o \"OAuth2\" deben contener valor");
-            string usuario = _servicioUsuarios.darAltaUsuario(usuarioDTO.Id, usuarioDTO.Username, usuarioDTO.Nombre, acceso, usuarioDTO.Codigo, accion);
-            return Ok(usuario);
+        public IActionResult darAlta(NuevoUsuarioDTO usuarioDTO)
+        { 
+            string usuario = _servicioUsuarios.darAltaUsuario(usuarioDTO.Id, usuarioDTO.Username, usuarioDTO.Nombre, usuarioDTO.Acceso, usuarioDTO.Codigo, usuarioDTO.OAuth2);
+            return NoContent();
         }
 
-        [HttpGet("verificar/{username}/{acceso}")]
-        public ActionResult<Dictionary<string, string>> verificarUsuario(string username, string acceso)
+        [HttpGet("verificar/{username}/{password}")]
+        public ActionResult<Dictionary<string, string>> verificarUsuario(string username, string password)
         {
-            Dictionary<string, string> claims = _servicioUsuarios.verificarUsuario(username, acceso);
+            Dictionary<string, string> claims = _servicioUsuarios.verificarUsuario(username, password);
             return Ok(claims);
         }
 
-        [HttpGet("verificar/OAuth2/{oauth2}")]
-        public ActionResult<Dictionary<string, string>> verificarUsuarioOAuth2(string oauth2)
+        [HttpGet("verificar/OAuth2/{idOauth2}")]
+        public ActionResult<Dictionary<string, string>> verificarUsuarioOAuth2(string idOauth2)
         {
-            Dictionary<string, string> claims = _servicioUsuarios.verificarUsuarioOAuth2(oauth2);
+            Dictionary<string, string> claims = _servicioUsuarios.verificarUsuarioOAuth2(idOauth2);
             return Ok(claims);
         }
 
