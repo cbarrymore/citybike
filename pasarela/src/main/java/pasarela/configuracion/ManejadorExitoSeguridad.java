@@ -5,10 +5,13 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import pasarela.usuarios.servicio.IServicioUsuarios;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
@@ -20,13 +23,22 @@ import java.util.Map;
 
 @Component
 public class ManejadorExitoSeguridad implements AuthenticationSuccessHandler {
-
+	@Autowired
+	private IServicioUsuarios servicioUsuarios;
+	
+	private ManejadorExitoSeguridad(IServicioUsuarios servicioUsuarios) {
+		this.servicioUsuarios = servicioUsuarios;
+	}
+	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
         DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
         Map<String, Object> claims = fetchUserInfo(usuario);
         System.out.println(usuario.getAttributes());
+        String oauth2Code = usuario.getAttribute("id");
+       Map<String,String> claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);        
+        
         if(claims != null)
         {
             Date caducidad = Date.from(Instant.now().plusSeconds(3600));
