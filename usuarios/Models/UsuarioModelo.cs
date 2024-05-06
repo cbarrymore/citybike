@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -84,9 +85,21 @@ namespace usuarios.modelo
             this.Validez = DateAndTime.Now.AddDays(7);
         }
 
+        public CodigoActivacion( string IdUsuario)
+        {
+            this.IdUsuario = IdUsuario;
+            this.Utilizado = false;
+            this.Validez = DateAndTime.Now.AddDays(7);
+        }
+
         public bool isValido()
         {
-            return !Utilizado && (Validez.CompareTo(Validez) > 0);
+            return !Utilizado && (Validez.CompareTo(DateAndTime.Now) > 0);
+        }
+
+        public bool isCaducado()
+        {
+            return Validez.CompareTo(DateAndTime.Now) > 0;
         }
 
     }
@@ -97,7 +110,9 @@ namespace usuarios.modelo
         public string Username{ get; set; }
         public string Nombre{ get; set; }
         public string Codigo{ get; set; }
+        [ValidateNever]
         public string Acceso{ get; set; }
+        [ValidateNever]
         public string OAuth2{ get; set; }
         public NuevoUsuarioDTO()
         {

@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IServicioUsuarios, ServicioUsuarios>();
 builder.Services.AddSingleton<RepositorioUsuarios, RepositorioUsuariosMongoDB>();
-builder.Services.AddSingleton<Repositorio<CodigoActivacion,string>, RepositorioCodigosActivacionMongoDB>();
+builder.Services.AddSingleton<RepositorioCodigosActivacion, RepositorioCodigosActivacionMongoDB>();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(typeof(ManejadorGlobalErrores));

@@ -72,7 +72,12 @@ namespace usuarios.Repositorio
         }
     }
     
-    public class RepositorioCodigosActivacionMongoDB : Repositorio<CodigoActivacion, string>
+    public interface RepositorioCodigosActivacion : Repositorio<CodigoActivacion, string>
+    {
+        public CodigoActivacion GetByIdUsuario(string idUsuario);
+    }
+
+    public class RepositorioCodigosActivacionMongoDB : RepositorioCodigosActivacion
     {
         public readonly IMongoCollection<CodigoActivacion> codigos;
 
@@ -104,6 +109,14 @@ namespace usuarios.Repositorio
         {
             return codigos
                 .Find(codigo => codigo.Codigo == id)
+                .FirstOrDefault();
+        }
+
+        public CodigoActivacion GetByIdUsuario(string idUsuario)
+        {
+            return codigos
+                .Find(codigo => codigo.IdUsuario == idUsuario)
+                .SortByDescending(codigo => codigo.Validez)
                 .FirstOrDefault();
         }
 

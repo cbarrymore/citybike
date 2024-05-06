@@ -22,9 +22,9 @@ namespace usuarios.servicios
 
         private static string ROL_USUARIO = "Usuario";
         private RepositorioUsuarios repositorioUsuarios;
-        private Repositorio<CodigoActivacion, string> repositorioCodigos;
+        private RepositorioCodigosActivacion repositorioCodigos;
 
-        public ServicioUsuarios(RepositorioUsuarios repositorioUsuarios, Repositorio<CodigoActivacion, string> repositorioCodigos)
+        public ServicioUsuarios(RepositorioUsuarios repositorioUsuarios, RepositorioCodigosActivacion repositorioCodigos)
         {
             this.repositorioUsuarios = repositorioUsuarios;
             this.repositorioCodigos = repositorioCodigos;
@@ -47,9 +47,11 @@ namespace usuarios.servicios
         public string solicitudCodigo(string idUsuario)
         {
             if(repositorioUsuarios.GetById(idUsuario) != null)
-                throw new InvalidOperationException("El usuario ya está dado de alta");
-            string codigo = idUsuario;
-            CodigoActivacion codigoActivacion = new CodigoActivacion(codigo,idUsuario);
+                throw new InvalidOperationException("El usuario ya se ha dado de alta");
+            CodigoActivacion codigoActivacion = repositorioCodigos.GetByIdUsuario(idUsuario);
+            if(codigoActivacion != null && codigoActivacion.isValido())
+                throw new InvalidOperationException("El usuario ya tiene un código");
+            codigoActivacion = new CodigoActivacion(idUsuario);
             repositorioCodigos.Add(codigoActivacion);
             return codigoActivacion.Codigo;
         }
@@ -58,11 +60,13 @@ namespace usuarios.servicios
         {
             if(repositorioUsuarios.GetById(idUsuario) != null)
                 throw new InvalidOperationException("El usuario ya se ha dado de alta");
-            if(repositorioUsuarios.GetById(username) != null)
+            if(repositorioUsuarios.GetByUsername(username) != null)
                 throw new InvalidOperationException("Nombre de usuario no disponible");
             CodigoActivacion codigoActivacion = repositorioCodigos.GetById(codigo);
             if(codigoActivacion == null || !codigoActivacion.isValido())
-                throw new Exception("El codigo de activación no es válido");
+                throw new Exception("El codigo de activación no es válido");        
+            if(oauth2 && repositorioUsuarios.GetByOAuht2(acceso)!=null)
+                throw new InvalidOperationException("OAuth2 ya corresponde a otro usuario");
             Usuario usuario = new Usuario(idUsuario,username,nombre,ROL_USUARIO,acceso, oauth2);
             repositorioUsuarios.Add(usuario);
             codigoActivacion.Utilizado = true;
