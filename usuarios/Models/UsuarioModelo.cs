@@ -11,9 +11,11 @@ namespace usuarios.modelo
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id{ get; set; }
+        public string Username{ get; set; }
         public string Nombre{ get; set; }
         public string Rol{ get; set; }
         public string Acceso{ get; set; }
+        public bool OAuth2{ get; set; }
         public bool Baja{ get; set; }
 
         public Usuario()
@@ -21,21 +23,25 @@ namespace usuarios.modelo
 
         }
 
-        public Usuario(string Id, string Nombre, string Rol, string Acceso, bool Baja)
+        public Usuario(string Id, string Username, string Nombre, string Rol, string Acceso, bool OAuth2, bool Baja)
         {
             this.Id = Id;
+            this.Username = Username;
             this.Nombre = Nombre;
             this.Rol = Rol;
             this.Acceso = Acceso;
+            this.OAuth2 = OAuth2;
             this.Baja = Baja;
         }
 
-        public Usuario(string Id, string Nombre, string Rol, string Acceso)
+        public Usuario(string Id, string Username, string Nombre, string Rol, string Acceso, bool OAuth2)
         {
             this.Id = Id;
+            this.Username = Username;
             this.Nombre = Nombre;
             this.Rol = Rol;
             this.Acceso = Acceso;
+            this.OAuth2 = OAuth2;
             this.Baja = false;
         }
 
@@ -88,20 +94,51 @@ namespace usuarios.modelo
     public class NuevoUsuarioDTO
     {
         public string Id{ get; set; }
+        public string Username{ get; set; }
         public string Nombre{ get; set; }
-        public string Acceso{ get; set; }
         public string Codigo{ get; set; }
+        public string Acceso{ get; set; }
+        public string OAuth2{ get; set; }
         public NuevoUsuarioDTO()
         {
 
         }
 
-        public NuevoUsuarioDTO(string Id, string Nombre, string Acceso, string Codigo)
+        public NuevoUsuarioDTO(string Id, string Username, string Nombre, string Codigo, string Acceso, string OAuth2)
+        {
+            this.Id = Id;
+            this.Username = Username;
+            this.Nombre = Nombre;
+            this.Codigo = Codigo;
+            this.Acceso = Acceso;
+            this.OAuth2 = OAuth2;
+        }
+
+    }
+
+    public class UsuarioDTO
+    {
+        public string Id{ get; set; }
+        public string Nombre{ get; set; }
+        public string Rol{ get; set; }
+
+        public UsuarioDTO(string Id, string Nombre, string Rol)
         {
             this.Id = Id;
             this.Nombre = Nombre;
-            this.Acceso = Acceso;
-            this.Codigo = Codigo;
+            this.Rol = Rol;
+        }
+
+        public UsuarioDTO()
+        {
+
+        }
+
+        public UsuarioDTO(Usuario usuario)
+        {
+            Id = usuario.Id;
+            Nombre = usuario.Nombre;
+            Rol = usuario.Rol;
         }
 
     }

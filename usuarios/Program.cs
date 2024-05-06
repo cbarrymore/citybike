@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IServicioUsuarios, ServicioUsuarios>();
-builder.Services.AddSingleton<Repositorio<Usuario,string>, RepositorioUsuariosMongoDB>();
+builder.Services.AddSingleton<RepositorioUsuarios, RepositorioUsuariosMongoDB>();
 builder.Services.AddSingleton<Repositorio<CodigoActivacion,string>, RepositorioCodigosActivacionMongoDB>();
 builder.Services.AddControllers(options =>
 {

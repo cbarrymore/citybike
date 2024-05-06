@@ -4,7 +4,14 @@ using usuarios.modelo;
 
 namespace usuarios.Repositorio
 {
-    public class RepositorioUsuariosMongoDB : Repositorio<Usuario, String>
+
+    public interface RepositorioUsuarios : Repositorio<Usuario, string>
+    {
+        public Usuario GetByUsername(string username);
+        public Usuario GetByOAuht2(string oauth2);
+    }
+
+    public class RepositorioUsuariosMongoDB : RepositorioUsuarios
     {
         public readonly IMongoCollection<Usuario> usuarios;
 
@@ -36,6 +43,20 @@ namespace usuarios.Repositorio
         {
             return usuarios
                 .Find(usuario => usuario.Id == id)
+                .FirstOrDefault();
+        }
+
+        public Usuario GetByUsername(string username)
+        {
+            return usuarios
+                .Find(usuario => usuario.Username == username)
+                .FirstOrDefault();
+        }
+
+        public Usuario GetByOAuht2(string oauth2)
+        {
+            return usuarios
+                .Find(usuario =>  usuario.OAuth2 == true && usuario.Acceso == oauth2) 
                 .FirstOrDefault();
         }
 
