@@ -10,7 +10,6 @@ namespace usuarios.modelo
     public class Usuario
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id{ get; set; }
         public string Username{ get; set; }
         public string Nombre{ get; set; }
@@ -49,9 +48,9 @@ namespace usuarios.modelo
         public Dictionary<string, string> getClaims()
         {
             Dictionary<string, string> claims = new Dictionary<string, string>();
-            claims.Add("Id",Id);
-            claims.Add("Nombre",Nombre);
-            claims.Add("Rol",Rol);
+            claims.Add("id",Id);
+            claims.Add("nombre",Nombre);
+            claims.Add("rol",Rol);
             return claims;
         }
     }

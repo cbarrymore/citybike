@@ -1,13 +1,13 @@
-package pasarela.usuarios.servicio;
+package pasarela.usuarios.dto;
 
 public class NuevoUsuarioDTO
 {
-    private String id;
-    private String username;
-    private String nombre;
-    private String acceso;
-    private String codigo;
-    private boolean oauth2;
+    private String Id;
+    private String Username;
+    private String Nombre;
+    private String Acceso;
+    private String Codigo;
+    private boolean OAuth2;
 
     public NuevoUsuarioDTO()
     {
@@ -16,72 +16,72 @@ public class NuevoUsuarioDTO
 
     public NuevoUsuarioDTO(String id, String username, String nombre, String acceso, String codigo, boolean oauth2)
     {
-        this.id = id;
-        this.username = username;
-        this.nombre = nombre;
-        this.acceso = acceso;
-        this.codigo = codigo;
-        this.oauth2 = oauth2;
+        this.Id = id;
+        this.Username = username;
+        this.Nombre = nombre;
+        this.Acceso = acceso;
+        this.Codigo = codigo;
+        this.OAuth2 = oauth2;
     }
 
     public String getId()
     {
-        return id;
+        return Id;
     }
 
     public void setId(String id)
     {
-        this.id = id;
+        this.Id = id;
     }
 
     public String getUsername()
     {
-        return username;
+        return Username;
     }
 
     public void setUsername(String username)
     {
-        this.username = username;
+        this.Username = username;
     }
 
     public String getNombre()
     {
-        return nombre;
+        return Nombre;
     }
 
     public void setNombre(String nombre)
     {
-        this.nombre = nombre;
+        this.Nombre = nombre;
     }
 
     public String getAcceso()
     {
-        return acceso;
+        return Acceso;
     }
 
     public void setAcceso(String acceso)
     {
-        this.acceso = acceso;
+        this.Acceso = acceso;
     }
 
     public String getCodigo()
     {
-        return codigo;
+        return Codigo;
     }
 
     public void setCodigo(String codigo)
     {
-        this.codigo = codigo;
+        this.Codigo = codigo;
     }
 
     public boolean getOauth2()
     {
-        return oauth2;
+        return OAuth2;
     }
 
     public void setOauth2(boolean oauth2)
     {
-        this.oauth2 = oauth2;
+        this.OAuth2 = oauth2;
     }
 
 }

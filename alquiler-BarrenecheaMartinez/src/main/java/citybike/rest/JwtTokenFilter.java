@@ -57,7 +57,7 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 
 				this.servletRequest.setAttribute("claims", claims);
 
-				Set<String> roles = new HashSet<>(Arrays.asList(claims.get("roles", String.class).split(",")));
+				Set<String> roles = new HashSet<>(Arrays.asList(claims.get("rol", String.class).split(",")));
 				// Consulta si la operación está protegida por rol
 				if (resourceInfo.getResourceMethod().isAnnotationPresent(PermitAll.class)) {
 					return;
@@ -87,7 +87,6 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 			} else
 				return secret_key.getBytes();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			throw new RuntimeException("La clave secreta no se ha podido obtener");
 		}
 

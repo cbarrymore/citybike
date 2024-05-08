@@ -19,11 +19,4 @@ public class ServicioUsuariosTest {
     public void setUp() {
     	servicioUsuarios = new ServicioUsuariosRetrofit();
     }
-    
-    
-    @Test
-    public void testVerificarUsuarioOauth2() throws ServicioUsuariosException, IOException {
-    	Map<String,String> claims = servicioUsuarios.verificarUsuario("hola", "hola");
-    	System.out.println(claims);
-    }
 }

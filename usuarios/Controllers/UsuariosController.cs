@@ -26,11 +26,11 @@ namespace usuarios.Controllers
             return NoContent();
         }
 
-        [HttpPost("solicitud/{idUsuario}")]
+        [HttpGet("solicitud/{idUsuario}")]
         public ActionResult<string> solicitudCodigo(string idUsuario)
         {
             string codigo = _servicioUsuarios.solicitudCodigo(idUsuario);
-            return Ok(codigo);
+            return Ok(new { id = codigo.ToString()});
         }
         
         [HttpPost]
@@ -54,7 +54,7 @@ namespace usuarios.Controllers
             return Ok(claims);
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public ActionResult<IEnumerable<UsuarioDTO>> getUsuarios()
         {
             List<Usuario> lista = _servicioUsuarios.GetUsuarios();
@@ -69,18 +69,18 @@ namespace usuarios.Controllers
 
     public class ManejadorGlobalErrores : ExceptionFilterAttribute
     {
+        
         public override void OnException(ExceptionContext context)
         {
+            Console.WriteLine("Entro");
             base.OnException(context);
             if(context.Exception is ArgumentException || context.Exception is FormatException || context.Exception is InvalidOperationException)
             {
-                Console.WriteLine(context.Exception.Message);
                 context.Result = new BadRequestObjectResult(context.Exception.Message);
             }
 
             else if(context.Exception is EntidadNoEncontradaException)
             {
-                Console.WriteLine(context.Exception.Message);
                 context.Result = new NotFoundObjectResult(context.Exception.Message);
             }
             
