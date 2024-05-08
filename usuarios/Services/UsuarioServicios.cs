@@ -20,7 +20,7 @@ namespace usuarios.servicios
     public class ServicioUsuarios : IServicioUsuarios
     {
 
-        private static string ROL_USUARIO = "Usuario";
+        private static string ROL_USUARIO = "usuario";
         private RepositorioUsuarios repositorioUsuarios;
         private RepositorioCodigosActivacion repositorioCodigos;
 

@@ -37,7 +37,6 @@ public class ManejadorExitoSeguridad implements AuthenticationSuccessHandler {
         Authentication authentication) throws ServletException, IOException {
         DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
         String name = usuario.getName();
-        System.out.println(usuario.getAttributes());
         String oauth2Code = Integer.toString(usuario.getAttribute("id"));
 		String oauth2Username = usuario.getAttribute("login");
         Map<String, Object> claims;
@@ -50,14 +49,9 @@ public class ManejadorExitoSeguridad implements AuthenticationSuccessHandler {
 				claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);
 	        }
 			sendJWT(claims, response);
-		} catch (ServicioUsuariosException e) {
+		} catch (ServicioUsuariosException | IOException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-		}
-		catch(IOException e1)
-		{
-			e1.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
         
     }

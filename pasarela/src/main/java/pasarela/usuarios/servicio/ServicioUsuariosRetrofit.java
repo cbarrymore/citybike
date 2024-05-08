@@ -30,7 +30,6 @@ public class ServicioUsuariosRetrofit implements IServicioUsuarios{
 	public Map<String, Object> verificarUsuario(String username, String acceso) throws ServicioUsuariosException, IOException {
 		Response<Map<String, Object>> respuesta = restUsuarios.verificarUsuario(username, acceso).execute();
 		int responseCode = respuesta.code();
-		System.out.println(responseCode);
 		if (responseCode == 404) {
 			return null;
 		}
@@ -64,8 +63,6 @@ public class ServicioUsuariosRetrofit implements IServicioUsuarios{
 	@Override
 	public String solicitarCodigo(String idUsuario) throws ServicioUsuariosException, IOException {
 		Response<ContenedorCodigo> respuesta = restUsuarios.solicitarCodigo(idUsuario).execute();
-		int responseCode = respuesta.code();
-		System.out.println(responseCode);
 		if(!respuesta.isSuccessful()){
 			throw new ServicioUsuariosException("Error al solicitar código"); 
 		} 

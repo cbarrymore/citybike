@@ -40,15 +40,12 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
-        // if request path is "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
-        // "/swagger-resources/**","/webjars/**" then permitAll
         String uri = request.getRequestURI();
         if (uri.startsWith("/auth/oauth2")) {
             filterChain.doFilter(request, response);
             return;
         }
         if(uri.startsWith("/auth/login")) {
-            System.out.println(request.getParameterMap().entrySet());
             String[] usernameList = request.getParameterValues("username");
             String[] passwordList = request.getParameterValues("password");
             if(usernameList == null || passwordList == null || usernameList.length>1 || passwordList.length>1)
@@ -75,7 +72,6 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
         
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No hay token o no es correcto");
-            //filterChain.doFilter(request, response);
             return;
         }	
         String token = authorization.substring("Bearer ".length()).trim();

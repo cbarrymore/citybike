@@ -25,7 +25,7 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("usuarios/*").hasAuthority("Gestor")
+        .antMatchers("/usuarios/*", "/usuarios/solicitud/*").hasAnyAuthority("gestor")
         .antMatchers("/auth/oauth2")
         .authenticated().and()
         .oauth2Login().successHandler(manegadorExito)
