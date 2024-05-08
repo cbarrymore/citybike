@@ -110,6 +110,14 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+            <mainClass>estaciones2.App</mainClass>
+            <layout>JAR</layout>
+        </configuration>
+     </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>${maven-enforcer-plugin.version}</version>
