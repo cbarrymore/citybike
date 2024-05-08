@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.security.core.Transient;
 import org.springframework.stereotype.Service;
 
-import pasarela.excepciones.ServicioUsuariosException;
 import pasarela.usuarios.dto.ContenedorCodigo;
 import pasarela.usuarios.dto.NuevoUsuarioDTO;
 import retrofit2.Response;

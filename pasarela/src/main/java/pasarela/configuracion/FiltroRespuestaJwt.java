@@ -22,8 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import pasarela.excepciones.ServicioUsuariosException;
 import pasarela.usuarios.servicio.IServicioUsuarios;
+import pasarela.usuarios.servicio.ServicioUsuariosException;
 
 @Component
 public class FiltroRespuestaJwt extends OncePerRequestFilter {

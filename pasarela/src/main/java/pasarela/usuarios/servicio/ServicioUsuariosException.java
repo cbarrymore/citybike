@@ -1,4 +1,4 @@
-package pasarela.excepciones;
+package pasarela.usuarios.servicio;
 
 public class ServicioUsuariosException extends Exception
 {

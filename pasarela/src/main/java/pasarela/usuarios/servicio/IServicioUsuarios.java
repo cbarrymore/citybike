@@ -3,8 +3,6 @@ package pasarela.usuarios.servicio;
 import java.io.IOException;
 import java.util.Map;
 
-import pasarela.excepciones.ServicioUsuariosException;
-
 public interface IServicioUsuarios {
 	public Map<String, Object> verificarUsuario(String username, String acceso) throws ServicioUsuariosException, IOException;
 	
