@@ -21,17 +21,14 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.httpBasic().disable().csrf().disable().authorizeRequests()
-                .antMatchers("/login/oauth2/code/github").permitAll()
-                .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
-                        "/webjars/**","/auth/login")
-                .permitAll()
-                .antMatchers("/**")
-                .authenticated().and()
-                .oauth2Login().successHandler(manegadorExito)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.httpBasic().disable().csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
+        .antMatchers("/auth/oauth2")
+        .authenticated().and()
+        .oauth2Login().successHandler(manegadorExito)
+        .and();
         httpSecurity.addFilterBefore(this.filtroRespuesta, UsernamePasswordAuthenticationFilter.class);
     }
 

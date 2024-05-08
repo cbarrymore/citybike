@@ -28,19 +28,20 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
         // if request path is "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
         // "/swagger-resources/**","/webjars/**" then permitAll
         String uri = request.getRequestURI();
-        if (request.getRequestURI().startsWith("/swagger-ui.html") || request.getRequestURI().startsWith("/swagger-ui")
-                || request.getRequestURI().startsWith("/v3/api-docs")
-                || request.getRequestURI().startsWith("/swagger-resources")
-                || request.getRequestURI().startsWith("/webjars")
-                || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*/estacionar") && request.getMethod().equals("PUT"))
-                || request.getRequestURI().matches("/api/estaciones/.*/hueco")) {
+        if (request.getRequestURI().startsWith("/auth/oauth2")) {
             filterChain.doFilter(request, response);
             return;
         }
+        if(request.getRequestURI().startsWith("/auth/login")) {
+        	//TODO
+        }
+        
+        
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No hay token o no es correcto");
+            filterChain.doFilter(request, response);
             return;
-        }
+        }	
         String token = authorization.substring("Bearer ".length()).trim();
         Claims claims;
         try {

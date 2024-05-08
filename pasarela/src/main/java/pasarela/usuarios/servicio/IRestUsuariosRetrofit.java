@@ -14,9 +14,12 @@ public interface IRestUsuariosRetrofit {
 	
 	
 	@GET("/api/usuarios/verificar/OAuth2/{idOauth2}")
-    Call<Map<String,String>> verificarUsuarioOAuth2(@Path("idOauth2") String idOauth2);
+    Call<Map<String,Object>> verificarUsuarioOAuth2(@Path("idOauth2") String idOauth2);
 	
 	
     @POST("/api/usuarios")
     Call<Void> darAlta(@Body NuevoUsuarioDTO usuario);
+    
+    @GET("/api/usuarios/solicitud/{idUsuario}")
+    Call<String> solicitarCodigo(@Path("IdUsuario") String idUsuario);
 }

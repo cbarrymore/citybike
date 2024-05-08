@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import pasarela.usuarios.servicio.IServicioUsuarios;
+import pasarela.usuarios.servicio.ServicioUsuariosException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,32 +37,33 @@ public class ManejadorExitoSeguridad implements AuthenticationSuccessHandler {
             Authentication authentication) throws ServletException, IOException {
         DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
         //Map<String, Object> claims = fetchUserInfo(usuario);
+        String name = usuario.getName();
         System.out.println(usuario.getAttributes());
-        String oauth2Code = usuario.getAttribute("id");
-        Map<String,Object> claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);//Resolver
-        if(claims != null)
-        {
-            Date caducidad = Date.from(Instant.now().plusSeconds(3600));
-            String token = Jwts.builder()
-                        .setClaims(claims)
-                        .signWith(SignatureAlgorithm.HS256, "secreto".getBytes())
-                        .setExpiration(caducidad)
-                        .compact();
-            response.getWriter().append(token);
-        }
-        else
-        {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario no permitido");
-        }
+        String oauth2Code = Integer.toString(usuario.getAttribute("id"));
+        Map<String, Object> claims;
+		try {
+			claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);
+			if(claims == null)
+	        {
+	        	String codigo = servicioUsuarios.solicitarCodigo(oauth2Code);
+	        	servicioUsuarios.darAlta(oauth2Code, name, oauth2Code, codigo, true);
+				claims = servicioUsuarios.verificarUsuarioOAuth2(oauth2Code);
+	        }
+			sendJWT(claims, response);
+		} catch (ServicioUsuariosException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//Resolver
+        
     }
 
-    private Map<String, Object> fetchUserInfo(DefaultOAuth2User usuario)
-    {
-        Map<String, Object> claims = new HashMap<>();
-        System.out.println(usuario.getName());
-        claims.put("sub", usuario.getName());
-        claims.put("rol", "usuario");
-        
-        return claims;
+    private void sendJWT(Map<String,Object> claims, HttpServletResponse response) throws IOException {
+    	Date caducidad = Date.from(Instant.now().plusSeconds(3600));
+        String token = Jwts.builder()
+                    .setClaims(claims)
+                    .signWith(SignatureAlgorithm.HS256, "secreto".getBytes())
+                    .setExpiration(caducidad)
+                    .compact();
+        response.getWriter().append(token);
     }
 }
