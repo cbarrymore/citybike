@@ -1,4 +1,4 @@
-package pasarela.usuarios.servicio;
+package pasarela.excepciones;
 
 public class RespuestaError {
 
