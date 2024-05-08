@@ -20,7 +20,7 @@ public class ServicioUsuariosRetrofit implements IServicioUsuarios{
 	
 	public ServicioUsuariosRetrofit() {
 		retrofit = new Retrofit.Builder()
-				.baseUrl("http://localhost:5115/")
+				.baseUrl("http://host.docker.internal:5115/")
 				.addConverterFactory(JacksonConverterFactory.create())
 				.build();
 		restUsuarios = retrofit.create(IRestUsuariosRetrofit.class);
