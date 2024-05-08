@@ -46,13 +46,12 @@ namespace usuarios.servicios
 
         public string solicitudCodigo(string idUsuario)
         {
+            Console.WriteLine(idUsuario);
             if(repositorioUsuarios.GetById(idUsuario) != null)
                 throw new InvalidOperationException("El usuario ya se ha dado de alta");
             CodigoActivacion codigoActivacion = repositorioCodigos.GetByIdUsuario(idUsuario);
-            if(codigoActivacion != null && codigoActivacion.isValido())
-                throw new InvalidOperationException("El usuario ya tiene un código");
-            codigoActivacion = new CodigoActivacion(idUsuario);
-            repositorioCodigos.Add(codigoActivacion);
+            if(codigoActivacion == null)
+                throw new InvalidOperationException("El usuario no tiene código");
             return codigoActivacion.Codigo;
         }
 
@@ -64,7 +63,7 @@ namespace usuarios.servicios
                 throw new InvalidOperationException("Nombre de usuario no disponible");
             CodigoActivacion codigoActivacion = repositorioCodigos.GetById(codigo);
             if(codigoActivacion == null || !codigoActivacion.isValido())
-                throw new Exception("El codigo de activación no es válido");        
+                throw new InvalidOperationException("El codigo de activación no es válido");        
             if(oauth2 && repositorioUsuarios.GetByOAuht2(acceso)!=null)
                 throw new InvalidOperationException("OAuth2 ya corresponde a otro usuario");
             Usuario usuario = new Usuario(idUsuario,username,nombre,ROL_USUARIO,acceso, oauth2);
@@ -77,12 +76,12 @@ namespace usuarios.servicios
         public Dictionary<string, string> verificarUsuario(string username, string password)
         {
             Usuario usuario = repositorioUsuarios.GetByUsername(username);
-            if(usuario == null)
+            if(usuario == null || usuario.OAuth2)
                 throw new EntidadNoEncontradaException("El usuario no existe");
             if(usuario.Baja)
                 throw new InvalidOperationException("El usuario esta dado de baja");
             if(!usuario.Acceso.Equals(password))
-                 throw new InvalidDataException("Contraseña incorrecta");
+                 throw new EntidadNoEncontradaException("Contraseña incorrecta");
             return usuario.getClaims();
         }
 

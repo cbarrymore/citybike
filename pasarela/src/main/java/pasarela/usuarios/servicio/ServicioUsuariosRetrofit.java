@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.security.core.Transient;
 import org.springframework.stereotype.Service;
 
+import pasarela.usuarios.dto.ContenedorCodigo;
+import pasarela.usuarios.dto.NuevoUsuarioDTO;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -25,10 +27,15 @@ public class ServicioUsuariosRetrofit implements IServicioUsuarios{
 	}
 	
 	@Override
-	public Map<String, String> verificarUsuario(String username, String acceso) throws ServicioUsuariosException, IOException {
-		Response<Map<String, String>> respuesta = restUsuarios.verificarUsuario(username, acceso).execute();
+	public Map<String, Object> verificarUsuario(String username, String acceso) throws ServicioUsuariosException, IOException {
+		Response<Map<String, Object>> respuesta = restUsuarios.verificarUsuario(username, acceso).execute();
+		int responseCode = respuesta.code();
+		System.out.println(responseCode);
+		if (responseCode == 404) {
+			return null;
+		}
 		if (!respuesta.isSuccessful()) {
-			throw new ServicioUsuariosException("Error al obtener claims\n" + respuesta.body());
+			throw new ServicioUsuariosException("Error al obtener claims");
 		}
 		return respuesta.body();
 	}
@@ -37,30 +44,32 @@ public class ServicioUsuariosRetrofit implements IServicioUsuarios{
 	public Map<String, Object> verificarUsuarioOAuth2(String idUsuario) throws ServicioUsuariosException, IOException {
 		Response<Map<String, Object>> respuesta = restUsuarios.verificarUsuarioOAuth2(idUsuario).execute();
 		int responseCode = respuesta.code();
-		if (!respuesta.isSuccessful()) {
-			throw new ServicioUsuariosException("Error al obtener claims\n" + respuesta.body());
-		}
 		if (responseCode == 404) {
 			return null;
+		}
+		if (!respuesta.isSuccessful()) {
+			throw new ServicioUsuariosException("Error al obtener claims");
 		}
 		return respuesta.body();// resolver esto
 	}
  
 	@Override
-	public void darAlta(String id, String nombre, String acceso, String codigo, boolean oauth2) throws ServicioUsuariosException, IOException{
-		Response<Void> respuesta = restUsuarios.darAlta(new NuevoUsuarioDTO(id, id, nombre, acceso, codigo, oauth2)).execute();
+	public void darAlta(String id, String username, String nombre, String acceso, String codigo, boolean oauth2) throws ServicioUsuariosException, IOException{
+		Response<Void> respuesta = restUsuarios.darAlta(new NuevoUsuarioDTO(id, username, nombre, acceso, codigo, oauth2)).execute();
 		if (!respuesta.isSuccessful()) {
-			throw new ServicioUsuariosException("Error al obtener claims\n" + respuesta.body());
+			throw new ServicioUsuariosException("Error al obtener claims");
 		}
 	}
 
 	@Override
 	public String solicitarCodigo(String idUsuario) throws ServicioUsuariosException, IOException {
-		Response<String> respuesta = restUsuarios.solicitarCodigo(idUsuario).execute();
+		Response<ContenedorCodigo> respuesta = restUsuarios.solicitarCodigo(idUsuario).execute();
+		int responseCode = respuesta.code();
+		System.out.println(responseCode);
 		if(!respuesta.isSuccessful()){
-			throw new ServicioUsuariosException("Error al solicitar código\n" + respuesta.body()); 
+			throw new ServicioUsuariosException("Error al solicitar código"); 
 		} 
-		return null;
+		return respuesta.body().getId();
 	}
 
 
