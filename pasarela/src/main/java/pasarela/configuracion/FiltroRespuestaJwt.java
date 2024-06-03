@@ -62,7 +62,7 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario o contraseña incorrectos");
                 sendJWT(claims, response);
             }
-            catch (ServicioUsuariosException | IOException e)
+            catch (Exception e)
             {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
             }

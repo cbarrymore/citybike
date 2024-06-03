@@ -48,7 +48,7 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 		} else {
 			String token = authorization.substring("Bearer ".length()).trim();
 			try {
-				Claims claims = Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token).getBody();
+				Claims claims = Jwts.parser().setSigningKey("secreto".getBytes()).parseClaimsJws(token).getBody();
 
 				// comprobar caducidad ...
 				if(claims.getExpiration().before(new Date())) {
