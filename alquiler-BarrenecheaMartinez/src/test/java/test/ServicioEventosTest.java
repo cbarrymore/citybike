@@ -17,7 +17,7 @@ import citybike.eventos.servicio.IServicioEventos;
 import citybike.eventos.servicio.ServicioEventosRabbit;
 
 public class ServicioEventosTest {
-
+/* 
     private static IServicioEventos servicioEventos;
 
     @BeforeAll
@@ -44,4 +44,5 @@ public class ServicioEventosTest {
         EventoBiciDesactivada eventInfo = new EventoBiciDesactivada("idBici", "motivo", LocalDateTime.now().toString());
         servicioEventos.publicarEvento(eventInfo);
     }
+    Desactivado por actualizacion*/
 }

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.gson.Gson;
 import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -31,8 +32,9 @@ public class ServicioEventosRabbit implements IServicioEventos {
     private Channel channel;
 
     private static final String EXCHANGE_NAME = "Citybike";
-    private static final String URI = "amqps://wjmgyyga:Ap642XV6hyZ0k0xwU4eTFmkH5DfyzHbt@whale.rmq.cloudamqp.com/wjmgyyga";
+    private static final String URI = "amqp://guest:guest@rabbitmq:5672";
     private static final String ROUTING_KEY = "citybike.alquiler";
+    private static final String ROUTING_KEY_ESCUCHAR = "citybike.estaciones2";
     private final HashMap<String, String> QUEUE_KEY = new HashMap<String, String>();
 
     private IServicioAlquileres servicioAlquileres = FactoriaServicios.getServicio(IServicioAlquileres.class);
@@ -43,10 +45,10 @@ public class ServicioEventosRabbit implements IServicioEventos {
         this.factory.setUri(URI);
         this.connection = factory.newConnection();
         this.channel = this.connection.createChannel();
-
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC, true, false, null);
+        channel.queueDeclare("citibyke.alquiler", true, false, false, null);
+        channel.queueBind("citibyke.alquiler", EXCHANGE_NAME, ROUTING_KEY_ESCUCHAR);
         this.QUEUE_KEY.put("citybike.alquiler", "citybike.alquiler");
-
-        // subscribe to all queues in QUEUE_KEY
 
         for (String queue : QUEUE_KEY.keySet()) {
             channel.basicConsume(queue, false, queue + "-consumer",
@@ -84,32 +86,6 @@ public class ServicioEventosRabbit implements IServicioEventos {
                         .contentType("application/json")
                         .build(),
                 mensaje.getBytes());
-    }
-
-    @Override
-    public void suscribirse(String queue, String routingKey)
-            throws IOException {
-        this.QUEUE_KEY.put(queue, routingKey);
-        this.channel.basicConsume(queue, false, queue + "-consumer",
-                new DefaultConsumer(channel) {
-                    @Override
-                    public void handleDelivery(String consumerTag, Envelope envelope,
-                            AMQP.BasicProperties properties, byte[] body) throws IOException {
-                        String routingKey = envelope.getRoutingKey();
-                        String contentType = properties.getContentType();
-                        long deliveryTag = envelope.getDeliveryTag();
-                        String contenido = new String(body);
-
-                        try {
-                            procesarEvento(routingKey, contentType, contenido);
-                        } catch (IOException | RepositorioException | EntidadNoEncontrada e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        channel.basicAck(deliveryTag, false);
-                    }
-                });
     }
 
     @Override

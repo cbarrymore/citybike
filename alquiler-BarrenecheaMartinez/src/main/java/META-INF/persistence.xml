@@ -19,7 +19,7 @@
 				value="root" />
 
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/citybike?serverTimezone=CET" />
+				value="jdbc:mysql://mysql:3306/citybike?serverTimezone=CET" />
 
 			<property name="eclipselink.ddl-generation"
 				value="create-or-extend-tables" />

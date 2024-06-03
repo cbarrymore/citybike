@@ -37,7 +37,7 @@ public class AlquilerControladorRest {
 	private HttpServletRequest servletRequest;
 
 	@POST
-	@Path("usuarios/{idUsuario}/reservas")
+	@Path("/usuarios/{idUsuario}/reservas")
 	/**
 	 * 
 	 * curl -X POST \ 'http://localhost:8080/api/alquileres/usuarios/1/reservas' \
