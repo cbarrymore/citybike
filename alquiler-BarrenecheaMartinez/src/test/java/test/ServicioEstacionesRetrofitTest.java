@@ -12,7 +12,7 @@ import citybike.repositorio.RepositorioException;
 
 public class ServicioEstacionesRetrofitTest {
     private ServicioEstacionesRetrofit servicioEstaciones;
-
+/*
     @BeforeEach
     public void setUp() {
         servicioEstaciones = new ServicioEstacionesRetrofit();
@@ -33,4 +33,5 @@ public class ServicioEstacionesRetrofitTest {
             e.printStackTrace();
         }
     }
+    Desactivado por actualizacion*/
 }

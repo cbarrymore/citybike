@@ -25,6 +25,7 @@ public class RabbitMQConfig {
     public static final String QUEUE_NAME = "citybike.estaciones2";
     public static final String EXCHANGE_NAME = "Citybike";
     public static final String ROUTING_KEY = "citybike.estaciones2.";
+    public static final String ROUTING_KEY_RECIBIR = "citybike.alquiler.";
 
     @Bean
     public TopicExchange exchange()
@@ -45,7 +46,7 @@ public class RabbitMQConfig {
     public Binding binding(Queue queue, Exchange exchange)
     {
         Map<String, Object> propiedades = null;
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY+"*").and(propiedades);
+        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY_RECIBIR+"*").and(propiedades);
     }
 
     @Bean

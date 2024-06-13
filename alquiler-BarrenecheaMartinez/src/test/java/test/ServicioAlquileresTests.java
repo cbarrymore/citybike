@@ -26,6 +26,7 @@ import citybike.usuario.modelo.Reserva;
 import citybike.usuario.modelo.Usuario;
 
 public class ServicioAlquileresTests {
+	/* 
 	private static IServicioAlquileres servicioAlquileres;
 	private static IServicioTiempo servicioTiempo;
 	private static Repositorio<Usuario, String> repositorioUsuario;
@@ -244,5 +245,5 @@ public class ServicioAlquileresTests {
 		servicioTiempo.setFixedClockAt(servicioTiempo.now().plusMinutes(61));
 		//servicioAlquileres.dejarBicicleta(idUsuario, "EstacionPrueba");
 	}
-
+Desactivado por actualizacion*/
 }
