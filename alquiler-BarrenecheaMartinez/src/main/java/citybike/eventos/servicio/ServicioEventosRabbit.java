@@ -32,7 +32,7 @@ public class ServicioEventosRabbit implements IServicioEventos {
     private Channel channel;
 
     private static final String EXCHANGE_NAME = "Citybike";
-    private static final String URI = "amqp://guest:guest@rabbitmq:5672";
+    private static final String URI = "amqp://guest:guest@localhost:5672";
     private static final String ROUTING_KEY = "citybike.alquiler";
     private static final String ROUTING_KEY_ESCUCHAR = "citybike.estaciones2";
     private final HashMap<String, String> QUEUE_KEY = new HashMap<String, String>();
