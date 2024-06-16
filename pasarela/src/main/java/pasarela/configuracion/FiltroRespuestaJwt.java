@@ -96,11 +96,15 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
 
     private void sendJWT(Map<String,Object> claims, HttpServletResponse response) throws IOException {
     	Date caducidad = Date.from(Instant.now().plusSeconds(3600));
+    	String role = claims.get("rol").toString();
         String token = Jwts.builder()
                     .setClaims(claims)
                     .signWith(SignatureAlgorithm.HS256, "secreto".getBytes())
                     .setExpiration(caducidad)
                     .compact();
-        response.getWriter().append(token);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        String jsonResponse = "{\"token\": \"" + token + "\", \"role\": \"" + role + "\"}";
+        response.getWriter().write(jsonResponse);
     }
 }

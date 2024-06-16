@@ -21,10 +21,10 @@ public class ReservaEntidad implements Entidad<Reserva>
 	@Column(name = "id_bici")
 	private String idBici;
 	
-	@Column(name = "fecha_creada", columnDefinition = "TIMESTAMP")
+	@Column(name = "fecha_creada", columnDefinition = "TIMESTAMP",nullable = true)
 	private LocalDateTime creada;
 	
-	@Column(name = "fecha_caducidad", columnDefinition = "TIMESTAMP")
+	@Column(name = "fecha_caducidad", columnDefinition = "TIMESTAMP",nullable = true)
 	private LocalDateTime caducidad;
 	
 	public ReservaEntidad()

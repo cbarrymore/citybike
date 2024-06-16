@@ -131,13 +131,13 @@ namespace usuarios.modelo
     public class UsuarioDTO
     {
         public string Id{ get; set; }
-        public string Nombre{ get; set; }
+        public string Username{ get; set; }
         public string Rol{ get; set; }
 
         public UsuarioDTO(string Id, string Nombre, string Rol)
         {
             this.Id = Id;
-            this.Nombre = Nombre;
+            this.Username = Nombre;
             this.Rol = Rol;
         }
 
@@ -149,7 +149,7 @@ namespace usuarios.modelo
         public UsuarioDTO(Usuario usuario)
         {
             Id = usuario.Id;
-            Nombre = usuario.Nombre;
+            Username = usuario.Username;
             Rol = usuario.Rol;
         }
 

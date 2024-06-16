@@ -21,10 +21,10 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 	@Column(name = "id_bici")
 	private String idBici;
 	
-	@Column(name = "fecha_inicio", columnDefinition = "TIMESTAMP")
+	@Column(name = "fecha_inicio", columnDefinition = "TIMESTAMP",nullable = true)
 	private LocalDateTime inicio;
 	
-	@Column(name = "fecha_fin", columnDefinition = "TIMESTAMP")
+	@Column(name = "fecha_fin", columnDefinition = "TIMESTAMP",nullable = true)
 	private LocalDateTime fin;
 	
 	public AlquilerEntidad()
