@@ -72,8 +72,8 @@ services:
     hostname: my-rabbit
     container_name: rabbit1
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       - "5672:5672"
       - "15672:15672"

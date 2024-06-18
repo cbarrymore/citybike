@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 import org.springframework.data.annotation.Id;
@@ -29,6 +30,8 @@ public class Estacion implements Identificable {
 	private List<Double> coordenadas;
 	private BigDecimal latitud;
 	private BigDecimal longitud;
+	@BsonIgnore
+	private int bicisDisponibles;
 	private LocalDate fechaAlta;
 	private Set<String> bicisAparcadas;
 
@@ -137,6 +140,14 @@ public class Estacion implements Identificable {
 
 	public boolean retirarBici(String idBici) {
 		return bicisAparcadas.remove(idBici);
+	}
+
+	public int getBicisDisponibles() {
+		return bicisDisponibles;
+	}
+
+	public void setBicisDisponibles(int bicisDisponibles) {
+		this.bicisDisponibles = bicisDisponibles;
 	}
 
 }

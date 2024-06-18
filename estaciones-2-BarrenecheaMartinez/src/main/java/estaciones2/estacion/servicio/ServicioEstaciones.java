@@ -16,6 +16,7 @@ import estaciones2.bici.modelo.Bici;
 import estaciones2.bici.repositorio.RepositorioBicis;
 import estaciones2.estacion.modelo.Estacion;
 import estaciones2.estacion.repositorio.RepositorioEstaciones;
+import estaciones2.estacion.repositorio.RepositorioEstacionesMongo;
 import estaciones2.evento.servicio.IServicioEventos;
 import estaciones2.historico.modelo.Historico;
 import estaciones2.historico.repositorio.RepositorioHistorico;
@@ -26,13 +27,13 @@ import estaciones2.repositorio.RepositorioException;
 @Transactional
 public class ServicioEstaciones implements IServicioEstaciones {
 
-	private RepositorioEstaciones repoEstaciones;
+	private RepositorioEstacionesMongo repoEstaciones;
 	private RepositorioBicis repoBicis;
 	private RepositorioHistorico repoHistoricos;
 	private IServicioEventos servicioEventos;
 
 	@Autowired
-	public ServicioEstaciones(RepositorioEstaciones repoEstaciones, RepositorioBicis repoBicis,
+	public ServicioEstaciones(RepositorioEstacionesMongo repoEstaciones, RepositorioBicis repoBicis,
 			RepositorioHistorico repoHistoricos, IServicioEventos servicioEventos) {
 		this.repoEstaciones = repoEstaciones;
 		this.repoBicis = repoBicis;

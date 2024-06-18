@@ -21,11 +21,11 @@ public class ReservaEntidad implements Entidad<Reserva>
 	@Column(name = "id_bici")
 	private String idBici;
 	
-	@Column(name = "fecha_creada", columnDefinition = "TIMESTAMP",nullable = true)
-	private LocalDateTime creada;
+	@Column(name = "fecha_creada",nullable = true)
+	private String creada;
 	
-	@Column(name = "fecha_caducidad", columnDefinition = "TIMESTAMP",nullable = true)
-	private LocalDateTime caducidad;
+	@Column(name = "fecha_caducidad",nullable = true)
+	private String caducidad;
 	
 	public ReservaEntidad()
 	{
@@ -35,8 +35,8 @@ public class ReservaEntidad implements Entidad<Reserva>
 	public ReservaEntidad(Reserva reserva)
 	{
 		this.idBici = reserva.getIdBici();
-		this.creada = reserva.getCreada();
-		this.caducidad = reserva.getCaducidad();
+		this.creada = reserva.getCreada().toString();
+		this.caducidad = reserva.getCaducidad().toString();
 	}
 	
 	public String getId()
@@ -59,24 +59,24 @@ public class ReservaEntidad implements Entidad<Reserva>
 		this.idBici = idBici;
 	}
 
-	public LocalDateTime getCreada()
+	public String getCreada()
 	{
 		return creada;
 	}
 
 	public void setCreada(LocalDateTime creada)
 	{
-		this.creada = creada;
+		this.creada = creada.toString();
 	}
 
-	public LocalDateTime getCaducidad()
+	public String getCaducidad()
 	{
 		return caducidad;
 	}
 
 	public void setCaducidad(LocalDateTime caducidad)
 	{
-		this.caducidad = caducidad;
+		this.caducidad = caducidad.toString();
 	}
 	
 	public Reserva getObject()
@@ -84,8 +84,8 @@ public class ReservaEntidad implements Entidad<Reserva>
 		Reserva res = new Reserva();
 		res.setId(id);
 		res.setIdBici(idBici);
-		res.setCreada(creada);
-		res.setCaducidad(caducidad);
+		res.setCreada(LocalDateTime.parse(creada));
+		res.setCaducidad(LocalDateTime.parse(caducidad));
 		return res;
 	}
 	

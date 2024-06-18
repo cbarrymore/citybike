@@ -20,6 +20,7 @@ public class EstacionDto {
     private boolean lleno;
     @Schema(description = "Direccion postal de la estacion")
     private long dirPostal;
+    private int bicisDisponibles; 
 
     @BsonProperty(value = "coordenadas")
     @Schema(description = "Coordenadas de la estacion")
@@ -35,7 +36,7 @@ public class EstacionDto {
 
     }
 
-    public EstacionDto(String nombre, boolean lleno, long dirPostal, BigDecimal latitud, BigDecimal longitud) {
+    public EstacionDto(String nombre, boolean lleno, long dirPostal, BigDecimal latitud, BigDecimal longitud, int bicisDisponibles) {
         this.nombre = nombre;
         this.lleno = lleno;
         this.dirPostal = dirPostal;
@@ -45,6 +46,7 @@ public class EstacionDto {
         this.coordenadas = new ArrayList<Double>();
         coordenadas.add(longitud.doubleValue());
         coordenadas.add(latitud.doubleValue());
+        this.bicisDisponibles = bicisDisponibles;
     }
 
     public String getId() {
@@ -110,14 +112,23 @@ public class EstacionDto {
     public void setFechaAlta(LocalDate fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
+    public int getBicisDisponibles() {
+    	return bicisDisponibles;
+    }
+    
+    public void setBicisDisponibles(int bicisDisponibles) {
+    	this.bicisDisponibles = bicisDisponibles;
+    }
 
     public static EstacionDto deEntidad(Estacion estacion) {
         EstacionDto nueva = new EstacionDto(estacion.getNombre(), estacion.lleno(),
                 estacion.getDirPostal(),
                 estacion.getLatitud(),
-                estacion.getLongitud());
+                estacion.getLongitud(),
+                estacion.getBicisDisponibles());
         nueva.setId(estacion.getId());
         return nueva;
     }
+
 
 }

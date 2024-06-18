@@ -95,7 +95,7 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
     }
 
     private void sendJWT(Map<String,Object> claims, HttpServletResponse response) throws IOException {
-    	Date caducidad = Date.from(Instant.now().plusSeconds(3600));
+    	Date caducidad = Date.from(Instant.now().plusSeconds(2592000));
     	String role = claims.get("rol").toString();
         String token = Jwts.builder()
                     .setClaims(claims)

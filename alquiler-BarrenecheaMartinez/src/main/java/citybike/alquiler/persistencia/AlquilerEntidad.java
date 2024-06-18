@@ -21,11 +21,11 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 	@Column(name = "id_bici")
 	private String idBici;
 	
-	@Column(name = "fecha_inicio", columnDefinition = "TIMESTAMP",nullable = true)
-	private LocalDateTime inicio;
+	@Column(name = "fecha_inicio",nullable = true)
+	private String inicio;
 	
-	@Column(name = "fecha_fin", columnDefinition = "TIMESTAMP",nullable = true)
-	private LocalDateTime fin;
+	@Column(name = "fecha_fin",nullable = true)
+	private String fin;
 	
 	public AlquilerEntidad()
 	{
@@ -35,8 +35,8 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 	public AlquilerEntidad(Alquiler alquiler)
 	{
 		this.idBici = alquiler.getIdBici();
-		this.inicio = alquiler.getInicio();
-		this.fin = alquiler.getFin();
+		this.inicio = alquiler.getInicio().toString();
+		this.fin = alquiler.getFin().toString();
 	}
 
 	public String getId()
@@ -59,24 +59,24 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 		this.idBici = idBici;
 	}
 
-	public LocalDateTime getInicio()
+	public String getInicio()
 	{
 		return inicio;
 	}
 
 	public void setInicio(LocalDateTime inicio)
 	{
-		this.inicio = inicio;
+		this.inicio = inicio.toString();
 	}
 
-	public LocalDateTime getFin()
+	public String getFin()
 	{
 		return fin;
 	}
 
 	public void setFin(LocalDateTime fin)
 	{
-		this.fin = fin;
+		this.fin = fin.toString();
 	}
 	
 	public Alquiler getObject()
@@ -84,8 +84,8 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 		Alquiler alq = new Alquiler();
 		alq.setId(id);
 		alq.setIdBici(idBici);
-		alq.setInicio(inicio);
-		alq.setFin(fin);
+		alq.setInicio(LocalDateTime.parse(inicio));
+		alq.setFin(LocalDateTime.parse(fin));
 		return alq;
 	}
 	

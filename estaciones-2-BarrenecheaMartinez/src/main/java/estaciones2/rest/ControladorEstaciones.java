@@ -30,6 +30,7 @@ import estaciones2.bici.modelo.Bici;
 import estaciones2.estacion.dto.NuevaEstacionDto;
 import estaciones2.estacion.modelo.Estacion;
 import estaciones2.estacion.servicio.IServicioEstaciones;
+import estaciones2.repositorio.EntidadNoEncontrada;
 import estaciones2.repositorio.RepositorioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -126,6 +127,15 @@ public class ControladorEstaciones {
 			throws Exception {
 		Pageable paginacion = PageRequest.of(page, size);
 		Page<Estacion> estaciones = servEstaciones.obtenerEstacionesPaginado(paginacion);
+		estaciones.forEach(e -> {
+			try {
+				int numBicisDisponibles = servEstaciones.bicisEstacionLimitado(e.getId()).size();
+				e.setBicisDisponibles(numBicisDisponibles); 
+			} catch (RepositorioException | EntidadNoEncontrada e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 
 		return this.pagedResourcesAssemblerEstacionDto.toModel(estaciones.map(EstacionDto::deEntidad));
 	}
