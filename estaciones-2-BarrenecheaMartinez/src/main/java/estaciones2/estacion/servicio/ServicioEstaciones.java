@@ -189,4 +189,21 @@ public class ServicioEstaciones implements IServicioEstaciones {
 				() -> new EntidadNoEncontrada("Estacion no encontrada"));
 		return !estacion.lleno();
 	}
+
+	@Override
+	public void modificarEstacion(String id, String nombre, int numPuestos, long dirPostal, BigDecimal latitud,
+			BigDecimal longitud) {
+		Estacion estacion = repoEstaciones.findById(id).get();
+		estacion.setNombre(nombre);
+		estacion.setNumPuestos(numPuestos);
+		estacion.setDirPostal(dirPostal);
+		estacion.setLatitud(latitud);
+		estacion.setLongitud(longitud);
+		repoEstaciones.save(estacion);
+	}
+
+	@Override
+	public void bajaEstacion(String id) {
+		repoEstaciones.deleteById(id);
+	}
 }

@@ -175,5 +175,21 @@ public class ControladorEstaciones {
 		boolean result = servEstaciones.huecoDisponible(id);
 		return result;
 	}
+	@PutMapping("/{id}")
+	@Operation(summary = "Modificar una estación", description = "Modifica una estación del sistema")
+	@PreAuthorize("hasAuthority('gestor')")
+	public ResponseEntity<Void> modificarEstacion(@PathVariable String id, @Validated @RequestBody NuevaEstacionDto estacion)
+			throws RepositorioException {
+		servEstaciones.modificarEstacion(id, estacion.getNombre(), estacion.getNumPuestos(), estacion.getDirPostal(),
+				estacion.getLatitud(), estacion.getLongitud());
+		return ResponseEntity.noContent().build();
+	}
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Eliminar una estación", description = "Elimina una estación del sistema")
+	@PreAuthorize("hasAuthority('gestor')")
+	public ResponseEntity<Void> eliminarEstacion(@PathVariable String id) throws RepositorioException {
+		servEstaciones.bajaEstacion(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }

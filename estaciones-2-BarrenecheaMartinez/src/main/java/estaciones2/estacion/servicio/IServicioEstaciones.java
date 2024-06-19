@@ -40,4 +40,9 @@ public interface IServicioEstaciones {
 
 	public boolean huecoDisponible(String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 
+    public void modificarEstacion(String id, String nombre, int numPuestos, long dirPostal, BigDecimal latitud,
+            BigDecimal longitud);
+
+    public void bajaEstacion(String id);
+
 }
