@@ -64,6 +64,7 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
             }
             return;

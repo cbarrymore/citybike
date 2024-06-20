@@ -16,10 +16,10 @@
  
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password"
-				value="practicas" />
+				value="root" />
 
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/arso?serverTimezone=CET" />
+				value="jdbc:mysql://localhost:3306/citybike?serverTimezone=CET" />
 
 			<property name="eclipselink.ddl-generation"
 				value="create-or-extend-tables" />

@@ -5,16 +5,12 @@ services:
     build: alquiler-BarrenecheaMartinez/
     ports:
       - "8080:8080"
-    environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/alquileres?authSource=admin
-    depends_on:
-      - mongo
   estaciones:
     build: estaciones-2-BarrenecheaMartinez/
     ports:
       - "4040:4040"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/estaciones2?authSource=admin
+      #- SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/estaciones2?authSource=admin
       - SPRING_RABBITMQ_ADDRESSES=amqp://guest:guest@rabbitmq:5672
     depends_on:
       - mongo
@@ -22,17 +18,12 @@ services:
     build: pasarela/
     ports:
       - "8070:8070"
-    environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/pasarela?authSource=admin
-      - SPRING_RABBITMQ_ADDRESSES=amqp://guest:guest@rabbitmq:5672
-    depends_on:
-      - mongo
   usuarios:
     build: usuarios/
     ports:
       - "5115:5115"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/usuarios?authSource=admin
+      #- SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/usuarios?authSource=admin
       - SPRING_RABBITMQ_ADDRESSES=amqp://guest:guest@rabbitmq:5672
     depends_on:
       - mongo
