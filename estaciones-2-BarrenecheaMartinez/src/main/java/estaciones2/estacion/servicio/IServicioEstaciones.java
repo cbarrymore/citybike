@@ -24,6 +24,8 @@ public interface IServicioEstaciones {
 
 	public void darBajaBici(String idBici, String motivo) throws RepositorioException, EntidadNoEncontrada;
 
+	public boolean biciDisponible(String idBici) throws RepositorioException, EntidadNoEncontrada;
+
 	public List<Bici> bicisEstacion(String idEstaciones)
 			throws RepositorioException, EntidadNoEncontrada;
 

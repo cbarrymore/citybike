@@ -39,4 +39,15 @@ public class ServicioEstacionesRetrofit implements IServicioEstaciones {
 		}
 	}
 
+	@Override
+	public boolean biciDisponible(String idBici)
+			throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException {
+		Response<Boolean> respuesta = restEstaciones.biciDisponible(idBici).execute();
+		if (!respuesta.isSuccessful()) {
+			throw new ServicioEstacionesException("Error al comprobar si la bici está disponible\n" + respuesta.body());
+		}
+		System.out.println(respuesta.body());
+		return respuesta.body();
+	}
+
 }

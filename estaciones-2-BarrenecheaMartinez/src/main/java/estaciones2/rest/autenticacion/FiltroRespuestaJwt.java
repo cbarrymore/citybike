@@ -32,7 +32,8 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
                 || request.getRequestURI().startsWith("/swagger-resources")
                 || request.getRequestURI().startsWith("/webjars")
                 || (request.getRequestURI().matches("/api/estaciones/.*/bicis/.*/estacionar") && request.getMethod().equals("PUT"))
-                || request.getRequestURI().matches("/api/estaciones/.*/hueco")) {
+                || request.getRequestURI().matches("/api/estaciones/.*/hueco")
+                || request.getRequestURI().matches("/api/estaciones/any/bicis/.*/disponible")) {
             filterChain.doFilter(request, response);
             return;
         }

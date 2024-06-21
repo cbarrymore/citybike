@@ -176,6 +176,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 			throw new IllegalStateException("La bici está dada de baja");
 		estacion.aparcarBici(idBici);
 		historico.marcarEntrada(idEstacion);
+		historico.setFechaSalida(null);
 		bici.setEstacion(idEstacion);
 		bici.setDisponible(true);
 		repoBicis.save(bici);
@@ -205,5 +206,12 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	@Override
 	public void bajaEstacion(String id) {
 		repoEstaciones.deleteById(id);
+	}
+
+	@Override
+	public boolean biciDisponible(String idBici) throws RepositorioException, EntidadNoEncontrada {
+		Bici bici = repoBicis.findById(idBici).orElseThrow(
+				() -> new EntidadNoEncontrada("Bici no encontrada"));
+		return bici.isDisponible();
 	}
 }

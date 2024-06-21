@@ -12,4 +12,7 @@ public interface IServicioEstaciones {
 
 	public void estacionarBici(String idBici, String idEstacion)
 			throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException;
+
+	public boolean biciDisponible(String idBici) 
+			throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException;
 }

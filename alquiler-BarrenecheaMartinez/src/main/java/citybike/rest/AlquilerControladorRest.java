@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,12 +46,12 @@ public class AlquilerControladorRest {
 	 * \ --header 'Content-Type: application/x-www-form-urlencoded' \
 	 * --data-urlencode 'idBici=1'
 	 */
-	public Response createReserva(@PathParam("idUsuario") String idUsuario, @FormParam("idBici") String idBici)
+	public Response createReserva(@PathParam("idUsuario") String idUsuario, @QueryParam("idBici") String idBici)
 			throws Exception {
 		servicio.reservar(idUsuario, idBici);
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
-
+	
 	@PATCH
 	@Path("/usuarios/{idUsuario}/reservas/")
 	/**
@@ -74,7 +75,7 @@ public class AlquilerControladorRest {
 	 * \ --header 'Content-Type: application/x-www-form-urlencoded' \
 	 * --data-urlencode 'idBici=1'
 	 */
-	public Response createAlquiler(@PathParam("idUsuario") String idUsuario, @FormParam("idBici") String idBici)
+	public Response createAlquiler(@PathParam("idUsuario") String idUsuario, @QueryParam("idBici") String idBici)
 			throws Exception {
 		servicio.alquilar(idUsuario, idBici);
 

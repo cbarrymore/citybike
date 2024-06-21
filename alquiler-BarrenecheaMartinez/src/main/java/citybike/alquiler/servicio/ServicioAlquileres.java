@@ -11,6 +11,9 @@ import citybike.estaciones.servicio.ServicioEstacionesException;
 import citybike.eventos.dtos.Evento;
 import citybike.eventos.dtos.EventoBiciAlquilada;
 import citybike.eventos.dtos.EventoBiciAlquilerConcluido;
+import citybike.eventos.dtos.EventoBiciReservaCancelada;
+import citybike.eventos.dtos.EventoBiciReservaExpirada;
+import citybike.eventos.dtos.EventoBiciReservada;
 import citybike.eventos.servicio.IServicioEventos;
 import citybike.repositorio.EntidadNoEncontrada;
 import citybike.repositorio.FactoriaRepositorios;
@@ -30,10 +33,24 @@ public class ServicioAlquileres implements IServicioAlquileres {
 	IServicioEventos servicioEventos; 
 
 	@Override
-	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
+	public void reservar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException{
 		Usuario u = procesarUsuario(idUsuario);
 		if (u.reservaActiva() != null) {
-			throw new IllegalStateException("Ya hay una reserva activa");
+			Reserva r = u.reservaActiva();
+			if(!r.activa()) {
+				u.getReservas().remove(u.getReservas().size() - 1);
+				repositorioUsuario.update(u);
+				Evento eventoReservaExpirada = new EventoBiciReservaExpirada(idUsuario, idBici);
+				try {
+					getServicioEventos().publicarEvento(eventoReservaExpirada);
+					System.out.println("La reserva "+ r.getId() + " ha expirado");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					throw new InternalError("Error al publicar evento");
+				}
+			}else {				
+				throw new IllegalStateException("Ya hay una reserva activa");
+			}
 		}
 		if (u.alquilerActivo() != null) {
 			throw new IllegalStateException("Ya hay un alquiler activo");
@@ -44,11 +61,24 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		if (u.superaTiempo()) {
 			throw new IllegalStateException("El usuario ha superado el tiempo de uso");
 		}
-
+		if (!estaciones.biciDisponible(idBici)) {
+			throw new IllegalStateException("La bici no está disponible");
+		}
+		
 		LocalDateTime creada = tiempo.now();
+		
+		
 		Reserva r = new Reserva(idBici, creada, creada.plusMinutes(30));
 		u.getReservas().add(r);
 		repositorioUsuario.update(u);
+		
+		Evento eventoReserva = new EventoBiciReservada(idUsuario, idBici);
+		try {
+			getServicioEventos().publicarEvento(eventoReserva);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new InternalError("Error al publicar evento");
+		}
 
 	}
 
@@ -57,17 +87,79 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		Usuario u = procesarUsuario(idUsuario);
 		Reserva r = u.reservaActiva();
 		if (r != null) {
-			Alquiler al = new Alquiler(r.getIdBici(), tiempo.now());
+			if(!r.activa()) {
+				u.getReservas().remove(u.getReservas().size() - 1);
+				repositorioUsuario.update(u);
+				
+				Evento eventoReservaExpirada = new EventoBiciReservaExpirada(idUsuario, r.getIdBici());
+				try {
+					getServicioEventos().publicarEvento(eventoReservaExpirada);
+					throw new IllegalStateException("La reserva no está activa");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					throw new InternalError("Error al publicar evento");
+				}
+			}
+			LocalDateTime creada = tiempo.now();
+			Alquiler al = new Alquiler(r.getIdBici(), creada);
 			u.getAlquileres().add(al);
 			u.getReservas().remove(u.getReservas().size() - 1);
 			repositorioUsuario.update(u);
+			
+			Evento eventoBiciAlquilada = new EventoBiciAlquilada(r.getIdBici(), creada.toString());
+
+			try {
+				getServicioEventos().publicarEvento(eventoBiciAlquilada);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				throw new InternalError("Error al publicar evento");
+			}
+			
 		} else
+			
 			throw new IllegalStateException("No hay ninguna reserva activa");
 
 	}
+	
+	@Override
+	public void cancelarReserva(String idUsuario) throws RepositorioException, EntidadNoEncontrada {
+		Usuario u = procesarUsuario(idUsuario);
+		Reserva r = u.reservaActiva();
+		if (r != null) {
+			if(!r.activa()) {
+				Evento eventoReservaExpirada = new EventoBiciReservaExpirada(idUsuario, r.getIdBici());
+				u.getReservas().remove(u.getReservas().size() - 1);
+				repositorioUsuario.update(u);
+				try {
+					getServicioEventos().publicarEvento(eventoReservaExpirada);
+					throw new IllegalStateException("La reserva no está activa");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					throw new InternalError("Error al publicar evento");
+				}
+			}
+			else {				
+				u.getReservas().remove(u.getReservas().size() - 1);
+				repositorioUsuario.update(u);
+				Evento eventoReservaCancelada = new EventoBiciReservaCancelada(idUsuario, r.getIdBici());
+				try {
+					getServicioEventos().publicarEvento(eventoReservaCancelada);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					throw new InternalError("Error al publicar evento");
+				}
+			}
+		} else
+			u.getReservas().remove(u.getReservas().size() - 1);
+			repositorioUsuario.update(u);
+			throw new IllegalStateException("No hay ninguna reserva activa o el tiempo de reserva ha expirado");
+		
+		
+	
+	}
 
 	@Override
-	public void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada {
+	public void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada, IOException, ServicioEstacionesException {
 		Usuario u = procesarUsuario(idUsuario);
 
 		if (u.reservaActiva() != null) {
@@ -82,6 +174,12 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		if (u.superaTiempo()) {
 			throw new IllegalStateException("El usuario ha superado el tiempo de uso");
 		}
+		
+		if(!estaciones.biciDisponible(idBici)) {
+			throw new IllegalStateException("La bici no está disponible");
+		}
+		
+		
 		LocalDateTime creada = tiempo.now();
 		Alquiler al = new Alquiler(idBici, creada);
 		u.getAlquileres().add(al);
@@ -113,7 +211,7 @@ public class ServicioAlquileres implements IServicioAlquileres {
 		if (a == null)
 			throw new IllegalStateException("No hay alquiler activo");
 		if (estaciones.huecoDisponible(idEstacion)) {
-			estaciones.estacionarBici(idUsuario, idEstacion);
+			estaciones.estacionarBici(a.getIdBici(), idEstacion);
 			a.setFin(tiempo.now());
 			repositorioUsuario.update(u);
 
@@ -156,6 +254,7 @@ public class ServicioAlquileres implements IServicioAlquileres {
 	private IServicioEventos getServicioEventos() {
 		if(this.servicioEventos == null) {
 			this.servicioEventos= FactoriaServicios.getServicio(IServicioEventos.class);
+			System.out.println("El SERVICIO DE EVENTOS" + this.servicioEventos + "\n\\n\\n\\n\\n");
 		}
 		return this.servicioEventos;
 	}

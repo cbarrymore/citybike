@@ -46,8 +46,8 @@ public class ServicioEventosRabbit implements IServicioEventos {
         this.connection = factory.newConnection();
         this.channel = this.connection.createChannel();
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC, true, false, null);
-        channel.queueDeclare("citibyke.alquiler", true, false, false, null);
-        channel.queueBind("citibyke.alquiler", EXCHANGE_NAME, ROUTING_KEY_ESCUCHAR);
+        channel.queueDeclare("citybike.alquiler", true, false, false, null);
+        channel.queueBind("citybike.alquiler", EXCHANGE_NAME, ROUTING_KEY_ESCUCHAR);
         this.QUEUE_KEY.put("citybike.alquiler", "citybike.alquiler");
 
         for (String queue : QUEUE_KEY.keySet()) {

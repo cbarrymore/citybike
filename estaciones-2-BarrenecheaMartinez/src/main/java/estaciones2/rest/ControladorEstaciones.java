@@ -81,12 +81,21 @@ public class ControladorEstaciones {
 	@io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Bicicleta dada de baja"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Bicicleta no encontrada") })
-	public ResponseEntity<Void> darBajaBicicleta(@PathVariable String id, @PathVariable String idBici)
+	public ResponseEntity<Void> darBajaBicicleta(@PathVariable String id, @PathVariable String idBici, @RequestParam String motivoBaja)
 			throws Exception {
-		servEstaciones.darBajaBici(idBici, "Baja por usuario");
+		servEstaciones.darBajaBici(idBici, motivoBaja);
 		// return a string informing the user that the bike was successfully removed
 		return ResponseEntity.noContent().build();
 	}
+
+	@GetMapping("/any/bicis/{idBici}/disponible")
+	@Operation(summary = "Comprobar si una bicicleta está disponible", description = "Comprueba si una bicicleta está disponible en la estación")
+	public boolean biciDisponible(@PathVariable String idBici) throws Exception {
+		boolean result = servEstaciones.biciDisponible(idBici);
+		return result;
+	}
+
+
 
 	@GetMapping("/{id}/bicis")
 	@Operation(summary = "Obtener las bicicletas de una estación", description = "Obtiene las bicicletas de una estación")
@@ -105,7 +114,7 @@ public class ControladorEstaciones {
 				String urlEliminar = WebMvcLinkBuilder
 						.linkTo(WebMvcLinkBuilder
 								.methodOn(ControladorEstaciones.class)
-								.darBajaBicicleta(id, b.getContent().getCodigo()))
+								.darBajaBicicleta(id, b.getContent().getCodigo(),""))
 						.toUri()
 						.toString();
 				b.add(Link.of(urlEliminar, "delete"));

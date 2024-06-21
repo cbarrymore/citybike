@@ -8,10 +8,13 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface IRestEstacionesRetrofit {
-    @GET("/api/estaciones/{idEstacion}/hueco")
+    @GET("api/estaciones/{idEstacion}/hueco")
     Call<Boolean> huecoDisponible(@Path("idEstacion") String idEstacion)
             throws RepositorioException, EntidadNoEncontrada;
 
-    @PUT("/api/estaciones//{idEstacion}/bicis/{idBici}")
+    @PUT("api/estaciones/{idEstacion}/bicis/{idBici}/estacionar")
     Call<Void> estacionarBici(@Path("idBici") String idBici, @Path("idEstacion") String idEstacion);
+    
+    @GET("api/estaciones/any/bicis/{idBici}/disponible")
+    Call<Boolean> biciDisponible(@Path("idBici")String idBici);
 }

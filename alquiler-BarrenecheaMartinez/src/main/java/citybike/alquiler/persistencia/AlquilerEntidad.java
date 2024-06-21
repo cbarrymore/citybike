@@ -36,7 +36,10 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 	{
 		this.idBici = alquiler.getIdBici();
 		this.inicio = alquiler.getInicio().toString();
-		this.fin = alquiler.getFin().toString();
+		if(alquiler.getFin() == null)
+			this.fin = null;
+		else
+			this.fin = alquiler.getFin().toString();
 	}
 
 	public String getId()
@@ -85,7 +88,10 @@ public class AlquilerEntidad implements Entidad<Alquiler>{
 		alq.setId(id);
 		alq.setIdBici(idBici);
 		alq.setInicio(LocalDateTime.parse(inicio));
-		alq.setFin(LocalDateTime.parse(fin));
+		if(fin == null)
+			alq.setFin(null);
+		else
+			alq.setFin(LocalDateTime.parse(fin));
 		return alq;
 	}
 	

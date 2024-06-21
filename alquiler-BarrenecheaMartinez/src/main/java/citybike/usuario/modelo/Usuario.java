@@ -49,9 +49,9 @@ public class Usuario implements Identificable {
 		if( reservas.size()== 0)
 			return null;
 		Reserva ultimaReserva = reservas.get(reservas.size()-1);
-		if(ultimaReserva.activa())
+//		if(ultimaReserva.activa())
 			return ultimaReserva;
-		return null;
+//		return null;
 	}
 	
 	public Alquiler alquilerActivo() {

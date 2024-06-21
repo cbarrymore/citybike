@@ -11,8 +11,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import estaciones2.evento.config.RabbitMQConfig;
+import estaciones2.evento.modelo.Evento;
 import estaciones2.evento.modelo.EventoBiciAlquilada;
 import estaciones2.evento.modelo.EventoBiciAlquilerTerminado;
+import estaciones2.evento.modelo.EventoBiciReservaCancelada;
+import estaciones2.evento.modelo.EventoBiciReservaExpirada;
+import estaciones2.evento.modelo.EventoBiciReservada;
 import estaciones2.evento.servicio.IServicioEventos;
 import estaciones2.repositorio.EntidadNoEncontrada;
 
@@ -37,5 +41,19 @@ public class ListenerEventos {
             EventoBiciAlquilerTerminado ev = objectMapper.readValue(msgEvento, EventoBiciAlquilerTerminado.class);
             servicioEventos.biciTerminaAlquiler(ev.getIdBici(), ev.getActualFechaFinAlquiler());
         }
+        else if (idEvento.equals(EventoBiciReservaCancelada.ID_EVENTO)) {
+            EventoBiciReservaCancelada ev = objectMapper.readValue(msgEvento, EventoBiciReservaCancelada.class);
+            servicioEventos.biciReservaCancelada(ev.getIdBici(), ev.getIdUsuario());
+        }
+        else if(idEvento.equals(EventoBiciReservaExpirada.ID_EVENTO)){
+            EventoBiciReservaExpirada ev = objectMapper.readValue(msgEvento, EventoBiciReservaExpirada.class);  
+            servicioEventos.biciReservaExpirada(ev.getIdBici(), ev.getIdUsuario());
+        }
+        else if(idEvento.equals(EventoBiciReservada.ID_EVENTO)){
+            EventoBiciReservada ev = objectMapper.readValue(msgEvento, EventoBiciReservada.class);
+            servicioEventos.biciReservada(ev.getIdBici(), ev.getIdUsuario());
+        }
+        else
+            System.out.println("Evento no manejado: " + idEvento);
     }
 }
