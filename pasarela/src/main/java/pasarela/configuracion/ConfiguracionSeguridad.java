@@ -36,6 +36,7 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
         .antMatchers("/usuarios/*", "/usuarios/solicitud/*").hasAnyAuthority("gestor")
+        .antMatchers("/usuarios").permitAll()
         .antMatchers("/auth/oauth2")
         .authenticated().and()
         .oauth2Login().successHandler(manegadorExito)

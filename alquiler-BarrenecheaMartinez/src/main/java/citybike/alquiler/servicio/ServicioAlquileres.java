@@ -150,8 +150,6 @@ public class ServicioAlquileres implements IServicioAlquileres {
 				}
 			}
 		} else
-			u.getReservas().remove(u.getReservas().size() - 1);
-			repositorioUsuario.update(u);
 			throw new IllegalStateException("No hay ninguna reserva activa o el tiempo de reserva ha expirado");
 		
 		

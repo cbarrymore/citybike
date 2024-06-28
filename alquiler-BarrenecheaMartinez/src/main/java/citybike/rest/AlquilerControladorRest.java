@@ -110,6 +110,15 @@ public class AlquilerControladorRest {
 	}
 
 	@DELETE
+	@Path("usuarios/{idUsuario}/reservas")
+	public Response cancelarReserva(@PathParam("idUsuario") String idUsuario) throws Exception 
+	{
+		servicio.cancelarReserva(idUsuario);
+		return Response.status(Response.Status.NO_CONTENT).build();
+		
+	}
+	
+	@DELETE
 	@Path("usuarios/{idUsuario}/reservas/bloqueadas")
 	/**
 	 * curl -X DELETE \

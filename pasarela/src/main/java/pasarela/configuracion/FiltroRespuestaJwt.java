@@ -41,7 +41,8 @@ public class FiltroRespuestaJwt extends OncePerRequestFilter {
             throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
         String uri = request.getRequestURI();
-        if (uri.startsWith("/auth/oauth2")) {
+        System.err.println(uri + "" + (uri.startsWith("/usuarios")));
+        if (uri.startsWith("/auth/oauth2") || (uri.startsWith("/usuarios"))) {
             filterChain.doFilter(request, response);
             return;
         }
