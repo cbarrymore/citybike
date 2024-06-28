@@ -1,10 +1,10 @@
 version: "3.7"
 
 services:
-  alquileres:
-    build: alquiler-BarrenecheaMartinez/
-    ports:
-      - "8080:8080"
+  # alquileres:
+  #   build: alquiler-BarrenecheaMartinez/
+  #   ports:
+  #     - "8080:8080"
   estaciones:
     build: estaciones-2-BarrenecheaMartinez/
     ports:
