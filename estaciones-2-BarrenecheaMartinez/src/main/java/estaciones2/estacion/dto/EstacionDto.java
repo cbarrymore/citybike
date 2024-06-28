@@ -21,7 +21,8 @@ public class EstacionDto {
     @Schema(description = "Direccion postal de la estacion")
     private long dirPostal;
     private int bicisDisponibles; 
-
+    @Schema(description = "Numero de puestos de la estacion")
+	private int numPuestos;
     @BsonProperty(value = "coordenadas")
     @Schema(description = "Coordenadas de la estacion")
     private List<Double> coordenadas;
@@ -36,7 +37,7 @@ public class EstacionDto {
 
     }
 
-    public EstacionDto(String nombre, boolean lleno, long dirPostal, BigDecimal latitud, BigDecimal longitud, int bicisDisponibles) {
+    public EstacionDto(String nombre, boolean lleno, long dirPostal, BigDecimal latitud, BigDecimal longitud, int bicisDisponibles, int numPuestos) {
         this.nombre = nombre;
         this.lleno = lleno;
         this.dirPostal = dirPostal;
@@ -47,6 +48,7 @@ public class EstacionDto {
         coordenadas.add(longitud.doubleValue());
         coordenadas.add(latitud.doubleValue());
         this.bicisDisponibles = bicisDisponibles;
+        this.numPuestos = numPuestos;
     }
 
     public String getId() {
@@ -120,12 +122,21 @@ public class EstacionDto {
     	this.bicisDisponibles = bicisDisponibles;
     }
 
+    public int getNumPuestos() {
+    	return numPuestos;
+    }
+    
+    public void setNumPuestos(int numPuestos) {
+    	this.numPuestos = numPuestos;
+    }
+
     public static EstacionDto deEntidad(Estacion estacion) {
         EstacionDto nueva = new EstacionDto(estacion.getNombre(), estacion.lleno(),
                 estacion.getDirPostal(),
                 estacion.getLatitud(),
                 estacion.getLongitud(),
-                estacion.getBicisDisponibles());
+                estacion.getBicisDisponibles(),
+                estacion.getNumPuestos());
         nueva.setId(estacion.getId());
         return nueva;
     }
