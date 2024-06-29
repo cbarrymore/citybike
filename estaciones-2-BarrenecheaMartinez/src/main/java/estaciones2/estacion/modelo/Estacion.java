@@ -127,7 +127,7 @@ public class Estacion implements Identificable {
 	}
 
 	public boolean lleno() {
-		return numPuestos < bicisAparcadas.size();
+		return numPuestos <= bicisAparcadas.size();
 	}
 
 	public boolean aparcarBici(String idBici) {

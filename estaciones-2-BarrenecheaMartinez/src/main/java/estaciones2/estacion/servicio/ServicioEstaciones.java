@@ -204,7 +204,10 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	}
 
 	@Override
-	public void bajaEstacion(String id) {
+	public void bajaEstacion(String id) throws  EntidadNoEncontrada { 
+		Estacion estacion = repoEstaciones.findById(id).orElseThrow(() -> new EntidadNoEncontrada("Bici no encontrada"));
+		if(estacion.getBicisAparcadas().size()!=0)
+		throw new IllegalStateException("La estación tiene bicis");
 		repoEstaciones.deleteById(id);
 	}
 

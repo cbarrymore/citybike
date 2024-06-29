@@ -45,6 +45,6 @@ public interface IServicioEstaciones {
     public void modificarEstacion(String id, String nombre, int numPuestos, long dirPostal, BigDecimal latitud,
             BigDecimal longitud);
 
-    public void bajaEstacion(String id);
+    public void bajaEstacion(String id) throws EntidadNoEncontrada;
 
 }

@@ -28,13 +28,16 @@ public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 
     HttpServletRequest request = (HttpServletRequest) req;
     HttpServletResponse response = (HttpServletResponse) res;
-
-    response.setHeader("Access-Control-Allow-Origin", "*");
+    
+    if(!request.getRequestURI().matches("/usuarios*"))
+    {
+        System.out.println(request.getRequestURI()+" "+request.getRequestURI().matches("/usuarios*"));
+        response.setHeader("Access-Control-Allow-Origin", "*");
+    }
     response.setHeader("Access-Control-Allow-Credentials", "true");
     response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, HEAD, PATCH, PUT");
     response.setHeader("Access-Control-Max-Age", "3600");
     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-
     chain.doFilter(req, res);
 }
 
