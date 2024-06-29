@@ -56,7 +56,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 	}
 
 	@Override
-	public String altaBici(String modelo, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
+	public Bici altaBici(String modelo, String idEstacion) throws RepositorioException, EntidadNoEncontrada {
 		if (modelo == null)
 			throw new IllegalArgumentException("El modelo no puede ser nulo");
 		if (idEstacion == null)
@@ -78,7 +78,7 @@ public class ServicioEstaciones implements IServicioEstaciones {
 		repoBicis.save(nueva);
 		estacion.aparcarBici(idBici);
 		repoEstaciones.save(estacion);
-		return idBici;
+		return nueva;
 
 	}
 

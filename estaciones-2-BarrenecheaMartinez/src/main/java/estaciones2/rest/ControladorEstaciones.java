@@ -69,10 +69,11 @@ public class ControladorEstaciones {
 	@PostMapping("/{idEstacion}/bicis")
 	@Operation(summary = "Dar de alta una bicicleta", description = "Da de alta una bicicleta de la estación")
 	@PreAuthorize("hasAuthority('gestor')")
-	public ResponseEntity<Void> darAltaBici(@RequestParam String modelo, @PathVariable String idEstacion)
+	public BiciDto darAltaBici(@RequestParam String modelo, @PathVariable String idEstacion)
 			throws Exception {
-		servEstaciones.altaBici(modelo, idEstacion);
-		return ResponseEntity.noContent().build();
+		Bici nueva= servEstaciones.altaBici(modelo, idEstacion);
+		BiciDto nuevaDto = BiciDto.deEntidad(nueva, idEstacion);
+		return nuevaDto;
 	}
 
 	@DeleteMapping("/{id}/bicis/{idBici}")
